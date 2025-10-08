@@ -17,10 +17,10 @@ Blaze | Chocolate | Dark | Jungle | Light | Midnight | Violet |
 <img src="https://github.com/ionsharp/Ion.WPF/blob/main/Themes/Blaze.png?raw=true" width="64" /> | <img src="https://github.com/ionsharp/Ion.WPF/blob/main/Themes/Chocolate.png?raw=true" width="64" /> | <img src="https://github.com/ionsharp/Ion.WPF/blob/main/Themes/Dark.png?raw=true" width="64" /> | <img src="https://github.com/ionsharp/Ion.WPF/blob/main/Themes/Jungle.png?raw=true" width="64" /> | <img src="https://github.com/ionsharp/Ion.WPF/blob/main/Themes/Light.png?raw=true" width="64" /> | <img src="https://github.com/ionsharp/Ion.WPF/blob/main/Themes/Midnight.png?raw=true" width="64" /> | <img src="https://github.com/ionsharp/Ion.WPF/blob/main/Themes/Violet.png?raw=true" width="64" />
 
 
-[Nuget](https://www.nuget.org/packages/Ion.WPF/)
+[Nuget](https://www.nuget.org/packages/Ion.WPF/) 
+![](https://img.shields.io/badge/style-Coming%20soon!-red.svg?style=flat&label=)
 ---
 ### Quick install
-##### Ion.WPF ![](https://img.shields.io/badge/style-Coming%20soon!-red.svg?style=flat&label=)
 > _`Install-Package Ion.WPF -Version *.0.0`_
 
 [Learn more...](https://github.com/ionsharp/Ion.WPF/wiki)
