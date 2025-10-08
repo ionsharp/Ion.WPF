@@ -1,9 +1,0 @@
-﻿<RichTextBox x:Class="Imagin.Core.Controls.ConsoleBox"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <RichTextBox.Resources>
-        <Style TargetType="{x:Type Paragraph}">
-            <Setter Property="Margin" Value="0" />
-        </Style>
-    </RichTextBox.Resources>
-</RichTextBox>
