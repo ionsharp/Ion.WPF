@@ -1,4 +1,6 @@
-﻿Imagin.Ion.WPF ![](https://img.shields.io/badge/style-8.0-blue.svg?style=flat&label=Version)
+﻿Imagin.Ion.WPF 
+![](https://img.shields.io/badge/style-Unstable-yellow.svg?style=flat&label=Build)
+![](https://img.shields.io/badge/style-8.0-blue.svg?style=flat&label=Version)
 ---
 ...
 
