@@ -1,0 +1,793 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:g="urn:gong-wpf-dragdrop"
+    xmlns:l="http://wpflocalizeextension.codeplex.com"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="clr-namespace:Ion.Controls"
+    xmlns:Collections="clr-namespace:Ion.Collect"
+    xmlns:Data="clr-namespace:Ion.Data"
+    xmlns:Storage="clr-namespace:Ion.Storage">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="{i:Style Key=Button}"/>
+        <ResourceDictionary Source="{i:Style Key=Control}"/>
+        <ResourceDictionary Source="{i:Style Key=FrameworkElement}"/>
+        <ResourceDictionary Source="{i:Style Key=ItemsControl}"/>
+        <ResourceDictionary Source="{i:Style Key=Menu}"/>
+        <ResourceDictionary Source="{i:Style Key=ScrollViewer}"/>
+        <ResourceDictionary Source="{i:Style Key=Thumbnail}"/>
+        <ResourceDictionary Source="{i:Style Key=Validation}"/>
+    </ResourceDictionary.MergedDictionaries>
+    <!--TextBox-->
+
+    <!--#region TextBox-->
+
+    <Style x:Key="{x:Type TextBoxBase}" TargetType="{x:Type TextBoxBase}" BasedOn="{StaticResource {x:Type Control}}">
+        <Setter Property="Background" Value="{i:Theme TextBoxBackground}" />
+        <Setter Property="Border.CornerRadius" Value="0.5" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CaretBrush" Value="{i:Theme TextBoxCaret}" />
+        <Setter Property="ContextMenu">
+            <Setter.Value>
+                <ContextMenu DataContext="{i:Bind From=Self, Path=PlacementTarget}">
+                    <MenuItem 
+                        Command="ApplicationCommands.Cut"
+                        CommandTarget="{i:Bind}"
+                        Header="{i:Text Cut}"
+                        Icon="{i:Image Key=Cut}"
+                        InputGestureText="Ctrl + X"/>
+                    <MenuItem 
+                        Command="ApplicationCommands.Copy"
+                        CommandTarget="{i:Bind}"
+                        Header="{i:Text Copy}"
+                        Icon="{i:Image Key=Copy}"
+                        InputGestureText="Ctrl + C"/>
+                    <MenuItem
+                        Command="ApplicationCommands.Paste"
+                        CommandTarget="{i:Bind}"
+                        Header="{i:Text Paste}"
+                        Icon="{i:Image Key=Paste}"
+                        InputGestureText="Ctrl + V"/>
+                    <Separator/>
+                    <MenuItem
+                        Command="{x:Static i:XTextBoxBase.ClearCommand}"
+                        CommandTarget="{i:Bind}"
+                        Header="{i:Text Clear}"
+                        Icon="{i:Image Key=XRound}"/>
+                </ContextMenu>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ContextMenuService.IsEnabled" Value="False"/>
+        <Setter Property="FontFamily" Value="{i:Bind FontFamily, AppSource=Data}"/>
+        <Setter Property="i:XControl.FontScale" Value="{i:Bind FontScale, AppSource=Data}"/>
+        <Setter Property="i:XControl.FontScaleOrigin" Value="{i:Bind FontSize, AppSource=Data}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="IsInactiveSelectionHighlightEnabled" Value="True" />
+        <Setter Property="i:XTextBoxBase.EnableCopyCommand" Value="False"/>
+        <Setter Property="i:XTextBoxBase.EnableCutCommand" Value="False"/>
+        <Setter Property="i:XTextBoxBase.EnablePasteCommand" Value="False"/>
+        <Setter Property="i:XTextBoxBase.MenuAnimation" Value="Fade" />
+        <Setter Property="i:XTextBoxBase.MenuHeight" Value="{x:Static i:XPopup.Height}" />
+        <Setter Property="i:XTextBoxBase.MenuPlacement" Value="Bottom" />
+        <Setter Property="i:XTextBoxBase.MenuTemplate">
+            <Setter.Value>
+                <DataTemplate DataType="{x:Type Data:Reference}">
+                    <Grid i:XGrid.AutoRows="True" i:XGrid.Rows="Auto,Auto,Auto">
+                        <Grid.Resources>
+                            <Data:Reference x:Key="TextBoxBase" Data="{i:Bind Data}"/>
+                        </Grid.Resources>
+                        <ScrollViewer i:XScrollViewer.Overlap="True">
+                            <i:MenuItemControl x:Name="ItemsControl"
+                                i:XItemsControl.EmptyTemplateVisibility="Visible">
+                                <i:XItemsControl.EmptyTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{i:Text NoSuggestions, Suffix=...}"
+                                            FontStyle="Italic" Opacity="0.5"/>
+                                    </DataTemplate>
+                                </i:XItemsControl.EmptyTemplate>
+                                <i:MenuItemControl.ItemContainerStyle>
+                                    <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                                        <Setter Property="Command" Value="{x:Static i:XTextBoxBase.DefaultSuggestionCommand}"/>
+                                        <Setter Property="CommandParameter" Value="{i:Bind}"/>
+                                        <Setter Property="CommandTarget" Value="{i:Bind Data, Source={StaticResource TextBoxBase}}"/>
+                                        <Setter Property="Header" Value="{i:Bind}"/>
+                                        <Setter Property="HeaderTemplate" Value="{i:Bind Path=Data.(i:XTextBoxBase.SuggestionTemplate), Source={StaticResource TextBoxBase}}"/>
+                                        <Setter Property="HeaderTemplateSelector" Value="{i:Bind Path=Data.(i:XTextBoxBase.SuggestionTemplateSelector), Source={StaticResource TextBoxBase}}"/>
+                                        <Setter Property="i:XToolTip.Template" Value="{i:Bind From=Self, Path=HeaderTemplate}"/>
+                                        <Setter Property="i:XToolTip.TemplateSelector" Value="{i:Bind From=Self, Path=HeaderTemplateSelector}"/>
+                                        <Setter Property="ToolTip" Value="{i:Bind From=Self, Path=Header}"/>
+                                    </Style>
+                                </i:MenuItemControl.ItemContainerStyle>
+                                <i:MenuItemControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel KeyboardNavigation.DirectionalNavigation="Contained" />
+                                    </ItemsPanelTemplate>
+                                </i:MenuItemControl.ItemsPanel>
+                                <i:MenuItemControl.ItemsSource>
+                                    <CompositeCollection>
+                                        <CollectionContainer Collection="{i:Bind Path=Data.(i:XTextBoxBase.SuggestionsFound), Source={StaticResource TextBoxBase}}"
+                                            i:XCollectionContainer.GroupDirection="{i:Bind Path=Data.(i:XTextBoxBase.SuggestionGroupDirection), Source={StaticResource TextBoxBase}}"
+                                            i:XCollectionContainer.GroupName="{i:Bind Path=Data.(i:XTextBoxBase.SuggestionGroupName), Source={StaticResource TextBoxBase}}"
+                                            i:XCollectionContainer.SortDirection="{i:Bind Path=Data.(i:XTextBoxBase.SuggestionSortDirection), Source={StaticResource TextBoxBase}}"
+                                            i:XCollectionContainer.SortName="{i:Bind Path=Data.(i:XTextBoxBase.SuggestionSortName), Source={StaticResource TextBoxBase}}"/>
+                                    </CompositeCollection>
+                                </i:MenuItemControl.ItemsSource>
+                            </i:MenuItemControl>
+                        </ScrollViewer>
+                        <Separator Margin="5,0"
+                            Visibility="{i:Bind Convert=Data:ConvertBooleanToVisibility, Path=Data.(i:XTextBoxBase.CanClearSuggestions), Source={StaticResource TextBoxBase}}"/>
+                        <MenuItem 
+                            Command="{x:Static i:XTextBoxBase.ClearSuggestionsCommand}"
+                            CommandTarget="{i:Bind Data, Source={StaticResource TextBoxBase}}"
+                            Header="{i:Text Clear}"
+                            Icon="{i:Image Key=XRound}"
+                            Visibility="{i:Bind Convert=Data:ConvertBooleanToVisibility, Path=Data.(i:XTextBoxBase.CanClearSuggestions), Source={StaticResource TextBoxBase}}"/>
+                    </Grid>
+                    <DataTemplate.Triggers>
+                        <Trigger SourceName="ItemsControl" Property="i:XItemsControl.IsEmpty" Value="True">
+                            <Setter TargetName="ItemsControl" Property="Margin" Value="{DynamicResource {x:Static i:DisplayEmpty.PopupMarginKey}}"/>
+                        </Trigger>
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XTextBoxBase.PlaceholderTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock Text="{i:Bind}" TextTrimming="CharacterEllipsis"
+                        Opacity="0.3"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XTextBoxBase.Right">
+            <Setter.Value>
+                <i:DataTemplateList>
+                    <DataTemplate>
+                        <ContentPresenter ContentTemplate="{StaticResource {x:Static i:XTextBoxBase.ValidationIconTemplate}}"/>
+                    </DataTemplate>
+                </i:DataTemplateList>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XTextBoxBase.ScrollViewerStyle" Value="{StaticResource {x:Type ScrollViewer}}" />
+        <Setter Property="i:XTextBoxBase.SuggestionTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock>
+                        <TextBlock.Resources>
+                            <Data:Reference x:Key="TextBoxBase" Data="{Data:Ancestor {x:Type TextBoxBase}}"/>
+                        </TextBlock.Resources>
+                        <Run FontWeight="Bold" Text="{i:Bind Data.Text, Mode=OneWay, Source={StaticResource TextBoxBase}}"/><Run>
+                            <Run.Text>
+                                <Data:MultiBind ConverterName="Substring">
+                                    <Binding Path="."/>
+                                    <i:Bind Convert="Data:ConvertStringLength" Path="Data.Text" Source="{StaticResource TextBoxBase}"/>
+                                </Data:MultiBind>
+                            </Run.Text>
+                        </Run>
+                    </TextBlock>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XTextBoxBase.Tab" Value="4" />
+        <Setter Property="i:XTextBoxBase.TextTrimming" Value="None"/>
+        <Setter Property="i:XTextBoxBase.ValidationIconErrorTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <i:ImageElement DataContext="{Data:Ancestor {x:Type TextBoxBase}}"
+                        AllowDrop="False"
+                        Foreground="{i:Theme Key=Red}"
+                        Margin="0,0,5,0"
+                        Source="{i:Image Key=XRound}"
+                        ToolTip="{l:Loc Error}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XTextBoxBase.ValidationIconSuccessTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <i:ImageElement DataContext="{Data:Ancestor {x:Type TextBoxBase}}"
+                        AllowDrop="False"
+                        Foreground="{i:Theme Key=Green}"
+                        Margin="0,0,5,0"
+                        Source="{i:Image Key=CheckmarkRound}"
+                        ToolTip="{l:Loc Success}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XTextBoxBase.ValidationIconVisibility" Value="Visible"/>
+        <Setter Property="i:XTextBoxBase.ValidationIconSuccessVisibility" Value="Collapsed"/>
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Padding" Value="2.5" />
+        <Setter Property="SelectionBrush" Value="{i:Theme TextBoxSelectionInactive}" />
+        <Setter Property="SelectionOpacity" Value="0.4" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden" />
+        <Setter Property="SnapsToDevicePixels" Value="True"/>
+        <Setter Property="Validation.ErrorTemplate" Value="{StaticResource {x:Static i:XTextBoxBase.ValidationErrorTemplate}}"/>
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsEnabled" Value="True"/>
+                    <Condition Property="IsKeyboardFocused" Value="True"/>
+                    <Condition Property="IsReadOnly" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="SelectionBrush" Value="{i:Theme TextBoxSelection}" />
+            </MultiTrigger>
+            <Trigger Property="AcceptsReturn" Value="False">
+                <Setter Property="i:XTextBoxBase.TextTrimming" Value="CharacterEllipsis"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="{x:Static i:XElement.DisabledOpacity}" />
+                <Setter Property="SelectionBrush" Value="{i:Theme TextBoxDisabledSelection}" />
+            </Trigger>
+            <Trigger Property="IsReadOnly" Value="True">
+                <Setter Property="Opacity" Value="{x:Static i:XElement.DisabledOpacity}" />
+                <Setter Property="SelectionBrush" Value="{i:Theme TextBoxDisabledSelection}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="{x:Type TextBox}" TargetType="{x:Type TextBox}" BasedOn="{StaticResource {x:Type TextBoxBase}}">
+        <Setter Property="AcceptsReturn" Value="False" />
+        <Setter Property="AcceptsTab" Value="False" />
+        <Setter Property="i:XTextBox.ClearButtonTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <i:ImageButton DataContext="{Data:Ancestor TextBox}"
+                        AllowDrop="False"
+                        Command="{x:Static i:XTextBoxBase.ClearCommand}"
+                        CommandTarget="{i:Bind}"
+                        Focusable="False"
+                        Source="{i:Image Key=X}"
+                        Margin="0,0,5,0"
+                        ToolTip="{i:Text Clear}"
+                        Visibility="{i:Bind IsEnabled, Convert=Data:ConvertBooleanToVisibility, From=Self}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XTextBox.ClearButtonVisibility" Value="Visible" />
+        <Setter Property="i:XTextBox.EditButtonTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <i:ImageButton Command="{x:Static i:XTextBox.EditCommand}"
+                        AllowDrop="False"
+                        CommandTarget="{Data:Ancestor TextBox}"
+                        Focusable="False"
+                        Source="{i:Image Key=Pencil}"
+                        Margin="5,0,0,0"
+                        ToolTip="{i:Text Edit}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XTextBox.EnterButtonSource" Value="{i:Image Key=ArrowNext}"/>
+        <Setter Property="i:XTextBox.EnterButtonTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <i:ImageButton Command="{i:Bind}"
+                        AllowDrop="False"
+                        Focusable="False"
+                        Margin="0,0,5,0"
+                        Source="{Data:Ancestor TextBox, Path=(i:XTextBox.EnterButtonSource)}"
+                        ToolTip="{Data:Ancestor TextBox, Path=(i:XTextBox.EnterButtonToolTip)}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XTextBox.EnterButtonToolTip" Value="{l:Loc Enter}"/>
+        <Setter Property="i:XTextBox.LabelTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock Text="{i:Bind}" 
+                        TextTrimming="CharacterEllipsis"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XTextBox.SelectAllOnTripleClick" Value="True" />
+        <Setter Property="i:XTextBoxBase.TextTrimmingTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock Text="{i:Bind}"
+                        TextTrimming="{Data:Ancestor TextBoxBase, Path=(i:XTextBoxBase.TextTrimming)}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XTextBoxBase.SelectAllOnFocus" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TextBox}">
+                    <Grid>
+                        <Grid.Resources>
+                            <Data:Reference x:Key="TextBox" Data="{i:Bind From=TemplatedParent}"/>
+                        </Grid.Resources>
+                        <Border x:Name="PART_Border"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            CornerRadius="{TemplateBinding Border.CornerRadius}">
+                            <Grid i:XGrid.Columns="Auto,*,Auto,Auto,Auto,Auto">
+                                <!-- ... Content (left) -->
+                                <ItemsControl Grid.Column="0" 
+                                    AllowDrop="False"
+                                    ItemsSource="{i:Bind From=TemplatedParent, Path=(i:XTextBoxBase.Left)}"
+                                    KeyboardNavigation.TabNavigation="None">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <ContentControl ContentTemplate="{i:Bind}"
+                                                VerticalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                                <!-- /// -->
+                                
+                                <!-- ... Placeholder -->
+                                <ContentPresenter Grid.Column="1"
+                                    Content="{i:Bind From=TemplatedParent, Path=(i:XTextBoxBase.Placeholder)}" 
+                                    ContentTemplate="{i:Bind From=TemplatedParent, Path=(i:XTextBoxBase.PlaceholderTemplate)}"
+                                    ContentTemplateSelector="{i:Bind From=TemplatedParent, Path=(i:XTextBoxBase.PlaceholderTemplateSelector)}"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    IsHitTestVisible="False"
+                                    KeyboardNavigation.TabNavigation="None"
+                                    Margin="{TemplateBinding Padding}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Visibility="{i:Bind From=TemplatedParent, Path=(i:XTextBoxBase.IsEmpty), Convert={x:Type Data:ConvertBooleanToVisibility}}"/>
+                                <!-- ... Label -->
+                                <ContentControl Grid.Column="1"
+                                    Content="{i:Bind From=TemplatedParent, Path=(i:XTextBox.Label)}"
+                                    ContentTemplate="{i:Bind From=TemplatedParent, Path=(i:XTextBox.LabelTemplate)}"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                    IsHitTestVisible="False"
+                                    Margin="{TemplateBinding Padding}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Visibility="{i:Bind From=TemplatedParent, Path=(i:XTextBox.IsEditable), Convert={x:Type Data:ConvertBooleanToVisibility}, ConverterParameter=1}"/>
+                                
+                                <!-- ... Text (trim) -->
+                                <ContentControl Grid.Column="1"
+                                    Content="{TemplateBinding Text}"
+                                    ContentTemplate="{i:Bind From=TemplatedParent, Path=(i:XTextBoxBase.TextTrimmingTemplate)}"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                    IsHitTestVisible="False"
+                                    Margin="{TemplateBinding Padding}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                    <ContentControl.Visibility>
+                                        <Data:MultiBindTrue For="All" Result="Visibility">
+                                            <i:Bind From="TemplatedParent" Path="(i:XTextBox.IsEditable)"/>
+                                            <i:Equal From="TemplatedParent" Invert="True" Path="(i:XTextBoxBase.TextTrimming)" Value="{x:Static TextTrimming.None}"/>
+                                            <i:Bind From="TemplatedParent" Path="IsKeyboardFocused" Convert="Data:Invert"/>
+                                        </Data:MultiBindTrue>
+                                    </ContentControl.Visibility>
+                                </ContentControl>
+                                <!-- ... Text -->
+                                <ScrollViewer x:Name="PART_ContentHost" Grid.Column="1"
+                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    Padding="{TemplateBinding Padding}"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" 
+                                    Style="{i:Bind From=TemplatedParent, Path=(i:XTextBoxBase.ScrollViewerStyle)}"
+                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}">
+                                    <ScrollViewer.Visibility>
+                                        <Data:MultiBind ConverterName="AandBorC">
+                                            <i:Bind From="TemplatedParent" Path="(i:XTextBox.IsEditable)"/>
+                                            <i:Equal From="TemplatedParent" Path="(i:XTextBoxBase.TextTrimming)" Value="{x:Static TextTrimming.None}"/>
+                                            <i:Bind From="TemplatedParent" Path="IsKeyboardFocused"/>
+                                        </Data:MultiBind>
+                                    </ScrollViewer.Visibility>
+                                </ScrollViewer>
+
+                                <!-- /// -->
+
+                                <!-- ... Content (right) -->
+                                <ItemsControl Grid.Column="2"
+                                    AllowDrop="False"
+                                    ItemsSource="{i:Bind From=TemplatedParent, Path=(i:XTextBoxBase.Right)}"
+                                    KeyboardNavigation.TabNavigation="None">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <ContentControl ContentTemplate="{i:Bind}"
+                                                VerticalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                                <!-- ... Buttons -->
+                                <ContentControl Grid.Column="3"
+                                    AllowDrop="False"
+                                    ContentTemplate="{i:Bind From=TemplatedParent, Path=(i:XTextBox.ClearButtonTemplate)}"
+                                    KeyboardNavigation.TabNavigation="None">
+                                    <ContentControl.Visibility>
+                                        <Data:MultiBindTrue For="All" Result="Visibility">
+                                            <i:Bind From="TemplatedParent" Path="(i:XTextBox.ClearButtonVisibility)"/>
+                                            <i:Bind From="TemplatedParent" Path="(i:XTextBox.IsEditable)"/>
+                                        </Data:MultiBindTrue>
+                                    </ContentControl.Visibility>
+                                </ContentControl>
+                                <ContentControl Grid.Column="4"
+                                    AllowDrop="False"
+                                    ContentTemplate="{i:Bind From=TemplatedParent, Path=(i:XTextBox.EditButtonTemplate)}"
+                                    HorizontalAlignment="{i:Bind From=TemplatedParent, Path=(i:XTextBox.EditButtonAlignment)}"
+                                    KeyboardNavigation.TabNavigation="None">
+                                    <ContentControl.Visibility>
+                                        <Data:MultiBindTrue For="All" Result="Visibility">
+                                            <i:Bind From="TemplatedParent" Path="(i:XTextBox.EditButtonVisibility)"/>
+                                            <i:Bind From="TemplatedParent" Path="(i:XTextBox.IsEditable)" Convert="Data:Invert"/>
+                                        </Data:MultiBindTrue>
+                                    </ContentControl.Visibility>
+                                </ContentControl>
+                                <ContentControl Grid.Column="5"
+                                    AllowDrop="False"
+                                    Content="{i:Bind From=TemplatedParent, Path=(i:XTextBox.EnterCommand)}"
+                                    ContentTemplate="{i:Bind From=TemplatedParent, Path=(i:XTextBox.EnterButtonTemplate)}"
+                                    KeyboardNavigation.TabNavigation="None">
+                                    <ContentControl.Visibility>
+                                        <Data:MultiBindTrue For="All" Result="Visibility">
+                                            <i:Bind From="TemplatedParent" Path="(i:XTextBox.EnterButtonVisibility)"/>
+                                            <i:Bind From="TemplatedParent" Path="(i:XTextBox.IsEditable)"/>
+                                        </Data:MultiBindTrue>
+                                    </ContentControl.Visibility>
+                                </ContentControl>
+                            </Grid>
+                        </Border>
+                        <Popup x:Name="PART_Popup"
+                            AllowsTransparency="True"
+                            Focusable="False"
+                            IsOpen="{i:Bind From=TemplatedParent, Convert={x:Type Data:ConvertBooleanToVisibility}, Mode=TwoWay, Path=(i:XTextBoxBase.MenuVisibility)}"
+                            i:XPopup.CloseOnMouseLeave="True"
+                            Placement="{i:Bind From=TemplatedParent, Path=(i:XTextBoxBase.MenuPlacement)}" 
+                            PlacementTarget="{i:Bind ElementName=PART_Border}"
+                            PopupAnimation="{i:Bind From=TemplatedParent, Path=(i:XTextBoxBase.MenuAnimation)}"
+                            StaysOpen="True">
+                            <i:PopupBorder 
+                                MaxHeight="{i:Bind From=TemplatedParent, Path=(i:XTextBoxBase.MenuHeight).Maximum}"
+                                MinHeight="{i:Bind From=TemplatedParent, Path=(i:XTextBoxBase.MenuHeight).Minimum}"
+                                MinWidth="{TemplateBinding ActualWidth}">
+                                <ContentPresenter
+                                    Content="{i:Bind Source={StaticResource TextBox}}"
+                                    ContentTemplate="{i:Bind From=TemplatedParent, Path=(i:XTextBoxBase.MenuTemplate)}"/>
+                            </i:PopupBorder>
+                        </Popup>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="i:XTextBox.IsEditable" Value="True"/>
+                    <Condition Property="IsFocused" Value="True"/>
+                    <Condition Property="IsMouseOver" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="BorderBrush" Value="{i:Theme TextBoxFocusedBorder}" />
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="i:XTextBox.IsEditable" Value="True"/>
+                    <Condition Property="IsFocused" Value="True"/>
+                    <Condition Property="IsMouseOver" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="BorderBrush" Value="{i:Theme TextBoxFocusedBorder}" />
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="i:XTextBox.IsEditable" Value="True"/>
+                    <Condition Property="IsFocused" Value="False"/>
+                    <Condition Property="IsMouseOver" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="BorderBrush" Value="{i:Theme TextBoxMouseOverBorder}" />
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="i:XTextBox.IsEditable" Value="True"/>
+                    <Condition Property="IsFocused" Value="False"/>
+                    <Condition Property="IsMouseOver" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="BorderBrush" Value="{i:Theme TextBoxBorder}" />
+            </MultiTrigger>
+            <!-- /// -->
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsEnabled" Value="True"/>
+                    <Condition Property="i:XTextBox.IsEditable" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="ContextMenuService.IsEnabled" Value="True"/>
+                <Setter Property="i:XTextBoxBase.EnableCopyCommand" Value="True"/>
+                <Setter Property="i:XTextBoxBase.EnableCutCommand" Value="True"/>
+                <Setter Property="i:XTextBoxBase.EnablePasteCommand" Value="True"/>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsReadOnly" Value="False"/>
+                    <Condition Property="i:XTextBox.IsEditable" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Cursor" Value="Arrow"/>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsReadOnly" Value="True"/>
+                    <Condition Property="i:XTextBox.IsEditable" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Cursor" Value="Arrow"/>
+            </MultiTrigger>
+            <!-- /// -->
+            <Trigger Property="i:XTextBox.IsEditable" Value="True">
+                <Setter Property="Cursor" Value="IBeam"/>
+                <Setter Property="Focusable" Value="True"/>
+            </Trigger>
+            <Trigger Property="i:XTextBox.IsEditable" Value="False">
+                <Setter Property="BorderBrush" Value="Transparent" />
+                <Setter Property="Focusable" Value="False"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--#endregion-->
+
+    <!--#region DatePickerTextBox-->
+
+    <Style x:Key="{x:Type DatePickerTextBox}" TargetType="{x:Type DatePickerTextBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+
+    <!--#endregion-->
+
+    <!--#region PathBox-->
+
+    <Style x:Key="{x:Type i:PathBox}" TargetType="{x:Type i:PathBox}" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="AllowDrop" Value="True" />
+        <Setter Property="BrowseButtonTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <i:ImageButton Source="{i:Image Key=Folder}"
+                        AllowDrop="False"
+                        Command="{i:Bind}"
+                        Focusable="False"
+                        Margin="0,0,5,0"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="BrowseButtonToolTip" Value="{i:Text Browse}"/>
+        <Setter Property="BrowseButtonVisibility" Value="True"/>
+        <Setter Property="BrowseMode" Value="OpenFile"/>
+        <Setter Property="BrowseTitle" Value="{i:Text Browse, Suffix=...}"/>
+        <Setter Property="g:DragDrop.IsDropTarget" Value="True"/>
+        <Setter Property="i:XControl.DropTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <i:DashedBorder
+                        BorderBrush="{i:Theme DropTarget.Border}"
+                        BorderThickness="2">
+                        <StackPanel DataContext="{Data:Ancestor {x:Type i:PathBox}}"
+                            HorizontalAlignment="{i:Bind HorizontalContentAlignment}"
+                            Margin="5,0"
+                            Orientation="Horizontal"
+                            VerticalAlignment="{i:Bind VerticalContentAlignment}">
+                            <i:ImageElement 
+                                Margin="0,0,5,0"
+                                Source="{i:Image Key=Plus}"/>
+                            <TextBlock Text="Copy path..."/>
+                        </StackPanel>
+                    </i:DashedBorder>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XControl.DropTemplateVisibility" Value="Visible" />
+        <Setter Property="i:XToolTip.Template">
+            <Setter.Value>
+                <DataTemplate>
+                    <ContentPresenter Content="{i:Bind}" ContentTemplate="{DynamicResource {x:Static i:XStorage.ToolTipTemplateKey}}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XTextBoxBase.Left">
+            <Setter.Value>
+                <i:DataTemplateList>
+                    <DataTemplate>
+                        <i:Thumbnail 
+                            DataContext="{Data:Ancestor {x:Type i:PathBox}}"
+                            AllowDrop="False"
+                            Height="16"
+                            Margin="5,0,0,0"
+                            Path="{i:Bind Text}"
+                            Width="16">
+                            <i:Thumbnail.Style>
+                                <Style TargetType="{x:Type i:Thumbnail}" BasedOn="{StaticResource {x:Type i:Thumbnail}}">
+                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Data:Ancestor IconVisibility, {x:Type i:PathBox}}" Value="Visible"/>
+                                                <Condition Binding="{Data:Ancestor {x:Type TextBoxBase}, Path=(Validation.HasError)}" Value="False"/>
+                                            </MultiDataTrigger.Conditions>
+                                            <Setter Property="Visibility" Value="Visible"/>
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </i:Thumbnail.Style>
+                        </i:Thumbnail>
+                    </DataTemplate>
+                </i:DataTemplateList>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XTextBoxBase.Right">
+            <Setter.Value>
+                <i:DataTemplateList>
+                    <DataTemplate>
+                        <ContentPresenter ContentTemplate="{StaticResource {x:Static i:XTextBoxBase.ValidationIconTemplate}}"/>
+                    </DataTemplate>
+                    <DataTemplate>
+                        <ContentControl
+                            AllowDrop="False"
+                            DataContext="{Data:Ancestor {x:Type i:PathBox}}"
+                            Content="{i:Bind BrowseCommand}"
+                            ContentTemplate="{i:Bind BrowseButtonTemplate}"
+                            ToolTip="{i:Bind BrowseButtonToolTip}"
+                            Visibility="{i:Bind BrowseButtonVisibility, Convert={x:Type Data:ConvertBooleanToVisibility}}"/>
+                    </DataTemplate>
+                </i:DataTemplateList>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XTextBoxBase.ValidationIconSuccessVisibility" Value="Visible"/>
+        <Setter Property="ToolTip" Value="{i:Bind From=Self, Path=Text}"/>
+    </Style>
+
+    <!--#endregion-->
+
+    <!--RichTextBox-->
+
+    <!--#region RichTextBox-->
+
+    <Style x:Key="{x:Type RichTextBox}" TargetType="{x:Type RichTextBox}" BasedOn="{StaticResource {x:Type TextBoxBase}}">
+        <Setter Property="AcceptsReturn" Value="True" />
+        <Setter Property="AcceptsTab" Value="True" />
+        <Setter Property="BorderBrush" Value="{i:Theme TextBoxBorder}" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type RichTextBox}">
+                    <Grid>
+                        <Grid.Resources>
+                            <Data:Reference x:Key="RichTextBox" Data="{i:Bind From=TemplatedParent}"/>
+                        </Grid.Resources>
+                        <Border x:Name="Bd"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding Border.CornerRadius}"
+                            SnapsToDevicePixels="True">
+                            <Grid i:XGrid.Columns="Auto,*,Auto">
+                                <!-- ... Content (left) -->
+                                <ItemsControl Grid.Column="0"
+                                    ItemsSource="{i:Bind From=TemplatedParent, Path=(i:XTextBoxBase.Left)}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <ContentControl ContentTemplate="{i:Bind}"
+                                                VerticalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <!-- ... Placeholder -->
+                                <ContentPresenter Grid.Column="1"
+                                    Content="{i:Bind From=TemplatedParent, Path=(i:XTextBoxBase.Placeholder)}" 
+                                    ContentTemplate="{i:Bind From=TemplatedParent, Path=(i:XTextBoxBase.PlaceholderTemplate)}"
+                                    ContentTemplateSelector="{i:Bind From=TemplatedParent, Path=(i:XTextBoxBase.PlaceholderTemplateSelector)}"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    IsHitTestVisible="False"
+                                    Margin="{TemplateBinding Padding}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Visibility="{i:Bind From=TemplatedParent, Path=(i:XTextBoxBase.IsEmpty), Convert={x:Type Data:ConvertBooleanToVisibility}}"/>
+                                <!-- ... Text -->
+                                <ScrollViewer x:Name="PART_ContentHost" Grid.Column="1"
+                                    HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    Padding="{TemplateBinding Padding}"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                    Style="{i:Bind From=TemplatedParent, Path=(i:XTextBoxBase.ScrollViewerStyle)}"
+                                    VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                <!-- ... Loading -->
+                                <i:ProgressCircle Grid.Column="1"
+                                    HorizontalAlignment="Center"
+                                    i:XElement.FadeTrigger="True"
+                                    i:XElement.FadeTriggerSource="{i:Bind From=TemplatedParent, Path=(i:XRichTextBox.Loading)}"
+                                    Opacity="0"
+                                    VerticalAlignment="Center"
+                                    Visibility="Collapsed"/>
+                                <!-- ... Content (right) -->
+                                <ItemsControl Grid.Column="2"
+                                    ItemsSource="{i:Bind From=TemplatedParent, Path=(i:XTextBoxBase.Right)}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <ContentControl ContentTemplate="{i:Bind}"
+                                                VerticalAlignment="Center"/>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </Grid>
+                        </Border>
+                        <Popup x:Name="PART_Popup"
+                            AllowsTransparency="True"
+                            Focusable="False" 
+                            IsOpen="{i:Bind From=TemplatedParent, Convert={x:Type Data:ConvertBooleanToVisibility}, Mode=TwoWay, Path=(i:XTextBoxBase.MenuVisibility)}"
+                            i:XPopup.CloseOnMouseLeave="True"
+                            Placement="{i:Bind From=TemplatedParent, Path=(i:XTextBoxBase.MenuPlacement)}" 
+                            PlacementTarget="{i:Bind ElementName=Bd}"
+                            PopupAnimation="{i:Bind From=TemplatedParent, Path=(i:XTextBoxBase.MenuAnimation)}"
+                            StaysOpen="True">
+                            <i:PopupBorder
+                                MaxHeight="{i:Bind From=TemplatedParent, Path=(i:XTextBoxBase.MenuHeight).Maximum}"
+                                MinHeight="{i:Bind From=TemplatedParent, Path=(i:XTextBoxBase.MenuHeight).Minimum}"
+                                MinWidth="{TemplateBinding ActualWidth}" >
+                                <ContentPresenter
+                                    Content="{i:Bind Source={StaticResource RichTextBox}}"
+                                    ContentTemplate="{i:Bind From=TemplatedParent, Path=(i:XTextBoxBase.MenuTemplate)}"/>
+                            </i:PopupBorder>
+                        </Popup>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="VerticalContentAlignment" Value="Top" />
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsFocused" Value="False"/>
+                    <Condition Property="IsMouseOver" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="BorderBrush" Value="{i:Theme TextBoxMouseOverBorder}" />
+            </MultiTrigger>
+            <!-- /// -->
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsEnabled" Value="True"/>
+                    <Condition Property="IsReadOnly" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="ContextMenuService.IsEnabled" Value="True"/>
+                <Setter Property="i:XTextBoxBase.EnableCopyCommand" Value="True"/>
+                <Setter Property="i:XTextBoxBase.EnableCutCommand" Value="True"/>
+                <Setter Property="i:XTextBoxBase.EnablePasteCommand" Value="True"/>
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--#endregion-->
+
+    <!--#region TokenBox-->
+
+    <Style x:Key="{x:Type i:TokenBox}" TargetType="{x:Type i:TokenBox}" BasedOn="{StaticResource {x:Type RichTextBox}}">
+        <Setter Property="AcceptsReturn" Value="False" />
+        <Setter Property="AcceptsTab" Value="False" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsEnabled" Value="True"/>
+                    <Condition Property="IsReadOnly" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="ContextMenuService.IsEnabled" Value="False"/>
+                <Setter Property="i:XTextBoxBase.EnableCopyCommand" Value="False"/>
+                <Setter Property="i:XTextBoxBase.EnableCutCommand" Value="False"/>
+                <Setter Property="i:XTextBoxBase.EnablePasteCommand" Value="False"/>
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--#endregion-->
+</ResourceDictionary>

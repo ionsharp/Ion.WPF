@@ -1,0 +1,256 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="clr-namespace:Ion.Controls"
+    xmlns:Data="clr-namespace:Ion.Data">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="{i:Style Key=Control}"/>
+        <ResourceDictionary Source="{i:Style Key=FrameworkElement}"/>
+        <ResourceDictionary Source="{i:Style Key=ItemsControl}"/>
+    </ResourceDictionary.MergedDictionaries>
+    <!--#region GridView-->
+    
+    <Style x:Key="{x:Static GridView.GridViewScrollViewerStyleKey}" TargetType="ScrollViewer">
+        <Setter Property="CanContentScroll" Value="True"/>
+        <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ScrollViewer">
+                    <Grid i:XGrid.Columns="*,Auto"
+                        i:XGrid.Rows="*,Auto"
+                        Background="{TemplateBinding Background}">
+                        <DockPanel Margin="{TemplateBinding Padding}">
+                            <ScrollViewer 
+                                Background="{i:Theme GridViewBackground}"
+                                BorderBrush="{i:Theme GridViewBorder}"
+                                BorderThickness="0,1"
+                                DockPanel.Dock="Top"
+                                HorizontalScrollBarVisibility="Hidden"
+                                VerticalScrollBarVisibility="Hidden"
+                                Focusable="false">
+                                <GridViewHeaderRowPresenter 
+                                    AllowsColumnReorder="{i:Bind From=TemplatedParent, Path=TemplatedParent.View.AllowsColumnReorder}"
+                                    Columns="{i:Bind From=TemplatedParent, Path=TemplatedParent.View.Columns}"
+                                    ColumnHeaderContainerStyle="{i:Bind From=TemplatedParent, Path=TemplatedParent.View.ColumnHeaderContainerStyle}"
+                                    ColumnHeaderContextMenu="{i:Bind From=TemplatedParent, Path=TemplatedParent.View.ColumnHeaderContextMenu}"
+                                    ColumnHeaderTemplate="{i:Bind From=TemplatedParent, Path=TemplatedParent.View.ColumnHeaderTemplate}"
+                                    ColumnHeaderTemplateSelector="{i:Bind From=TemplatedParent, Path=TemplatedParent.View.ColumnHeaderTemplateSelector}"
+                                    ColumnHeaderToolTip="{i:Bind From=TemplatedParent, Path=TemplatedParent.View.ColumnHeaderToolTip}"
+                                    Margin="2,0"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </ScrollViewer>
+                            <ScrollContentPresenter Name="PART_ScrollContentPresenter"
+                                KeyboardNavigation.DirectionalNavigation="Local"
+                                CanContentScroll="True"
+                                CanHorizontallyScroll="False"
+                                CanVerticallyScroll="False" />
+                        </DockPanel>
+
+                        <ScrollBar Name="PART_HorizontalScrollBar"
+                            Orientation="Horizontal"
+                            Grid.Row="1"
+                            Maximum="{TemplateBinding ScrollableWidth}"
+                            ViewportSize="{TemplateBinding ViewportWidth}"
+                            Value="{TemplateBinding HorizontalOffset}"
+                            Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}" />
+                        <ScrollBar Name="PART_VerticalScrollBar"
+                            Grid.Column="1"
+                            Maximum="{TemplateBinding ScrollableHeight}"
+                            ViewportSize="{TemplateBinding ViewportHeight}"
+                            Value="{TemplateBinding VerticalOffset}"
+                            Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--#endregion-->
+
+    <!--#region ListBox-->
+
+    <ControlTemplate x:Key="{x:Static i:XListBoxItem.TemplateKey}" TargetType="{x:Type ListBoxItem}">
+        <Grid>
+            <Control x:Name="LastSelectedControl" Style="{StaticResource {x:Static i:XElement.FocusVisualStyleKey}}"/>
+            <Border
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}" 
+                BorderThickness="{TemplateBinding BorderThickness}"
+                Padding="{TemplateBinding Padding}">
+                <ContentPresenter
+                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+            </Border>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="i:XListBoxItem.LastSelected" Value="True">
+                <Setter TargetName="LastSelectedControl" Property="Visibility" Value="Visible"/>
+            </Trigger>
+            <Trigger Property="i:XListBoxItem.LastSelected" Value="False">
+                <Setter TargetName="LastSelectedControl" Property="Visibility" Value="Collapsed"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+    
+    <Style x:Key="{x:Type ListBoxItem}" TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource {x:Type Control}}">
+        <Setter Property="Background" Value="{i:Theme ListBoxItemBackground}" />
+        <Setter Property="BorderBrush" Value="{i:Theme ListBoxItemBorder}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Foreground" Value="{i:Theme Text}" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Padding" Value="{i:Constant Key=Thick}" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Template" Value="{StaticResource {x:Static i:XListBoxItem.TemplateKey}}"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsSelected" Value="True"/>
+                    <Condition Property="Selector.IsSelectionActive" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{i:Theme ListBoxItemSelectedActiveBackground}"/>
+                <Setter Property="BorderBrush" Value="{i:Theme ListBoxItemSelectedActiveBorder}"/>
+                <Setter Property="Foreground" Value="{i:Theme ListBoxItemSelectedActiveForeground}"/>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsSelected" Value="True"/>
+                    <Condition Property="Selector.IsSelectionActive" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{i:Theme ListBoxItemSelectedBackground}"/>
+                <Setter Property="BorderBrush" Value="{i:Theme ListBoxItemSelectedBorder}"/>
+                <Setter Property="Foreground" Value="{i:Theme ListBoxItemSelectedForeground}"/>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsSelected" Value="False"/>
+                    <Condition Property="IsMouseOver" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{i:Theme ListBoxItemMouseOverBackground}"/>
+                <Setter Property="BorderBrush" Value="{i:Theme ListBoxItemMouseOverBorder}"/>
+                <Setter Property="Foreground" Value="{i:Theme ListBoxItemMouseOverForeground}"/>
+            </MultiTrigger>
+            <Trigger Property="i:XControl.IsDraggingOver" Value="True">
+                <Setter Property="BorderBrush" Value="{i:Theme DropTargetBorder}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="{x:Type ListBox}" TargetType="{x:Type ListBox}" BasedOn="{StaticResource {x:Type ItemsControl}}">
+        <Setter Property="Background" Value="{i:Theme ListBoxBackground}"/>
+        <Setter Property="BorderBrush" Value="{i:Theme ListBoxBorder}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="KeyboardNavigation.DirectionalNavigation" Value="Cycle"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="i:XItemsControl.GroupStyle" Value="{DynamicResource {x:Static i:XItemsControl.GroupStyleKey}}"/>
+        <Setter Property="i:XItemsControl.EmptyTemplateVisibility" Value="Visible"/>
+        <Setter Property="i:XListBox.ShowLastSelected" Value="True"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto" />
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto" />
+        <Setter Property="Selector.IsSynchronizedWithCurrentItem" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListBox}">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding Border.CornerRadius}">
+                        <ScrollViewer>
+                            <Grid>
+                                <i:DisplayEmpty/>
+                                <i:DisplaySelection/>
+                                <ItemsPresenter
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    Margin="{TemplateBinding Padding}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Grid>
+                        </ScrollViewer>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsGrouping" Value="True">
+                            <Setter Property="ScrollViewer.CanContentScroll" Value="False"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True"/>
+        <Setter Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="True"/>
+        <Setter Property="VirtualizingPanel.ScrollUnit" Value="Pixel"/>
+        <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling"/>
+    </Style>
+
+    <!--#endregion-->
+
+    <!--#region ListView-->
+
+    <Style x:Key="{x:Type ListViewItem}" TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+        <Setter Property="i:XListViewItem.ParentHasColumns" Value="{Data:Is View, From=FindAncestor, FromType=ListView}"/>
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="i:XListViewItem.ParentHasColumns" Value="True"/>
+                    <Condition Property="ItemsControl.AlternationIndex" Value="0"/>
+                    <Condition Property="IsSelected" Value="False"/>
+                    <Condition Property="IsMouseOver" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{i:Theme ListBoxItemEvenBackground}"/>
+                <Setter Property="BorderBrush" Value="{i:Theme ListBoxItemEvenBorder}"/>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="i:XListViewItem.ParentHasColumns" Value="True"/>
+                    <Condition Property="ItemsControl.AlternationIndex" Value="1"/>
+                    <Condition Property="IsSelected" Value="False"/>
+                    <Condition Property="IsMouseOver" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{i:Theme ListBoxItemOddBackground}"/>
+                <Setter Property="BorderBrush" Value="{i:Theme ListBoxItemOddBorder}"/>
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="{x:Type ListView}" TargetType="{x:Type ListView}" BasedOn="{StaticResource {x:Type ListBox}}">
+        <Setter Property="AlternationCount" Value="2"/>
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="ScrollViewer.CanContentScroll" Value="True" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ListView}">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding Border.CornerRadius}">
+                        <ScrollViewer x:Name="ScrollViewer">
+                            <Grid>
+                                <i:DisplayEmpty/>
+                                <i:DisplaySelection/>
+                                <ItemsPresenter
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    Margin="{TemplateBinding Padding}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Grid>
+                        </ScrollViewer>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsGrouping" Value="True">
+                            <Setter Property="ScrollViewer.CanContentScroll" Value="False" />
+                        </Trigger>
+                        <DataTrigger Binding="{i:Bind From=Self, Path=View, Convert={x:Type Data:ConvertObjectToType}}" Value="{x:Type GridView}">
+                            <Setter TargetName="ScrollViewer" Property="Style" Value="{DynamicResource {x:Static GridView.GridViewScrollViewerStyleKey}}"/>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--#endregion-->
+</ResourceDictionary>

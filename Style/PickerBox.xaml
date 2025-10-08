@@ -1,0 +1,68 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:l="http://wpflocalizeextension.codeplex.com"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:i="clr-namespace:Ion.Controls"
+    xmlns:Colors="clr-namespace:Ion.Colors"
+    xmlns:Data="clr-namespace:Ion.Data"
+    xmlns:Media="clr-namespace:Ion.Media">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="{i:Style Key=FrameworkElement}"/>
+    </ResourceDictionary.MergedDictionaries>
+    <Style x:Key="{x:Type i:PickerBox}" TargetType="{x:Type i:PickerBox}" BasedOn="{StaticResource {x:Type FrameworkElement}}">
+        <Setter Property="Background" Value="{x:Static Media:CheckerBrush.Default}"/>
+        <Setter Property="BorderBrush" Value="Black"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="Height" Value="28"/>
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="InnerBorderBrush" Value="White"/>
+        <Setter Property="InnerBorderThickness" Value="1"/>
+        <Setter Property="MinHeight" Value="15"/>
+        <Setter Property="MinWidth" Value="15"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type i:PickerBox}">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding Border.CornerRadius}">
+                        <Border
+                            BorderBrush="{TemplateBinding InnerBorderBrush}" 
+                            BorderThickness="{TemplateBinding InnerBorderThickness}">
+                            <ContentPresenter
+                                Content="{i:Bind From=TemplatedParent, Path=Value}"
+                                ContentTemplate="{TemplateBinding ValueTemplate}"/>
+                        </Border>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Width" Value="28"/>
+    </Style>
+
+    <!-- /// -->
+
+    <Style x:Key="{x:Type i:ColorBox}" TargetType="{x:Type i:ColorBox}" BasedOn="{StaticResource {x:Type i:PickerBox}}">
+        <Setter Property="Title" Value="Select color..."/>
+        <Setter Property="ValueTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Rectangle Fill="{i:Bind Convert={x:Type Data:ConvertColorToSolidColorBrush}}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="{x:Type i:GradientBox}" TargetType="{x:Type i:GradientBox}" BasedOn="{StaticResource {x:Type i:PickerBox}}">
+        <Setter Property="Title" Value="Select gradient..."/>
+        <Setter Property="ValueTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Rectangle Fill="{Colors:GradientBinding}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

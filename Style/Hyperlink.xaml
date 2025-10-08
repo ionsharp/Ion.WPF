@@ -1,0 +1,12 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="clr-namespace:Ion.Controls"
+    xmlns:Data="clr-namespace:Ion.Data">
+    <Style x:Key="{x:Type Hyperlink}" TargetType="{x:Type Hyperlink}">
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Foreground" Value="{i:Theme Link}"/>
+        <Setter Property="i:XHyperlink.IsExternal" Value="True"/>
+        <Setter Property="ToolTip" Value="{i:Bind From=Self, Path=NavigateUri}" />
+    </Style>
+</ResourceDictionary>

@@ -1,0 +1,182 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:l="http://wpflocalizeextension.codeplex.com"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:i="clr-namespace:Ion.Controls"
+    xmlns:Core="clr-namespace:Ion;assembly=Ion"
+    xmlns:Data="clr-namespace:Ion.Data">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="{i:Style Key=Control}"/>
+    </ResourceDictionary.MergedDictionaries>
+    <Style x:Key="{x:Type i:FlagButton}" TargetType="{x:Type i:FlagButton}">
+        <Setter Property="Background" Value="{i:Theme ComboBoxBackground}" />
+        <Setter Property="BorderBrush" Value="{i:Theme ComboBoxBorder}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="FontFamily" Value="{i:Bind FontFamily, AppSource=Data}"/>
+        <Setter Property="Foreground" Value="{i:Theme ComboBoxForeground}" />
+        <Setter Property="ItemPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <StackPanel/>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <i:SwitchButton 
+                        Content="{i:Bind Value, Mode=OneWay}"
+                        IsChecked="{i:Bind IsChecked, Mode=TwoWay}"
+                        Margin="0,0,0,10"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="PlaceholderTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock Text="{i:Bind}" Opacity="0.4"
+                        TextTrimming="CharacterEllipsis"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="StaysOpen" Value="False" />
+        <Setter Property="ValueTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <ContentPresenter Content="{i:Bind}" i:Display.Condition="{Data:Is Type=Core:Flag}">
+                        <i:Display.ConditionalTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{i:Bind Convert=Data:ConvertFlagToString, ConverterParameter=','}" TextTrimming="CharacterEllipsis"/>
+                            </DataTemplate>
+                        </i:Display.ConditionalTemplate>
+                        <i:Display.DefaultTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{i:Bind}" TextTrimming="CharacterEllipsis"/>
+                            </DataTemplate>
+                        </i:Display.DefaultTemplate>
+                    </ContentPresenter>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsDropDownOpen" Value="True"/>
+                    <Condition Property="View" Value="Menu"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{i:Theme ComboBoxCheckedBackground}" />
+                <Setter Property="BorderBrush" Value="{i:Theme ComboBoxCheckedBorder}" />
+                <Setter Property="Foreground" Value="{i:Theme ComboBoxCheckedForeground}"/>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsDropDownOpen" Value="False"/>
+                    <Condition Property="IsMouseOver" Value="True"/>
+                    <Condition Property="View" Value="Menu"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{i:Theme ComboBoxMouseOverBackground}" />
+                <Setter Property="BorderBrush" Value="{i:Theme ComboBoxMouseOverBorder}" />
+                <Setter Property="Foreground" Value="{i:Theme ComboBoxMouseOverForeground}"/>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsFocused" Value="True"/>
+                    <Condition Property="View" Value="Menu"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="BorderBrush" Value="{i:Theme ComboBoxFocusBorder}" />
+            </MultiTrigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="{x:Static i:XElement.DisabledOpacity}" />
+            </Trigger>
+            <Trigger Property="View" Value="Default">
+                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                <Setter Property="VerticalContentAlignment" Value="Stretch" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type i:FlagButton}">
+                            <ItemsControl
+                                ItemsSource="{i:Bind From=TemplatedParent, Path=Items, Way=1}"
+                                ItemContainerStyle="{TemplateBinding ItemStyle}"
+                                ItemsPanel="{TemplateBinding ItemPanel}"
+                                ItemTemplate="{TemplateBinding ItemTemplate}"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="View" Value="Menu">
+                <Setter Property="HorizontalContentAlignment" Value="Center" />
+                <Setter Property="VerticalContentAlignment" Value="Center" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type i:FlagButton}">
+                            <Grid x:Name="Grid0" i:XGrid.Columns="*,Auto">
+                                <ToggleButton Grid.ColumnSpan="2"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    IsChecked="{i:Bind From=TemplatedParent, Path=IsDropDownOpen, Mode=TwoWay}"
+                                    i:XControl.IgnoreDrop="True"
+                                    MinHeight="5" MinWidth="25"
+                                    Style="{StaticResource {x:Static i:XComboBox.ToggleButtonStyleKey}}"/>
+
+                                <Grid Grid.Column="0" Margin="{TemplateBinding Padding}"
+                                    IsHitTestVisible="False">
+                                    <ContentPresenter x:Name="ContentPresenter0"
+                                        Content="{i:Bind From=TemplatedParent, Path=Placeholder}" 
+                                        ContentTemplate="{i:Bind From=TemplatedParent, Path=PlaceholderTemplate}"
+                                        ContentTemplateSelector="{i:Bind From=TemplatedParent, Path=PlaceholderTemplateSelector}"
+                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        IsHitTestVisible="False"
+                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                        Visibility="Collapsed"/>
+                                    <ContentPresenter x:Name="ContentPresenter1"
+                                        Content="{i:Bind From=TemplatedParent, Path=Value}" 
+                                        ContentTemplate="{i:Bind From=TemplatedParent, Path=ValueTemplate}"
+                                        ContentTemplateSelector="{i:Bind From=TemplatedParent, Path=ValueTemplateSelector}"
+                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        IsHitTestVisible="False"
+                                        Margin="{TemplateBinding Padding}"
+                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                </Grid>
+
+                                <i:RotateElement Grid.Column="1"
+                                    IsHitTestVisible="False"
+                                    Margin="0,0,5,0"
+                                    Rotate="{TemplateBinding IsDropDownOpen}"
+                                    Rotation="-90,0"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Visibility="{Data:Ancestor IsReadOnly, {x:Type i:FlagButton}, Convert={x:Type Data:ConvertBooleanToVisibility}, ConverterParameter=1}">
+                                    <i:ImageElement 
+                                        Source="{i:Image Key=ArrowDown}"
+                                        SourceSize="12,12"
+                                        Foreground="{TemplateBinding Foreground}"/>
+                                </i:RotateElement>
+                                <Popup
+                                    AllowsTransparency="True"
+                                    Focusable="False"
+                                    IsOpen="{TemplateBinding IsDropDownOpen}"
+                                    Placement="Bottom"
+                                    PopupAnimation="None"
+                                    StaysOpen="{TemplateBinding StaysOpen}">
+                                    <i:PopupBorder>
+                                        <i:ClipBorder Padding="{TemplateBinding Padding}">
+                                            <ItemsControl
+                                                ItemsSource="{i:Bind From=TemplatedParent, Path=Items, Way=1}"
+                                                ItemContainerStyle="{TemplateBinding ItemStyle}"
+                                                ItemsPanel="{TemplateBinding ItemPanel}"
+                                                ItemTemplate="{TemplateBinding ItemTemplate}"
+                                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                        </i:ClipBorder>
+                                    </i:PopupBorder>
+                                </Popup>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

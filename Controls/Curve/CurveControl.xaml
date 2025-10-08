@@ -1,0 +1,11 @@
+﻿<UserControl x:Class="Ion.Controls.CurveControl" 
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="clr-namespace:Ion.Controls">
+    <Viewbox>
+        <Grid>
+            <Polygon Fill="{i:Theme Key=PolygonBackground}" Points="{i:Bind PreviewX, From=FindAncestor, FromType=i:CurveControl}"/>
+            <Polygon Fill="{i:Theme Key=PolygonForeground}" Points="{i:Bind PreviewY, From=FindAncestor, FromType=i:CurveControl}"/>
+        </Grid>
+    </Viewbox>
+</UserControl>

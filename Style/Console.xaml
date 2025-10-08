@@ -1,0 +1,28 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:l="http://wpflocalizeextension.codeplex.com"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="clr-namespace:Ion.Controls"
+    xmlns:Data="clr-namespace:Ion.Data">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="{i:Style Key=TextBox}"/>
+    </ResourceDictionary.MergedDictionaries>
+    <Style x:Key="{x:Type i:ConsoleBox}" TargetType="{x:Type i:ConsoleBox}" BasedOn="{StaticResource {x:Type RichTextBox}}">
+        <Setter Property="Background" Value="#333"/>
+        <Setter Property="CaretBrush" Value="#7C3"/>
+        <Setter Property="FontFamily" Value="Consolas"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="Foreground" Value="#7C3"/>
+        <Setter Property="i:XElement.Wheel" Value="True"/>
+        <Setter Property="i:XElement.WheelIncrement" Value="4"/>
+        <Setter Property="i:XElement.WheelMaximum" Value="72"/>
+        <Setter Property="i:XElement.WheelMinimum" Value="8"/>
+        <Setter Property="i:XElement.WheelValue" Value="{i:Bind From=Self, Path=FontSize, Mode=TwoWay}"/>
+        <Setter Property="i:XTextBoxBase.ScrollToEnd" Value="True"/>
+        <Setter Property="i:XTextBoxBase.SelectAllOnFocus" Value="False"/>
+        <Setter Property="i:XTextBoxBase.TextTrimming" Value="None"/>
+        <Setter Property="i:ImageElement.Foreground" Value="#7C3"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+    </Style>
+</ResourceDictionary>

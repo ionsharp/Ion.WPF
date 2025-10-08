@@ -1,0 +1,101 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:l="http://wpflocalizeextension.codeplex.com"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="clr-namespace:Ion.Controls"
+    xmlns:Data="clr-namespace:Ion.Data"
+    xmlns:Reflection="clr-namespace:System.Reflection;assembly=mscorlib">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="{i:Style Key=ItemsControl}"/>
+        <ResourceDictionary Source="{i:Style Key=Menu}"/>
+        <ResourceDictionary Source="{i:Style Key=Popup}"/>
+    </ResourceDictionary.MergedDictionaries>
+    <DataTemplate x:Key="{x:Static i:XContextMenu.HeaderPatternKey}">
+        <i:DotControl Foreground="{i:Theme Key=Text}"/>
+    </DataTemplate>
+    
+    <Style x:Key="{x:Type ContextMenu}" TargetType="{x:Type ContextMenu}" BasedOn="{StaticResource {x:Type ItemsControl}}">
+        <Setter Property="Background" Value="{i:Theme PopupBackground}"/>
+        <Setter Property="BorderBrush" Value="{i:Theme PopupBorder}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+        <Setter Property="Grid.IsSharedSizeScope" Value="True"/>
+        <Setter Property="i:XContextMenu.HeaderIconTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <i:ImageElement Foreground="{i:Theme Key=Text}" Source="{i:Bind}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XItemsControl.EmptyTemplateVisibility" Value="Visible"/>
+        <Setter Property="i:XItemsControl.GroupStyle" Value="{DynamicResource {x:Static i:XMenu.GroupStyle}}"/>
+        <Setter Property="i:XMenuBase.ItemClearStyle">
+            <Setter.Value>
+                <Style TargetType="MenuItem">
+                    <Setter Property="FontStyle" Value="Italic"/>
+                    <Setter Property="Header" Value="{l:Loc Clear}"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XMenuBase.ItemPlaceholderStyle">
+            <Setter.Value>
+                <Style TargetType="MenuItem">
+                    <Setter Property="FontStyle" Value="Italic"/>
+                    <Setter Property="Header" Value="{l:Loc None}"/>
+                    <Setter Property="Opacity" Value="0.5"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="MaxHeight" Value="{x:Static i:XPopup.MaximumHeight}" />
+        <Setter Property="MinHeight" Value="0"/>
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ContextMenu}">
+                    <Grid i:XGrid.Rows="Auto,*,Auto" i:XGrid.AutoRows="True">
+                        <ContentPresenter Content="{i:Bind From=TemplatedParent, Path=(i:XContextMenu.Above)}" 
+                            ContentTemplate="{i:Bind From=TemplatedParent, Path=(i:XContextMenu.AboveTemplate)}"
+                            Margin="0,0,0,5"
+                            Visibility="{i:Bind Convert=Data:ConvertObjectToVisibility, Path=(i:XContextMenu.Above), From=TemplatedParent}"/>
+                        <Border
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding Border.CornerRadius}">
+                            <Grid i:XGrid.AutoRows="True" i:XGrid.Rows="Auto,*">
+                                <i:BottomBorder Margin="1,0" Padding="5"
+                                    Visibility="{i:Bind Convert=Data:ConvertObjectToVisibility, Path=(i:XContextMenu.Header), From=TemplatedParent}">
+                                    <Grid i:XGrid.AutoColumns="True" i:XGrid.Columns="Auto,Auto,*" i:XPanel.Spacing="0,0,5,0" i:XPanel.SpacingExcept="Last">
+                                        <ContentControl Content="{i:Bind From=TemplatedParent, Path=(i:XContextMenu.HeaderIcon)}" 
+                                            ContentTemplate="{i:Bind From=TemplatedParent, Path=(i:XContextMenu.HeaderIconTemplate)}" 
+                                            Foreground="{i:Theme Key=Text}"
+                                            Visibility="{i:Bind Convert=Data:ConvertObjectToVisibility, From=TemplatedParent, Path=(i:XContextMenu.HeaderIcon)}"/>
+                                        <ContentControl Content="{i:Bind From=TemplatedParent, Path=(i:XContextMenu.Header)}" 
+                                            ContentTemplate="{i:Bind From=TemplatedParent, Path=(i:XContextMenu.HeaderTemplate)}"
+                                            Foreground="{i:Theme Key=Text}"/>
+                                        <ContentPresenter ContentTemplate="{DynamicResource {x:Static i:XContextMenu.HeaderPatternKey}}"/>
+                                    </Grid>
+                                </i:BottomBorder>
+                                <Grid>
+                                    <i:DisplayEmpty/>
+                                    <ScrollViewer i:XScrollViewer.Overlap="True">
+                                        <StackPanel
+                                            IsItemsHost="True" 
+                                            KeyboardNavigation.DirectionalNavigation="Cycle" 
+                                            ScrollViewer.PanningMode="None"
+                                            ScrollViewer.PanningRatio="0"
+                                            ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                                    </ScrollViewer>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                        <ContentPresenter Content="{i:Bind From=TemplatedParent, Path=(i:XContextMenu.Below)}" 
+                            ContentTemplate="{i:Bind From=TemplatedParent, Path=(i:XContextMenu.BelowTemplate)}"
+                            Margin="0,5,0,0"
+                            Visibility="{i:Bind Convert=Data:ConvertObjectToVisibility, Path=(i:XContextMenu.Below), From=TemplatedParent}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

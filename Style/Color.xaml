@@ -1,0 +1,99 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="clr-namespace:Ion.Controls"
+    xmlns:Data="clr-namespace:Ion.Data"
+    xmlns:Media="clr-namespace:Ion.Media">
+    <DataTemplate x:Key="{x:Static i:ColorView.ComponentDescriptionTemplate}">
+        <StackPanel i:XPanel.Spacing="0,0,0,5">
+            <TextBlock FontSize="13" FontStyle="Italic" Opacity="0.5" Text="{i:Bind Range}" TextAlignment="Center"/>
+            <TextBlock FontSize="14" Text="{i:Bind Description}" TextAlignment="Center" TextWrapping="Wrap"
+                Visibility="{i:Bind Description, Convert=Data:ConvertObjectToVisibility}"/>
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="{x:Static i:ColorView.ComponentToolTipHeaderTemplate}">
+        <TextBlock>(<Run Text="{i:Bind Symbol, Mode=OneWay}"/>) <Run Text="{i:Bind Name, Mode=OneWay}"/></TextBlock>
+    </DataTemplate>
+
+    <DataTemplate x:Key="{x:Static i:ColorView.ComponentToolTipTemplate}">
+        <ContentPresenter Content="{i:Bind}" ContentTemplate="{StaticResource {x:Static i:ColorView.ComponentDescriptionTemplate}}"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="{x:Static i:ColorView.ModelToolTipHeaderTemplate}">
+        <TextBlock Text="{i:Bind Name}"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="{x:Static i:ColorView.ModelToolTipTemplate}">
+        <StackPanel i:XPanel.Spacing="0,0,0,5" i:XPanel.SpacingExcept="Last" i:XPanel.VerticalContentAlignment="Center">
+            <StackPanel.Resources>
+                <Data:Reference x:Key="ModelInfo" Data="{i:Bind Convert=Data:ConvertToModelInfo}"/>
+            </StackPanel.Resources>
+            <ItemsControl ItemsSource="{i:Bind Data.Components, Convert=Data:ConvertToObjectCollection, Source={StaticResource ModelInfo}}"
+                HorizontalAlignment="Center">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock FontSize="13" FontStyle="Italic" Margin="{i:Constant Key=ThickSmallRight}" Opacity="0.5"><Run Text="{i:Bind Name, Mode=OneWay}"/> (<Run Text="{i:Bind Symbol, Mode=OneWay}"/><Run Text="{i:Bind Unit, Mode=OneWay}"/>)</TextBlock>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <TextBlock FontSize="14" Text="{i:Bind Data.Description, Source={StaticResource ModelInfo}}" TextAlignment="Center" TextWrapping="Wrap"/>
+        </StackPanel>
+    </DataTemplate>
+
+    <DataTemplate x:Key="{x:Static i:ColorView.HeaderTemplate}">
+        <TextBlock>#<Run Text="{i:Bind Convert={x:Type Data:ConvertColorToString}, Way=1}"/></TextBlock>
+    </DataTemplate>
+
+    <DataTemplate x:Key="{x:Static i:ColorView.IconTemplate}">
+        <Ellipse Fill="{i:Bind Convert=Data:ConvertByteVector4ToSolidColorBrush}" Height="16" Width="16" Stroke="Black" StrokeThickness="1"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="{x:Static i:ColorView.ToolTipHeaderTemplate}">
+        <StackPanel i:XPanel.HorizontalContentAlignment="Center">
+            <StackPanel i:XPanel.VerticalContentAlignment="Center" Orientation="Horizontal">
+                <i:ClipBorder Background="{x:Static Media:CheckerBrush.Default}"
+                    BorderBrush="{i:Bind Convert={x:Type Data:ConvertColorToSolidColorBrushBlackOrWhite}}" BorderThickness="1"
+                    CornerRadius="999"
+                    Height="16" Width="16">
+                    <i:FillElement Fill="{i:Bind Convert={x:Type Data:ConvertColorToSolidColorBrush}}"/>
+                </i:ClipBorder>
+                <TextBlock Text="{i:Bind Convert={x:Type Data:ConvertColorToStringName}}" 
+                    FontStyle="Italic" 
+                    Margin="5,0,0,0"/>
+            </StackPanel>
+            <TextBlock Margin="0,2.5,0,0"><Run FontWeight="Bold" Text="#"/><Run FontWeight="Bold" Text="{i:Bind Convert={x:Type Data:ConvertColorToString}, Mode=OneWay}"/><Run Text="{i:Bind Convert={x:Type Data:ConvertColorToStringShort}, ConverterParameter=' ({0})', Mode=OneWay}"/></TextBlock>
+        </StackPanel>
+</DataTemplate>
+
+    <DataTemplate x:Key="{x:Static i:ColorView.ToolTipTemplate}">
+        <ItemsControl ItemsSource="{i:Bind ColorToolTip, Convert=Data:ConvertToStringCollection, AppSource=Data}">
+            <ItemsControl.Resources>
+                <Data:Reference x:Key="Color" Data="{i:Bind}"/>
+            </ItemsControl.Resources>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Margin="0,5,0,0">
+                        <Label Content="{i:Bind}" HorizontalAlignment="Center" Margin="0,0,0,5"
+                            Style="{DynamicResource {x:Static i:XLabel.Accent}}"/>
+                        <TextBlock HorizontalAlignment="Center">
+                            <TextBlock.Text>
+                                <Data:MultiBind ConverterName="Color">
+                                    <Binding Path="Data" Source="{StaticResource Color}"/>
+                                    <Binding/> 
+                                    <i:Bind AppSource="Data" Path="ColorToolTipNormalize"/>
+                                    <i:Bind AppSource="Data" Path="ColorToolTipPrecision"/>
+                                </Data:MultiBind>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </DataTemplate>
+</ResourceDictionary>

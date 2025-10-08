@@ -1,0 +1,700 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:g="urn:gong-wpf-dragdrop"
+    xmlns:l="http://wpflocalizeextension.codeplex.com"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="clr-namespace:Ion.Controls"
+    xmlns:Data="clr-namespace:Ion.Data"
+    xmlns:Storage="clr-namespace:Ion.Storage">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="{i:Style Key=Control}"/>
+        <ResourceDictionary Source="{i:Style Key=Menu}"/>
+        <ResourceDictionary Source="{i:Style Key=Storage}"/>
+    </ResourceDictionary.MergedDictionaries>
+    <!--#region Button-->
+
+    <Style x:Key="{x:Static i:XButton.DefaultStyle}" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Control}}">
+        <Setter Property="Border.CornerRadius" Value="0.5"/>
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Cursor" Value="Arrow" />
+        <Setter Property="FontFamily" Value="{i:Bind FontFamily, AppSource=Data}"/>
+        <Setter Property="i:XButton.ImageTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <i:ImageElement Source="{i:Bind}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XControl.FontScale" Value="{i:Bind FontScale, AppSource=Data}"/>
+        <Setter Property="i:XControl.FontScaleOrigin" Value="{i:Bind FontSize, AppSource=Data}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Padding" Value="24,6" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Grid>
+                        <Border x:Name="Border"
+                            Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding Border.CornerRadius}"
+                            Padding="{TemplateBinding Padding}"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                            <Grid i:XGrid.AutoColumns="True" i:XGrid.Columns="Auto,*"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                <ContentPresenter Content="{i:Bind From=TemplatedParent, Path=(i:XButton.Image)}"
+                                    ContentTemplate="{i:Bind From=TemplatedParent, Path=(i:XButton.ImageTemplate)}"
+                                    Margin="{i:Constant Key=ThickRight}"
+                                    Visibility="{i:Bind Convert=Data:ConvertObjectToVisibility, From=TemplatedParent, Path=(i:XButton.Image)}"/>
+                                <ContentPresenter/>
+                            </Grid>
+                        </Border>
+                        <Popup IsOpen="{i:Bind From=TemplatedParent, Path=(i:XButton.IsChecked), Mode=TwoWay}" 
+                            Placement="Bottom" 
+                            PlacementTarget="{i:Bind ElementName=Border}" 
+                            StaysOpen="True">
+                            <i:PopupBorder
+                                MaxHeight="{i:Bind From=TemplatedParent, Path=(i:XButton.MenuMaxHeight)}"
+                                MaxWidth="{i:Bind From=TemplatedParent, Path=(i:XButton.MenuMaxWidth)}"
+                                MinWidth="{i:Bind From=TemplatedParent, Path=(i:XButton.MenuMinWidth)}">
+                                <ContentPresenter Content="{i:Bind From=TemplatedParent, Path=(i:XButton.Menu)}" 
+                                    ContentTemplate="{i:Bind From=TemplatedParent, Path=(i:XButton.MenuTemplate)}"/>
+                            </i:PopupBorder>
+                        </Popup>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="True">
+                <Setter Property="Cursor" Value="Hand" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="{x:Static i:XElement.DisabledOpacity}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="{x:Type Button}" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static i:XButton.DefaultStyle}}">
+        <Setter Property="Background" Value="{i:Theme ButtonBackground}" />
+        <Setter Property="BorderBrush" Value="{i:Theme ButtonBorder}" />
+        <Setter Property="Foreground" Value="{i:Theme ButtonForeground}" />
+        <Setter Property="i:ImageElement.Foreground" Value="{i:Theme ButtonForeground}" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{i:Theme ButtonMouseOverBackground}" />
+                <Setter Property="BorderBrush" Value="{i:Theme ButtonMouseOverBorder}" />
+                <Setter Property="Foreground" Value="{i:Theme ButtonMouseOverForeground}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{i:Theme ButtonMouseDownBackground}" />
+                <Setter Property="BorderBrush" Value="{i:Theme ButtonMouseDownBorder}" />
+                <Setter Property="Foreground" Value="{i:Theme ButtonMouseDownForeground}" />
+            </Trigger>
+
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsDefault" Value="True"/>
+                    <Condition Property="IsMouseOver" Value="False"/>
+                    <Condition Property="IsPressed" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{i:Theme ButtonDefaultBackground}" />
+                <Setter Property="BorderBrush" Value="{i:Theme ButtonDefaultBorder}" />
+                <Setter Property="Foreground" Value="{i:Theme ButtonDefaultForeground}" />
+                <Setter Property="i:ImageElement.Foreground" Value="{i:Theme ButtonDefaultForeground}" />
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsDefault" Value="True"/>
+                    <Condition Property="IsMouseOver" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{i:Theme ButtonDefaultMouseOverBackground}" />
+                <Setter Property="BorderBrush" Value="{i:Theme ButtonDefaultMouseOverBorder}" />
+                <Setter Property="Foreground" Value="{i:Theme ButtonDefaultMouseOverForeground}" />
+                <Setter Property="i:ImageElement.Foreground" Value="{i:Theme ButtonDefaultMouseOverForeground}" />
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsDefault" Value="True"/>
+                    <Condition Property="IsPressed" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{i:Theme ButtonDefaultPressedBackground}" />
+                <Setter Property="BorderBrush" Value="{i:Theme ButtonDefaultPressedBorder}" />
+                <Setter Property="Foreground" Value="{i:Theme ButtonDefaultPressedForeground}" />
+                <Setter Property="i:ImageElement.Foreground" Value="{i:Theme ButtonDefaultPressedForeground}" />
+            </MultiTrigger>
+
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsCancel" Value="True"/>
+                    <Condition Property="IsMouseOver" Value="False"/>
+                    <Condition Property="IsPressed" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{i:Theme ButtonCancelBackground}" />
+                <Setter Property="BorderBrush" Value="{i:Theme ButtonCancelBorder}" />
+                <Setter Property="Foreground" Value="{i:Theme ButtonCancelForeground}" />
+                <Setter Property="i:ImageElement.Foreground" Value="{i:Theme ButtonCancelForeground}" />
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsCancel" Value="True"/>
+                    <Condition Property="IsMouseOver" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{i:Theme ButtonCancelMouseOverBackground}" />
+                <Setter Property="BorderBrush" Value="{i:Theme ButtonCancelMouseOverBorder}" />
+                <Setter Property="Foreground" Value="{i:Theme ButtonCancelMouseOverForeground}" />
+                <Setter Property="i:ImageElement.Foreground" Value="{i:Theme ButtonCancelMouseOverForeground}" />
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsCancel" Value="True"/>
+                    <Condition Property="IsPressed" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{i:Theme ButtonCancelPressedBackground}" />
+                <Setter Property="BorderBrush" Value="{i:Theme ButtonCancelPressedBorder}" />
+                <Setter Property="Foreground" Value="{i:Theme ButtonCancelPressedForeground}" />
+                <Setter Property="i:ImageElement.Foreground" Value="{i:Theme ButtonCancelPressedForeground}" />
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--#endregion-->
+
+    <!--#region XButton-->
+
+    <Style x:Key="{x:Static i:XButton.BlackButton}" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static i:XButton.DefaultStyle}}">
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                    <GradientStop Offset="0" Color="#222"/>
+                    <GradientStop Offset="1" Color="#333"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="BorderBrush" Value="#111" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="i:ImageElement.Foreground" Value="White" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Offset="0" Color="#333"/>
+                            <GradientStop Offset="1" Color="#444"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="BorderBrush" Value="#222" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                            <GradientStop Offset="0" Color="#111"/>
+                            <GradientStop Offset="1" Color="#222"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="BorderBrush" Value="#000" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="{x:Static i:XButton.BlueButton}" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static i:XButton.DefaultStyle}}">
+        <Setter Property="Background" Value="#07c" />
+        <Setter Property="BorderBrush" Value="#06b" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="i:ImageElement.Foreground" Value="White" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#06c" />
+                <Setter Property="BorderBrush" Value="#05b" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="#05c" />
+                <Setter Property="BorderBrush" Value="#04b" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="{x:Static i:XButton.GreenButton}" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static i:XButton.DefaultStyle}}">
+        <Setter Property="Background" Value="#3A3" />
+        <Setter Property="BorderBrush" Value="#393" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="i:ImageElement.Foreground" Value="White" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#393" />
+                <Setter Property="BorderBrush" Value="#383" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="#383" />
+                <Setter Property="BorderBrush" Value="#373" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="{x:Static i:XButton.OrangeButton}" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static i:XButton.DefaultStyle}}">
+        <Setter Property="Background" Value="#F80" />
+        <Setter Property="BorderBrush" Value="#F70" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="i:ImageElement.Foreground" Value="White" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#F70" />
+                <Setter Property="BorderBrush" Value="#F60" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="#F60" />
+                <Setter Property="BorderBrush" Value="#F50" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="{x:Static i:XButton.RedButton}" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static i:XButton.DefaultStyle}}">
+        <Setter Property="Background" Value="#C30" />
+        <Setter Property="BorderBrush" Value="#B30" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="i:ImageElement.Foreground" Value="White" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="#B30" />
+                <Setter Property="BorderBrush" Value="#A30" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="#A30" />
+                <Setter Property="BorderBrush" Value="#930" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="{x:Static i:XButton.TransparentButton}" TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Static i:XButton.DefaultStyle}}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Cursor" Value="Hand" />
+        <Setter Property="Padding" Value="0" />
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="BorderBrush" Value="Transparent" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--#endregion-->
+
+    <!--#region ImageButton-->
+
+    <Style x:Key="{x:Type i:ImageButton}" TargetType="{x:Type i:ImageButton}" BasedOn="{StaticResource {x:Type Control}}">
+        <Setter Property="Background" Value="{i:Theme ImageButtonBackground}"/>
+        <Setter Property="BorderBrush" Value="{i:Theme ImageButtonBorder}"/>
+        <Setter Property="Border.CornerRadius" Value="2"/>
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="ButtonMargin" Value="3,0,0,0" />
+        <Setter Property="ButtonSize" Value="12,12"/>
+        <Setter Property="ButtonSource" Value="{i:Image Key=TriangleDown}"/>
+        <Setter Property="ButtonToolTip" Value="{x:Null}" />
+        <Setter Property="ButtonVisibility" Value="Collapsed" />
+        <Setter Property="ContentMargin" Value="0" />
+        <Setter Property="Cursor" Value="Arrow" />
+        <Setter Property="Foreground" Value="{i:Theme ImageButtonForeground}"/>
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="SourceSize" Value="16,16" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="i:ImageButton">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        Padding="{TemplateBinding Padding}">
+                        <Border.Resources>
+                            <Data:Reference x:Key="Control" Data="{i:Bind From=TemplatedParent}"/>
+                        </Border.Resources>
+                        <Grid i:XGrid.Columns="Auto,Auto,Auto">
+                            <i:ImageElement
+                                Source="{TemplateBinding Source}"
+                                SourceSize="{TemplateBinding SourceSize}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                Visibility="{i:Equal Source, From=TemplatedParent, Invert=True, Result=Visibility}"/>
+
+                            <ContentPresenter Grid.Column="1"
+                                Margin="{TemplateBinding ContentMargin}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                <ContentPresenter.Visibility>
+                                    <Data:MultiBindTrue For="All" Result="Visibility">
+                                        <i:Equal From="TemplatedParent" Invert="True" Path="Content"/>
+                                        <i:Bind From="TemplatedParent" Path="ContentVisibility"/>
+                                    </Data:MultiBindTrue>
+                                </ContentPresenter.Visibility>
+                            </ContentPresenter>
+
+                            <ContentPresenter Grid.Column="2" 
+                                i:Display.Condition="{i:Equal Data.ButtonVisibility, Source={StaticResource Control}, Value={x:Static Visibility.Visible}}">
+                                <i:Display.ConditionalTemplate>
+                                    <DataTemplate>
+                                        <i:RotateElement DataContext="{i:Bind Data, Source={StaticResource Control}}"
+                                            Cursor="Hand"
+                                            Margin="{i:Bind ButtonMargin}"
+                                            Rotate="{i:Bind IsChecked}"
+                                            Rotation="-90,0"
+                                            ToolTip="{i:Bind ButtonToolTip}"
+                                            VerticalAlignment="{i:Bind VerticalContentAlignment}">
+                                            <i:ImageElement
+                                                Foreground="{i:Bind Path=(i:ImageElement.Foreground)}"
+                                                Source="{i:Bind ButtonSource}"
+                                                SourceSize="{i:Bind ButtonSize}"/>
+                                        </i:RotateElement>
+                                    </DataTemplate>
+                                </i:Display.ConditionalTemplate>
+                            </ContentPresenter>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="Width" Value="Auto" />
+        <Style.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="HasMenu" Value="True"/>
+                    <Condition Property="IsChecked" Value="False"/>
+                    <Condition Property="IsMouseOver" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" 
+                    Value="{i:Theme ImageButtonMouseOverBackground}"/>
+                <Setter Property="BorderBrush" 
+                    Value="{i:Theme ImageButtonMouseOverBorder}"/>
+                <Setter Property="Foreground" 
+                    Value="{i:Theme ImageButtonMouseOverForeground}"/>
+                <Setter Property="i:ImageElement.Foreground" 
+                    Value="{i:Theme ImageButtonMouseOverForeground}"/>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="HasMenu" Value="True"/>
+                    <Condition Property="IsChecked" Value="True"/>
+                    <Condition Property="IsMouseOver" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" 
+                    Value="{i:Theme ImageButtonCheckedBackground}"/>
+                <Setter Property="BorderBrush" 
+                    Value="{i:Theme ImageButtonCheckedBorder}"/>
+                <Setter Property="Foreground" 
+                    Value="{i:Theme ImageButtonCheckedForeground}"/>
+                <Setter Property="i:ImageElement.Foreground" 
+                    Value="{i:Theme ImageButtonCheckedForeground}"/>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="HasMenu" Value="True"/>
+                    <Condition Property="IsPressed" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" 
+                    Value="{i:Theme ImageButtonPressedBackground}"/>
+                <Setter Property="BorderBrush" 
+                    Value="{i:Theme ImageButtonPressedBorder}"/>
+                <Setter Property="Foreground" 
+                    Value="{i:Theme ImageButtonPressedForeground}"/>
+                <Setter Property="i:ImageElement.Foreground" 
+                    Value="{i:Theme ImageButtonPressedForeground}"/>
+            </MultiTrigger>
+            <!-- /// -->
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="HasMenu" Value="False"/>
+                    <Condition Property="IsChecked" Value="False"/>
+                    <Condition Property="IsMouseOver" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" 
+                    Value="Transparent"/>
+                <Setter Property="BorderBrush" 
+                    Value="Transparent"/>
+                <Setter Property="Foreground"
+                    Value="{i:Theme ImageButtonMouseOver}"/>
+                <Setter Property="i:ImageElement.Foreground" 
+                    Value="{i:Theme ImageButtonMouseOver}"/>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="HasMenu" Value="False"/>
+                    <Condition Property="IsChecked" Value="True"/>
+                    <Condition Property="IsMouseOver" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" 
+                    Value="Transparent"/>
+                <Setter Property="BorderBrush" 
+                    Value="Transparent"/>
+                <Setter Property="Foreground" 
+                    Value="{i:Theme ImageButtonChecked}"/>
+                <Setter Property="i:ImageElement.Foreground" 
+                    Value="{i:Theme ImageButtonChecked}"/>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="HasMenu" Value="False"/>
+                    <Condition Property="IsPressed" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" 
+                    Value="Transparent"/>
+                <Setter Property="BorderBrush" 
+                    Value="Transparent"/>
+                <Setter Property="Foreground" 
+                    Value="{i:Theme ImageButtonPressed}"/>
+                <Setter Property="i:ImageElement.Foreground" 
+                    Value="{i:Theme ImageButtonPressed}"/>
+            </MultiTrigger>
+            <!-- /// -->
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{i:Equal Content, {x:Null}, From=Self}" Value="False"/>
+                    <Condition Binding="{i:Bind From=Self, Path=ContentVisibility}" Value="Visible"/>
+                    <Condition Binding="{i:Equal Source, {x:Null}, From=Self}" Value="False"/>
+                </MultiDataTrigger.Conditions>
+                <Setter Property="ContentMargin" Value="3,0,0,0"/>
+            </MultiDataTrigger>
+            <!-- /// -->
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="ButtonVisibility" Value="Visible"/>
+                    <Condition Property="Content" Value="{x:Null}"/>
+                    <Condition Property="Source" Value="{x:Null}"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="ButtonMargin" Value="0"/>
+            </MultiTrigger>
+            <!-- /// -->
+            <Trigger Property="HasMenu" Value="True">
+                <Setter Property="Padding" Value="3" />
+            </Trigger>
+            <Trigger Property="HasMenu" Value="False">
+                <Setter Property="Padding" Value="0" />
+            </Trigger>
+            <!-- /// -->
+            <Trigger Property="IsEnabled" Value="True">
+                <Setter Property="Cursor" Value="Hand" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="{x:Static i:XElement.DisabledOpacity}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="{x:Type i:FolderButton}" TargetType="{x:Type i:FolderButton}" BasedOn="{StaticResource {x:Type i:ImageButton}}">
+        <Setter Property="AllowDrop" Value="True" />
+        <Setter Property="ButtonVisibility" Value="{i:Compare32 Items.Count, From=Self, Result=Visibility, Type=Greater}"/>
+        <Setter Property="Content" Value="{i:Bind From=Self, Path=Path, Convert={x:Type Data:ConvertFileName}}"/>
+        <Setter Property="g:DragDrop.IsDropTarget" Value="True"/>
+        <Setter Property="ItemStyle">
+            <Setter.Value>
+                <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+                    <Setter Property="Command" Value="{Data:Ancestor PlacementTarget.Command, {x:Type ContextMenu}}"/>
+                    <Setter Property="CommandParameter" Value="{i:Bind Path}"/>
+                    <Setter Property="Icon" Value="{i:Bind}"/>
+                    <Setter Property="i:XMenuItem.IconTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <i:Thumbnail Path="{i:Bind Path}"/>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="i:XToolTip.Template">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <ContentPresenter Content="{i:Bind}" ContentTemplate="{StaticResource {x:Static i:XStorage.ToolTipTemplateKey}}"/>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="ToolTip" Value="{i:Bind Path}"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{i:Bind IsHidden}" Value="True">
+                            <Setter Property="Opacity" Value="{x:Static i:ItemViewControl.HiddenOpacity}"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemTemplate">
+            <Setter.Value>
+                <DataTemplate DataType="{x:Type Storage:Item}">
+                    <TextBlock Text="{i:Bind Path, Convert={x:Type Data:ConvertFileName}}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XControl.DropTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <i:DashedBorder
+                        BorderBrush="{i:Theme DropTargetBorder}"
+                        BorderThickness="2">
+                        <i:ImageElement Source="{i:Image Key=Plus}"
+                            HorizontalAlignment="Center" 
+                            VerticalAlignment="Center"/>
+                    </i:DashedBorder>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XControl.DropTemplateVisibility" Value="Visible" />
+        <Setter Property="i:XStorage.CopyWarningTitle" Value="{i:Text Copy}"/>
+        <Setter Property="i:XStorage.CopyWarningMessage" Value="{i:Text Continue, Suffix=?}"/>
+        <Setter Property="i:XStorage.MoveWarningTitle" Value="{i:Text Move}"/>
+        <Setter Property="i:XStorage.MoveWarningMessage" Value="{i:Text Continue, Suffix=?}"/>
+        <Setter Property="i:XStorage.WarnBeforeDrop" Value="True"/>
+        <Setter Property="i:XElement.FadeIn" Value="True" />
+        <Setter Property="i:XElement.ShellContextMenu" Value="{i:Bind From=Self, Path=Path}"/>
+        <Setter Property="i:XToolTip.Template">
+            <Setter.Value>
+                <DataTemplate>
+                    <ContentPresenter Content="{i:Bind}" ContentTemplate="{StaticResource {x:Static i:XStorage.ToolTipTemplateKey}}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ToolTip" Value="{i:Bind From=Self, Path=(i:XStorage.Path)}"/>
+    </Style>
+
+    <!--#endregion-->
+
+    <!--#region TokenBoxButton-->
+
+    <Style x:Key="{x:Type i:TokenBoxButton}" TargetType="{x:Type i:TokenBoxButton}" BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock Text="{i:Bind}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Margin" Value="0,0,5,0"/>
+        <Setter Property="Padding" Value="5,3"/>
+    </Style>
+
+    <!--#endregion-->
+
+    <!--#region WindowButton-->
+
+    <Style x:Key="{x:Type i:WindowButton}" TargetType="{x:Type i:WindowButton}" BasedOn="{StaticResource {x:Type Button}}">
+        <Setter Property="Background" Value="{i:Theme WindowButtonBackground}"/>
+        <Setter Property="BorderBrush" Value="{i:Theme WindowButtonBorder}"/>
+        <Setter Property="Border.CornerRadius" Value="0"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="ContentSize" Value="16,16"/>
+        <Setter Property="ContentTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <i:ImageElement DataContext="{i:Bind From=FindAncestor, FromType=i:WindowButton}"
+                        IsHitTestVisible="False"
+                        Source="{i:Bind Content}"
+                        SourceSize="{i:Bind ContentSize}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Foreground" Value="{i:Theme WindowButtonForeground}"/>
+        <Setter Property="i:ImageElement.Foreground" Value="{i:Theme WindowButtonForeground}" />
+        <Setter Property="Padding" Value="7,5" />
+        <Setter Property="Window.IsHitTestVisible" Value="True"/>
+        <Style.Triggers>
+            <!-- ... Default -->
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{i:Theme WindowButtonMouseOverBackground}"/>
+                <Setter Property="BorderBrush" Value="{i:Theme WindowButtonMouseOverBorder}"/>
+                <Setter Property="Foreground" Value="{i:Theme WindowButtonMouseOverForeground}"/>
+                <Setter Property="i:ImageElement.Foreground" Value="{i:Theme WindowButtonMouseOverForeground}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{i:Theme WindowButtonPressedBackground}"/>
+                <Setter Property="BorderBrush" Value="{i:Theme WindowButtonPressedBorder}"/>
+                <Setter Property="Foreground" Value="{i:Theme WindowButtonPressedForeground}"/>
+                <Setter Property="i:ImageElement.Foreground" Value="{i:Theme WindowButtonPressedForeground}" />
+            </Trigger>
+            <!-- /// -->
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsChecked" Value="False"/>
+                    <Condition Property="IsDefault" Value="True"/>
+                    <Condition Property="IsMouseOver" Value="False"/>
+                    <Condition Property="IsPressed" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{i:Theme WindowButtonBackground}"/>
+                <Setter Property="BorderBrush" Value="{i:Theme WindowButtonBorder}"/>
+                <Setter Property="Foreground" Value="{i:Theme WindowButtonForeground}"/>
+                <Setter Property="i:ImageElement.Foreground" Value="{i:Theme WindowButtonForeground}" />
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsChecked" Value="False"/>
+                    <Condition Property="IsDefault" Value="True"/>
+                    <Condition Property="IsMouseOver" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{i:Theme WindowButtonMouseOverBackground}"/>
+                <Setter Property="BorderBrush" Value="{i:Theme WindowButtonMouseOverBorder}"/>
+                <Setter Property="Foreground" Value="{i:Theme WindowButtonMouseOverForeground}"/>
+                <Setter Property="i:ImageElement.Foreground" Value="{i:Theme WindowButtonMouseOverForeground}" />
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsChecked" Value="False"/>
+                    <Condition Property="IsDefault" Value="True"/>
+                    <Condition Property="IsPressed" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{i:Theme WindowButtonPressedBackground}"/>
+                <Setter Property="BorderBrush" Value="{i:Theme WindowButtonPressedBorder}"/>
+                <Setter Property="Foreground" Value="{i:Theme WindowButtonPressedForeground}"/>
+                <Setter Property="i:ImageElement.Foreground" Value="{i:Theme WindowButtonPressedForeground}" />
+            </MultiTrigger>
+            <!-- /// -->
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsCancel" Value="True"/>
+                    <Condition Property="IsChecked" Value="False"/>
+                    <Condition Property="IsMouseOver" Value="False"/>
+                    <Condition Property="IsPressed" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{i:Theme WindowButtonBackground}"/>
+                <Setter Property="BorderBrush" Value="{i:Theme WindowButtonBorder}"/>
+                <Setter Property="Foreground" Value="{i:Theme WindowButtonForeground}"/>
+                <Setter Property="i:ImageElement.Foreground" Value="{i:Theme WindowButtonForeground}" />
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsCancel" Value="True"/>
+                    <Condition Property="IsChecked" Value="False"/>
+                    <Condition Property="IsMouseOver" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{i:Theme WindowButtonMouseOverBackground}"/>
+                <Setter Property="BorderBrush" Value="{i:Theme WindowButtonMouseOverBorder}"/>
+                <Setter Property="Foreground" Value="{i:Theme WindowButtonMouseOverForeground}"/>
+                <Setter Property="i:ImageElement.Foreground" Value="{i:Theme WindowButtonMouseOverForeground}" />
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsCancel" Value="True"/>
+                    <Condition Property="IsChecked" Value="False"/>
+                    <Condition Property="IsPressed" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{i:Theme WindowButtonPressedBackground}"/>
+                <Setter Property="BorderBrush" Value="{i:Theme WindowButtonPressedBorder}"/>
+                <Setter Property="Foreground" Value="{i:Theme WindowButtonPressedForeground}"/>
+                <Setter Property="i:ImageElement.Foreground" Value="{i:Theme WindowButtonPressedForeground}" />
+            </MultiTrigger>
+            <!-- ... WindowButton -->
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background" Value="{i:Theme WindowButtonCheckedBackground}"/>
+                <Setter Property="BorderBrush" Value="{i:Theme WindowButtonCheckedBorder}"/>
+                <Setter Property="Foreground" Value="{i:Theme WindowButtonCheckedForeground}"/>
+                <Setter Property="i:ImageElement.Foreground" Value="{i:Theme WindowButtonCheckedForeground}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--#endregion-->
+</ResourceDictionary>

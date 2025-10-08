@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectView>ProjectFiles</ProjectView>
+  </PropertyGroup>
+  <ItemGroup>
+    <Page Update="Controls\Curve\CurveControl.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Theme\Default\Blaze.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Theme\Default\Chocolate.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Theme\Default\Dark.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Theme\Default\Jungle.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Theme\Default\Light.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Theme\Default\Midnight.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Theme\Default\Violet.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,691 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="clr-namespace:Ion.Controls"
+    xmlns:Data="clr-namespace:Ion.Data">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="{i:Style Key=Control}"/>
+        <ResourceDictionary Source="{i:Style Key=FrameworkElement}"/>
+    </ResourceDictionary.MergedDictionaries>
+    <!-- /// -->
+
+    <Style x:Key="{x:Static i:XToggleButton.StyleKey}" TargetType="{x:Type ToggleButton}" BasedOn="{StaticResource {x:Type FrameworkElement}}">
+        <Setter Property="ClickMode" Value="Press" />
+        <Setter Property="Cursor" Value="Arrow" />
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Padding" Value="10,0,0,0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <BulletDecorator Background="Transparent">
+                        <BulletDecorator.Bullet>
+                            <ContentPresenter ContentTemplate="{i:Bind From=TemplatedParent, Path=(i:XToggleButton.BulletTemplate)}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </BulletDecorator.Bullet>
+                        <!-- ... Everything, but FontSize carries over! -->
+                        <Grid i:XGrid.AutoColumns="True" i:XGrid.Columns="Auto,*">
+                            <i:ImageElement Source="{i:Bind From=TemplatedParent, Path=(i:XToggleButton.Image)}" 
+                                Margin="0,0,5,0"                
+                                Visibility="{i:Bind Path=(i:XToggleButton.Image), Convert=Data:ConvertObjectToVisibility, From=TemplatedParent}"/>
+                            <ContentPresenter
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                Margin="{TemplateBinding Padding}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                Visibility="{i:Bind Content, Convert=Data:ConvertObjectToVisibility, From=TemplatedParent}"/>
+                        </Grid>
+                    </BulletDecorator>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="True">
+                <Setter Property="Cursor" Value="Hand" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- /// -->
+
+    <Style x:Key="{x:Type CheckBox}" TargetType="{x:Type CheckBox}" BasedOn="{StaticResource {x:Static i:XToggleButton.StyleKey}}">
+        <Setter Property="Background" Value="{i:Theme CheckBoxBackground}" />
+        <Setter Property="BorderBrush" Value="{i:Theme CheckBoxBorder}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Foreground" Value="{i:Theme Text}" />
+        <Setter Property="i:XToggleButton.BulletSize" Value="16,16"/>
+        <Setter Property="i:XToggleButton.BulletTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Border DataContext="{Data:Ancestor {x:Type CheckBox}}"
+                        Background="{i:Bind Background}"
+                        BorderBrush="{i:Bind BorderBrush}"
+                        BorderThickness="{i:Bind BorderThickness}"
+                        Height="{i:Bind Path=(i:XToggleButton.BulletSize).Height}" 
+                        Width="{i:Bind Path=(i:XToggleButton.BulletSize).Width}">
+                        <Border Margin="2">
+                            <Border.Style>
+                                <Style TargetType="{x:Type Border}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{i:Bind IsChecked}" Value="{x:Null}">
+                                            <Setter Property="Background" Value="Transparent" />
+                                            <Setter Property="BorderBrush" Value="{i:Theme CheckBoxTickFill}" />
+                                            <Setter Property="BorderThickness" Value="3" />
+                                            <Setter Property="Margin" Value="-2" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{i:Bind IsChecked}" Value="True">
+                                            <Setter Property="Background" Value="{i:Theme CheckBoxTickFill}" />
+                                            <Setter Property="BorderBrush" Value="Transparent" />
+                                            <Setter Property="BorderThickness" Value="0" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{i:Bind IsChecked}" Value="False">
+                                            <Setter Property="Background" Value="Transparent" />
+                                            <Setter Property="BorderBrush" Value="Transparent" />
+                                            <Setter Property="BorderThickness" Value="0" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                        </Border>
+                    </Border>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="{x:Static i:XElement.DisabledOpacity}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="{x:Type i:ImageToggleButton}" TargetType="{x:Type i:ImageToggleButton}" BasedOn="{StaticResource {x:Static i:XToggleButton.StyleKey}}">
+        <Setter Property="Background" Value="{i:Theme ImageButtonBackground}"/>
+        <Setter Property="BorderBrush" Value="{i:Theme ImageButtonBorder}"/>
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="ButtonMargin" Value="5,0,0,0" />
+        <Setter Property="ButtonSize" Value="12,12"/>
+        <Setter Property="ButtonSource" Value="{i:Image Key=TriangleDown}"/>
+        <Setter Property="ButtonToolTip" Value="{x:Null}" />
+        <Setter Property="ButtonVisibility" Value="Collapsed" />
+        <Setter Property="ContentMargin" Value="0" />
+        <Setter Property="Foreground" Value="{i:Theme ImageButtonForeground}"/>
+        <Setter Property="Padding" Value="3" />
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="SourceSize" Value="16,16" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="i:ImageToggleButton">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        CornerRadius="{TemplateBinding Border.CornerRadius}"
+                        Padding="{TemplateBinding Padding}">
+                        <Border.Resources>
+                            <Data:Reference x:Key="ImageToggleButton" Data="{i:Bind From=TemplatedParent}"/>
+                        </Border.Resources>
+                        <Border.Style>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="ToolTip" Value="{i:Bind From=TemplatedParent, Path=ToolTip}"/>
+                                <Style.Triggers>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{i:Bind From=TemplatedParent, Path=IsChecked}" Value="True"/>
+                                            <Condition Binding="{i:Equal CheckedToolTip, {x:Null}, From=TemplatedParent}" Value="False"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="ToolTip" Value="{i:Bind From=TemplatedParent, Path=CheckedToolTip}"/>
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <Grid i:XGrid.Columns="Auto,Auto,Auto">
+                            <ContentPresenter Grid.Column="0" Content="{TemplateBinding Source}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                Visibility="{i:Bind Source, Convert=Data:ConvertObjectToVisibility, From=TemplatedParent}">
+                                <ContentPresenter.ContentTemplate>
+                                    <DataTemplate>
+                                        <i:ImageElement x:Name="ImageElement"
+                                            Source="{i:Bind}"
+                                            SourceSize="{Data:Ancestor SourceSize, i:ImageToggleButton}"/>
+                                        <DataTemplate.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{i:Bind Data.IsChecked, Source={StaticResource ImageToggleButton}}" Value="True"/>
+                                                    <Condition Binding="{i:Equal Data.CheckedSource, Source={StaticResource ImageToggleButton}}" Value="False"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter TargetName="ImageElement" Property="Source" Value="{i:Bind Data.CheckedSource, Source={StaticResource ImageToggleButton}}"/>
+                                            </MultiDataTrigger>
+                                        </DataTemplate.Triggers>
+                                    </DataTemplate>
+                                </ContentPresenter.ContentTemplate>
+                            </ContentPresenter>
+                            <ContentPresenter Grid.Column="1" ContentSource="Content"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                Margin="{TemplateBinding ContentMargin}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                Visibility="{i:Bind Content, Convert=Data:ConvertObjectToVisibility, From=TemplatedParent}">
+                                <ContentPresenter.Style>
+                                    <Style TargetType="ContentPresenter">
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{i:Bind From=TemplatedParent, Path=IsChecked}" Value="True"/>
+                                                    <Condition Binding="{i:Equal CheckedContent, From=TemplatedParent}" Value="False"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Content" Value="{i:Bind From=TemplatedParent, Path=CheckedContent}"/>
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ContentPresenter.Style>
+                            </ContentPresenter>
+                            <i:RotateElement Grid.Column="2"
+                                Margin="{TemplateBinding ButtonMargin}"
+                                Rotate="{i:Bind From=TemplatedParent, Path=IsChecked}"
+                                Rotation="-90,0"
+                                ToolTip="{TemplateBinding ButtonToolTip}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                Visibility="{TemplateBinding ButtonVisibility}">
+                                <i:ImageElement
+                                    Foreground="{i:Bind From=TemplatedParent, Path=(i:ImageElement.Foreground)}"
+                                    Source="{TemplateBinding ButtonSource}"
+                                    SourceSize="{TemplateBinding ButtonSize}"/>
+                            </i:RotateElement>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="{x:Static i:XElement.DisabledOpacity}" />
+            </Trigger>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{i:Equal Content, {x:Null}, From=Self}" Value="False"/>
+                    <Condition Binding="{i:Equal Source, {x:Null}, From=Self}" Value="False"/>
+                </MultiDataTrigger.Conditions>
+                <Setter Property="ContentMargin" Value="5,0,0,0"/>
+            </MultiDataTrigger>
+            <!-- /// -->
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="Content" Value="{x:Null}"/>
+                    <Condition Property="HasMenu" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Padding" Value="0" />
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="ButtonVisibility" Value="Visible"/>
+                    <Condition Property="Content" Value="{x:Null}"/>
+                    <Condition Property="Source" Value="{x:Null}"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="ButtonMargin" Value="0"/>
+            </MultiTrigger>
+            <!-- /// -->
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsChecked" Value="False"/>
+                    <Condition Property="IsMouseOver" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" 
+                    Value="{i:Theme ImageToggleButtonMouseOverBackground}"/>
+                <Setter Property="BorderBrush" 
+                    Value="{i:Theme ImageToggleButtonMouseOverBorder}"/>
+                <Setter Property="Foreground" 
+                    Value="{i:Theme ImageToggleButtonMouseOverForeground}"/>
+                <Setter Property="i:ImageElement.Foreground" 
+                    Value="{i:Theme ImageToggleButtonMouseOverForeground}"/>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsChecked" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" 
+                    Value="{i:Theme ImageToggleButtonCheckedBackground}"/>
+                <Setter Property="BorderBrush" 
+                    Value="{i:Theme ImageToggleButtonCheckedBorder}"/>
+                <Setter Property="Foreground" 
+                    Value="{i:Theme ImageToggleButtonCheckedForeground}"/>
+                <Setter Property="i:ImageElement.Foreground" 
+                    Value="{i:Theme ImageToggleButtonCheckedForeground}"/>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsPressed" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" 
+                    Value="{i:Theme ImageToggleButtonPressedBackground}"/>
+                <Setter Property="BorderBrush" 
+                    Value="{i:Theme ImageToggleButtonPressedBorder}"/>
+                <Setter Property="Foreground" 
+                    Value="{i:Theme ImageToggleButtonPressedForeground}"/>
+                <Setter Property="i:ImageElement.Foreground" 
+                    Value="{i:Theme ImageToggleButtonPressedForeground}"/>
+            </MultiTrigger>
+            <!-- /// -->
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="HasMenu" Value="True"/>
+                    <Condition Property="IsChecked" Value="False"/>
+                    <Condition Property="IsMouseOver" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" 
+                    Value="{i:Theme ImageButtonMouseOverBackground}"/>
+                <Setter Property="BorderBrush" 
+                    Value="{i:Theme ImageButtonMouseOverBorder}"/>
+                <Setter Property="Foreground" 
+                    Value="{i:Theme ImageButtonMouseOverForeground}"/>
+                <Setter Property="i:ImageElement.Foreground" 
+                    Value="{i:Theme ImageButtonMouseOverForeground}"/>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="HasMenu" Value="True"/>
+                    <Condition Property="IsChecked" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" 
+                    Value="{i:Theme ImageButtonCheckedBackground}"/>
+                <Setter Property="BorderBrush" 
+                    Value="{i:Theme ImageButtonCheckedBorder}"/>
+                <Setter Property="Foreground" 
+                    Value="{i:Theme ImageButtonCheckedForeground}"/>
+                <Setter Property="i:ImageElement.Foreground" 
+                    Value="{i:Theme ImageButtonCheckedForeground}"/>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="HasMenu" Value="True"/>
+                    <Condition Property="IsPressed" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" 
+                    Value="{i:Theme ImageButtonPressedBackground}"/>
+                <Setter Property="BorderBrush" 
+                    Value="{i:Theme ImageButtonPressedBorder}"/>
+                <Setter Property="Foreground" 
+                    Value="{i:Theme ImageButtonPressedForeground}"/>
+                <Setter Property="i:ImageElement.Foreground" 
+                    Value="{i:Theme ImageButtonPressedForeground}"/>
+            </MultiTrigger>
+            <!-- /// -->
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="Content" Value="{x:Null}"/>
+                    <Condition Property="HasMenu" Value="False"/>
+                    <Condition Property="IsChecked" Value="False"/>
+                    <Condition Property="IsMouseOver" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" 
+                    Value="Transparent"/>
+                <Setter Property="BorderBrush" 
+                    Value="Transparent"/>
+                <Setter Property="Foreground"
+                    Value="{i:Theme ImageButtonMouseOver}"/>
+                <Setter Property="i:ImageElement.Foreground" 
+                    Value="{i:Theme ImageButtonMouseOver}"/>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="Content" Value="{x:Null}"/>
+                    <Condition Property="HasMenu" Value="False"/>
+                    <Condition Property="IsChecked" Value="True"/>
+                    <Condition Property="IsMouseOver" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" 
+                    Value="Transparent"/>
+                <Setter Property="BorderBrush" 
+                    Value="Transparent"/>
+                <Setter Property="Foreground"
+                    Value="{i:Theme ImageButtonChecked}"/>
+                <Setter Property="i:ImageElement.Foreground" 
+                    Value="{i:Theme ImageButtonChecked}"/>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="Content" Value="{x:Null}"/>
+                    <Condition Property="HasMenu" Value="False"/>
+                    <Condition Property="IsChecked" Value="True"/>
+                    <Condition Property="IsMouseOver" Value="False"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" 
+                    Value="Transparent"/>
+                <Setter Property="BorderBrush" 
+                    Value="Transparent"/>
+                <Setter Property="Foreground" 
+                    Value="{i:Theme ImageButtonChecked}"/>
+                <Setter Property="i:ImageElement.Foreground" 
+                    Value="{i:Theme ImageButtonChecked}"/>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="Content" Value="{x:Null}"/>
+                    <Condition Property="HasMenu" Value="False"/>
+                    <Condition Property="IsPressed" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" 
+                    Value="Transparent"/>
+                <Setter Property="BorderBrush" 
+                    Value="Transparent"/>
+                <Setter Property="Foreground" 
+                    Value="{i:Theme ImageButtonPressed}"/>
+                <Setter Property="i:ImageElement.Foreground" 
+                    Value="{i:Theme ImageButtonPressed}"/>
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="{x:Type RadioButton}" TargetType="{x:Type RadioButton}" BasedOn="{StaticResource {x:Static i:XToggleButton.StyleKey}}">
+        <Setter Property="Background" Value="{i:Theme RadioButtonBackground}" />
+        <Setter Property="BorderBrush" Value="{i:Theme RadioButtonBorder}" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="Foreground" Value="{i:Theme RadioButtonForeground}" />
+        <Setter Property="Border.CornerRadius" Value="999"/>
+        <Setter Property="i:XToggleButton.BulletSize" Value="16,16"/>
+        <Setter Property="i:XToggleButton.BulletTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Border DataContext="{Data:Ancestor {x:Type RadioButton}}"
+                        Background="{i:Bind Background}"
+                        BorderBrush="{i:Bind BorderBrush}"
+                        BorderThickness="{i:Bind BorderThickness}" 
+                        CornerRadius="{i:Bind Path=(Border.CornerRadius)}"
+                        Height="{i:Bind Path=(i:XToggleButton.BulletSize).Height}" 
+                        Width="{i:Bind Path=(i:XToggleButton.BulletSize).Width}">
+                        <Ellipse
+                            HorizontalAlignment="Stretch" 
+                            Margin="1" 
+                            VerticalAlignment="Stretch">
+                            <Ellipse.Style>
+                                <Style TargetType="{x:Type Ellipse}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{i:Bind IsChecked}" Value="True">
+                                            <Setter Property="Fill" Value="{i:Theme RadioButtonTickStroke}" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{i:Bind IsChecked}" Value="False">
+                                            <Setter Property="Fill" Value="Transparent" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Ellipse.Style>
+                        </Ellipse>
+                    </Border>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="{x:Static i:XElement.DisabledOpacity}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="{x:Type i:SwipeButton}" TargetType="{x:Type i:SwipeButton}" BasedOn="{StaticResource {x:Type Control}}">
+        <Setter Property="Background" Value="{i:Theme SwipeButtonBackground}"/>
+        <Setter Property="BorderBrush" Value="{i:Theme SwipeButtonBorder}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="ClickMode" Value="Press"/>
+        <Setter Property="Foreground" Value="{i:Theme SwipeButtonForeground}"/>
+        <Setter Property="i:ImageElement.Foreground" Value="{i:Theme SwipeButtonForeground}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="IsCheckable" Value="False"/>
+        <Setter Property="SwipeAnimationAcceleration" Value="0.4"/>
+        <Setter Property="SwipeAnimationDeceleration" Value="0.6"/>
+        <Setter Property="SwipeAnimationDuration" Value="0:0:0.8"/>
+        <Setter Property="SwipeCommandThreshold" Value="50%"/>
+        <Setter Property="SwipeDirection" Value="Horizontal"/>
+        <Setter Property="SwipeMode" Value="Default"/>
+        <Setter Property="SwipeStartLength" Value="4"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="i:SwipeButton">
+                    <Grid>
+                        <ContentPresenter Content="{TemplateBinding Left}"
+                            ContentTemplate="{TemplateBinding LeftTemplate}"
+                            ContentTemplateSelector="{TemplateBinding LeftTemplateSelector}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            Margin="{TemplateBinding Padding}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                            <ContentPresenter.Visibility>
+                                <Data:MultiBind ConverterType="{x:Type i:SwipeButtonVisibilityConverter}">
+                                    <i:Bind From="TemplatedParent" Path="IsLeftSwiping"/>
+                                    <i:Bind From="TemplatedParent" Path="IsAnimating"/>
+                                    <i:Bind From="TemplatedParent" Path="IsSwiping"/>
+                                </Data:MultiBind>
+                            </ContentPresenter.Visibility>
+                        </ContentPresenter>
+                        <i:FillElement Opacity="{i:Bind From=TemplatedParent, Path=LeftSwipeProgress, Convert={x:Type Data:ConvertDoubleInverse}}">
+                            <i:FillElement.Fill>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                    <GradientStop Offset="0" Color="#AA000000"/>
+                                    <GradientStop Offset="0.5" Color="#00000000"/>
+                                    <GradientStop Offset="1" Color="#00000000"/>
+                                </LinearGradientBrush>
+                            </i:FillElement.Fill>
+                        </i:FillElement>
+                        <ContentPresenter Content="{TemplateBinding Right}"
+                            ContentTemplate="{TemplateBinding RightTemplate}"
+                            ContentTemplateSelector="{TemplateBinding RightTemplateSelector}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            Margin="{TemplateBinding Padding}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                            <ContentPresenter.Visibility>
+                                <Data:MultiBind ConverterType="{x:Type i:SwipeButtonVisibilityConverter}">
+                                    <i:Bind From="TemplatedParent" Path="IsRightSwiping"/>
+                                    <i:Bind From="TemplatedParent" Path="IsAnimating"/>
+                                    <i:Bind From="TemplatedParent" Path="IsSwiping"/>
+                                </Data:MultiBind>
+                            </ContentPresenter.Visibility>
+                        </ContentPresenter>
+                        <i:FillElement Opacity="{i:Bind From=TemplatedParent, Path=RightSwipeProgress, Convert={x:Type Data:ConvertDoubleInverse}}">
+                            <i:FillElement.Fill>
+                                <LinearGradientBrush StartPoint="1,0" EndPoint="0,0">
+                                    <GradientStop Offset="0" Color="#AA000000"/>
+                                    <GradientStop Offset="0.5" Color="#00000000"/>
+                                    <GradientStop Offset="1" Color="#00000000"/>
+                                </LinearGradientBrush>
+                            </i:FillElement.Fill>
+                        </i:FillElement>
+                        <Canvas
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            Margin="{TemplateBinding Padding}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                            <Border
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                Canvas.Left="{TemplateBinding ContentX}"
+                                Canvas.Top="{TemplateBinding ContentY}"
+                                CornerRadius="{TemplateBinding Border.CornerRadius}"
+                                Height="{TemplateBinding ActualHeight}"
+                                Width="{TemplateBinding ActualWidth}">
+                                <ContentPresenter x:Name="BackContent" ContentSource="Content"/>
+                            </Border>
+                        </Canvas>
+                        <ContentPresenter x:Name="FrontContent" ContentSource="Content"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            Margin="{TemplateBinding Padding}"
+                            Opacity="0"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="IsAnimating" Value="False"/>
+                                <Condition Property="IsSwiping" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="BackContent" Property="Opacity" Value="0"/>
+                            <Setter TargetName="FrontContent" Property="Opacity" Value="1"/>
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background" Value="{i:Theme SwipeButtonCheckedBackground}"/>
+                <Setter Property="Foreground" Value="{i:Theme SwipeButtonCheckedForeground}"/>
+                <Setter Property="i:ImageElement.Foreground" Value="{i:Theme SwipeButtonCheckedForeground}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="{x:Static i:XElement.DisabledOpacity}" />
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsChecked" Value="False"/>
+                    <Condition Property="IsMouseDown" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{i:Theme SwipeButtonMouseDownBackground}"/>
+                <Setter Property="Foreground" Value="{i:Theme SwipeButtonMouseDownForeground}"/>
+                <Setter Property="i:ImageElement.Foreground" Value="{i:Theme SwipeButtonMouseDownForeground}"/>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsChecked" Value="False"/>
+                    <Condition Property="IsMouseDown" Value="False"/>
+                    <Condition Property="IsMouseOver" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{i:Theme SwipeButtonMouseOverBackground}"/>
+                <Setter Property="Foreground" Value="{i:Theme SwipeButtonMouseOverForeground}"/>
+                <Setter Property="i:ImageElement.Foreground" Value="{i:Theme SwipeButtonMouseOverForeground}"/>
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="{x:Type i:SwitchButton}" TargetType="{x:Type i:SwitchButton}" BasedOn="{StaticResource {x:Static i:XToggleButton.StyleKey}}">
+        <Setter Property="Background" Value="{i:Theme SwitchButtonBackground}"/>
+        <Setter Property="BorderBrush" Value="{i:Theme SwitchButtonBorder}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Foreground" Value="{i:Theme Text}"/>
+        <Setter Property="Border.CornerRadius" Value="2"/>
+        <Setter Property="i:XToggleButton.BulletSize" Value="22,60"/>
+        <Setter Property="i:XToggleButton.BulletTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Grid DataContext="{i:Bind From=FindAncestor, FromType=i:SwitchButton}"
+                        Height="{i:Bind Path=(i:XToggleButton.BulletSize).Height}" 
+                        Width="{i:Bind Path=(i:XToggleButton.BulletSize).Width}">
+                        <Border
+                            Background="{i:Bind Background}"
+                            BorderBrush="{i:Bind BorderBrush}"
+                            BorderThickness="{i:Bind BorderThickness}"
+                            CornerRadius="{i:Bind Path=(Border.CornerRadius)}"
+                            Padding="{i:Bind Padding}">
+                            <Grid 
+                                i:XGrid.Columns="*,*"
+                                i:XPanel.HorizontalContentAlignment="Center"
+                                i:XPanel.VerticalContentAlignment="Center">
+                                <Line 
+                                    Stroke="{i:Bind SymbolForeground}" 
+                                    StrokeThickness="2"  
+                                    Visibility="{i:Bind IsChecked, Convert={x:Type Data:ConvertBooleanToVisibility}}"
+                                    X1="0"
+                                    X2="0" 
+                                    Y1="0" 
+                                    Y2="{i:Bind SymbolSize}"/>
+                                <Ellipse 
+                                    Grid.Column="1"
+                                    Height="{i:Bind SymbolSize}"
+                                    Stroke="{i:Bind SymbolForeground}" 
+                                    StrokeThickness="2" 
+                                    Visibility="{i:Bind IsChecked, Convert={x:Type Data:ConvertBooleanToVisibility}, ConverterParameter=1}"
+                                    Width="{i:Bind SymbolSize}"/>
+                            </Grid>
+                        </Border>
+                        <Thumb x:Name="PART_Slider"
+                            Height="{i:Bind Height}" 
+                            HorizontalAlignment="Left" 
+                            RenderTransformOrigin="0.5,0.5"
+                            Style="{i:Bind ThumbStyle}">
+                            <Thumb.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                    <TranslateTransform X="0" Y="0"/>
+                                </TransformGroup>
+                            </Thumb.RenderTransform>
+                        </Thumb>
+                    </Grid>
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{Data:Ancestor IsChecked, i:SwitchButton}" Value="True">
+                            <DataTrigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames 
+                                            BeginTime="00:00:00" 
+                                            Storyboard.TargetName="PART_Slider"
+                                            Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[1].(TranslateTransform.X)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="50" />
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.EnterActions>
+                            <DataTrigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimationUsingKeyFrames 
+                                            BeginTime="00:00:00" 
+                                            Storyboard.TargetName="PART_Slider" 
+                                            Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[1].(TranslateTransform.X)">
+                                            <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="0" />
+                                        </DoubleAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </DataTrigger.ExitActions>
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="SymbolForeground" Value="{i:Theme SwitchButtonForeground}"/>
+        <Setter Property="SymbolSize" Value="10"/>
+        <Setter Property="ThumbStyle">
+            <Setter.Value>
+                <Style TargetType="Thumb">
+                    <Setter Property="Background" Value="{i:Theme SwitchButtonThumbBackground}"/>
+                    <Setter Property="BorderBrush" Value="{i:Theme SwitchButtonThumbBorder}"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="Border.CornerRadius" Value="2"/>
+                    <Setter Property="IsHitTestVisible" Value="False"/>
+                    <Setter Property="OverridesDefaultStyle" Value="True"/>
+                    <Setter Property="Width" Value="12"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="Thumb">
+                                <Border
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="{TemplateBinding Border.CornerRadius}"/>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Data:Ancestor IsChecked, {x:Type i:SwitchButton}}" Value="True">
+                            <Setter Property="Background" Value="{i:Theme SwitchButtonCheckedThumbBackground}" />
+                            <Setter Property="BorderBrush" Value="{i:Theme SwitchButtonCheckedThumbBorder}" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Data:Ancestor IsChecked, {x:Type i:SwitchButton}}" Value="{x:Null}">
+                            <Setter Property="Background" Value="{i:Theme SwitchButtonNullThumbBackground}" />
+                            <Setter Property="BorderBrush" Value="{i:Theme SwitchButtonNullThumbBorder}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Background" Value="{i:Theme SwitchButtonCheckedBackground}" />
+                <Setter Property="BorderBrush" Value="{i:Theme SwitchButtonCheckedBorder}" />
+                <Setter Property="SymbolForeground" Value="{i:Theme SwitchButtonCheckedForeground}" />
+            </Trigger>
+            <Trigger Property="IsChecked" Value="{x:Null}">
+                <Setter Property="Background" Value="{i:Theme SwitchButtonNullBackground}" />
+                <Setter Property="BorderBrush" Value="{i:Theme SwitchButtonNullBorder}" />
+                <Setter Property="SymbolForeground" Value="{i:Theme SwitchButtonNullForeground}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="{x:Static i:XElement.DisabledOpacity}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

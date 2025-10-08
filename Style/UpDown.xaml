@@ -1,0 +1,85 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:g="urn:gong-wpf-dragdrop"
+    xmlns:l="http://wpflocalizeextension.codeplex.com"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="clr-namespace:Ion.Controls"
+    xmlns:Collections="clr-namespace:Ion.Collect"
+    xmlns:Data="clr-namespace:Ion.Data">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="{i:Style Key=Validation}"/>
+        <ResourceDictionary Source="{i:Style Key=TextBox}"/>
+    </ResourceDictionary.MergedDictionaries>
+    <Style x:Key="{x:Type i:UpDown}" TargetType="{x:Type i:UpDown}" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="DownButtonTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <i:ImageButton x:Name="PART_Down"
+                        Command="{i:Bind}"
+                        CommandParameter="Down"
+                        Focusable="False"
+                        Source="{i:Image Key=ArrowDown}"
+                        SourceSize="9,9"
+                        ToolTip="{i:Text Decrease}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XTextBox.ClearButtonVisibility" Value="Collapsed" />
+        <Setter Property="i:XTextBoxBase.Right">
+            <Setter.Value>
+                <i:DataTemplateList>
+                    <DataTemplate>
+                        <ContentPresenter ContentTemplate="{DynamicResource {x:Static i:XTextBoxBase.ValidationIconTemplate}}"/>
+                    </DataTemplate>
+                    <DataTemplate>
+                        <Grid i:XGrid.AutoRows="True" i:XGrid.Rows="*,*"
+                            Margin="0,0,5,0"
+                            Visibility="{Data:Ancestor CanUpDown, i:UpDown, Convert={x:Type Data:ConvertBooleanToVisibility}}">
+                            <ContentPresenter
+                                Content="{Data:Ancestor UpCommand, i:UpDown}"
+                                ContentTemplate="{Data:Ancestor UpButtonTemplate, i:UpDown}"/>
+                            <ContentPresenter
+                                Content="{Data:Ancestor DownCommand, i:UpDown}"
+                                ContentTemplate="{Data:Ancestor DownButtonTemplate, i:UpDown}"/>
+                        </Grid>
+                    </DataTemplate>
+                </i:DataTemplateList>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="UpButtonTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <i:ImageButton x:Name="PART_Up"
+                        Command="{i:Bind}"
+                        CommandParameter="Up"
+                        Focusable="False"
+                        Source="{i:Image Key=ArrowUp}"
+                        SourceSize="9,9"
+                        ToolTip="{i:Text Increase}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="{x:Type i:ByteUpDown}" TargetType="{x:Type i:ByteUpDown}" BasedOn="{StaticResource {x:Type i:UpDown}}"/>
+
+    <Style x:Key="{x:Type i:DecimalUpDown}" TargetType="{x:Type i:DecimalUpDown}" BasedOn="{StaticResource {x:Type i:UpDown}}"/>
+
+    <Style x:Key="{x:Type i:DoubleUpDown}" TargetType="{x:Type i:DoubleUpDown}" BasedOn="{StaticResource {x:Type i:UpDown}}"/>
+
+    <Style x:Key="{x:Type i:SingleUpDown}" TargetType="{x:Type i:SingleUpDown}" BasedOn="{StaticResource {x:Type i:UpDown}}"/>
+
+    <Style x:Key="{x:Type i:Int16UpDown}" TargetType="{x:Type i:Int16UpDown}" BasedOn="{StaticResource {x:Type i:UpDown}}"/>
+
+    <Style x:Key="{x:Type i:Int32UpDown}" TargetType="{x:Type i:Int32UpDown}" BasedOn="{StaticResource {x:Type i:UpDown}}"/>
+
+    <Style x:Key="{x:Type i:Int64UpDown}" TargetType="{x:Type i:Int64UpDown}" BasedOn="{StaticResource {x:Type i:UpDown}}"/>
+
+    <Style x:Key="{x:Type i:SByteUpDown}" TargetType="{x:Type i:SByteUpDown}" BasedOn="{StaticResource {x:Type i:UpDown}}"/>
+
+    <Style x:Key="{x:Type i:UInt16UpDown}" TargetType="{x:Type i:UInt16UpDown}" BasedOn="{StaticResource {x:Type i:UpDown}}"/>
+
+    <Style x:Key="{x:Type i:UInt32UpDown}" TargetType="{x:Type i:UInt32UpDown}" BasedOn="{StaticResource {x:Type i:UpDown}}"/>
+
+    <Style x:Key="{x:Type i:UInt64UpDown}" TargetType="{x:Type i:UInt64UpDown}" BasedOn="{StaticResource {x:Type i:UpDown}}"/>
+</ResourceDictionary>

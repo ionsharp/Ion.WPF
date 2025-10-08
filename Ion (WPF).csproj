@@ -1,0 +1,923 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <LangVersion>preview</LangVersion>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net9.0-windows</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Authors>Ion</Authors>
+    <Company>Ion</Company>
+    <Copyright>No rights reserved.</Copyright>
+    <Description></Description>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/ionsharp/</RepositoryUrl>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AssemblyName>Ion.WPF</AssemblyName>
+    <AssemblyTitle>Ion.WPF</AssemblyTitle>
+    <RootNamespace>Ion</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Version>1.0.0.0</Version>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <NoWarn>MSB3290;NU1701;8509;8524;8600;8601;8604;8625</NoWarn>
+    <NoWarn>0109,1998,0612,0168,0169,0649,0067,0414,1701,8509,8524</NoWarn>
+    <WarningLevel>0</WarningLevel>
+  </PropertyGroup>
+  
+  <PropertyGroup>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+    <UseWindowsForms>true</UseWindowsForms>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Update="App\App\IAppWindow.cs">
+      <Generator>MSBuild:Compile</Generator>
+    </Compile>
+    <Compile Update="Storage\File\FileExtensionGroup.cs">
+      <Generator>MSBuild:Compile</Generator>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="Style\UpDown.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ion.Color\Ion (Color).csproj" />
+    <ProjectReference Include="..\Ion.Effects\Ion (Effects).csproj" />
+    <ProjectReference Include="..\Ion.Imaging\Ion (Imaging).csproj" />
+    <ProjectReference Include="..\Ion.Input\Ion (Input).csproj" />
+    <ProjectReference Include="..\Ion.Windows\Ion (Windows).csproj" />
+    <ProjectReference Include="..\Ion\Ion.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="IWshRuntimeLibrary">
+      <Guid>{F935DC20-1CF0-11D0-ADB9-00C04FD58A0B}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="Shell32">
+      <Guid>{50A7E9B0-70EF-11D1-B75A-00A0C90564FE}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\128\128-ArrowLeft.png" />
+    <Resource Include="Image\128\128-ArrowRight.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\256\256-Block.png" />
+    <Resource Include="Image\256\256-Bookmark.png" />
+    <Resource Include="Image\256\256-Chat.png" />
+    <Resource Include="Image\256\256-Clock.png" />
+    <Resource Include="Image\256\256-Email.png" />
+    <Resource Include="Image\256\256-Error.png" />
+    <Resource Include="Image\256\256-Globe.png" />
+    <Resource Include="Image\256\256-Help.png" />
+    <Resource Include="Image\256\256-Info.png" />
+    <Resource Include="Image\256\256-Play.png" />
+    <Resource Include="Image\256\256-Plus.png" />
+    <Resource Include="Image\256\256-Search.png" />
+    <Resource Include="Image\256\256-Settings.png" />
+    <Resource Include="Image\256\256-Star.png" />
+    <Resource Include="Image\256\256-Success.png" />
+    <Resource Include="Image\256\256-Warning.png" />
+    <Resource Include="Image\512\512-Drive.png" />
+    <Resource Include="Image\512\512-File.png" />
+    <Resource Include="Image\512\512-Folder.png" />
+    <Resource Include="Controls\ColorView\Layout\Select.xml" />
+    <Resource Include="Controls\ColorView\Layout\All.xml" />
+    <Resource Include="Controls\ColorView\Layout\Explore.xml" />
+    <Resource Include="Controls\ColorView\Layout\Analyze.xml" />
+    <Resource Include="Controls\ColorView\Layout\Collect.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Fonts\Lucida.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Fonts\Oswald.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Image\032\" />
+    <Folder Include="Image\064\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\016\Activity.png" />
+    <Resource Include="Image\016\Adjust.png" />
+    <Resource Include="Image\016\AlignCenter.png" />
+    <Resource Include="Image\016\AlignJustify.png" />
+    <Resource Include="Image\016\AlignLeft.png" />
+    <Resource Include="Image\016\AlignRight.png" />
+    <Resource Include="Image\016\Analyze.png" />
+    <Resource Include="Image\016\Archive.png" />
+    <Resource Include="Image\016\Arrange.png" />
+    <Resource Include="Image\016\Arrow.png" />
+    <Resource Include="Image\016\ArrowBoth.png" />
+    <Resource Include="Image\016\ArrowDown.png" />
+    <Resource Include="Image\016\ArrowDownDouble.png" />
+    <Resource Include="Image\016\ArrowDownLeft.png" />
+    <Resource Include="Image\016\ArrowDownLeftRound.png" />
+    <Resource Include="Image\016\ArrowDownRight.png" />
+    <Resource Include="Image\016\ArrowDownRound.png" />
+    <Resource Include="Image\016\ArrowDownSmall.png" />
+    <Resource Include="Image\016\ArrowE.png" />
+    <Resource Include="Image\016\ArrowLeft.png" />
+    <Resource Include="Image\016\ArrowLeftDown.png" />
+    <Resource Include="Image\016\ArrowLeftDownRound.png" />
+    <Resource Include="Image\016\ArrowLeftRound.png" />
+    <Resource Include="Image\016\ArrowLeftUp.png" />
+    <Resource Include="Image\016\ArrowLeftUpRound.png" />
+    <Resource Include="Image\016\ArrowN.png" />
+    <Resource Include="Image\016\ArrowNE.png" />
+    <Resource Include="Image\016\ArrowNext.png" />
+    <Resource Include="Image\016\ArrowNW.png" />
+    <Resource Include="Image\016\ArrowP.png" />
+    <Resource Include="Image\016\ArrowPrevious.png" />
+    <Resource Include="Image\016\ArrowRight.png" />
+    <Resource Include="Image\016\ArrowRightDown.png" />
+    <Resource Include="Image\016\ArrowRightRound.png" />
+    <Resource Include="Image\016\ArrowRightUp.png" />
+    <Resource Include="Image\016\ArrowS.png" />
+    <Resource Include="Image\016\ArrowSE.png" />
+    <Resource Include="Image\016\ArrowSW.png" />
+    <Resource Include="Image\016\ArrowUp.png" />
+    <Resource Include="Image\016\ArrowUpLeft.png" />
+    <Resource Include="Image\016\ArrowUpRight.png" />
+    <Resource Include="Image\016\ArrowUpRound.png" />
+    <Resource Include="Image\016\ArrowW.png" />
+    <Resource Include="Image\016\Bell.png" />
+    <Resource Include="Image\016\Binary.png" />
+    <Resource Include="Image\016\Binoculars.png" />
+    <Resource Include="Image\016\Blend.png" />
+    <Resource Include="Image\016\Block.png" />
+    <Resource Include="Image\016\Bold.png" />
+    <Resource Include="Image\016\Bookmark.png" />
+    <Resource Include="Image\016\BottomRightTriangle.png" />
+    <Resource Include="Image\016\Briefcase.png" />
+    <Resource Include="Image\016\Broom.png" />
+    <Resource Include="Image\016\Brush.png" />
+    <Resource Include="Image\016\Bug.png" />
+    <Resource Include="Image\016\Bullets.png" />
+    <Resource Include="Image\016\Calendar.png" />
+    <Resource Include="Image\016\Camera.png" />
+    <Resource Include="Image\016\Carousel.png" />
+    <Resource Include="Image\016\CarouselGradient.png" />
+    <Resource Include="Image\016\Category.png" />
+    <Resource Include="Image\016\Channels.png" />
+    <Resource Include="Image\016\Checkers.png" />
+    <Resource Include="Image\016\Checkmark.png" />
+    <Resource Include="Image\016\CheckmarkRound.png" />
+    <Resource Include="Image\016\Circle.png" />
+    <Resource Include="Image\016\Class.png" />
+    <Resource Include="Image\016\Clock.png" />
+    <Resource Include="Image\016\Clone.png" />
+    <Resource Include="Image\016\CloneFile.png" />
+    <Resource Include="Image\016\CloneFolder.png" />
+    <Resource Include="Image\016\Close.png" />
+    <Resource Include="Image\016\CloseAll.png" />
+    <Resource Include="Image\016\CloseAllButThis.png" />
+    <Resource Include="Image\016\Cloud.png" />
+    <Resource Include="Image\016\CloudDownload.png" />
+    <Resource Include="Image\016\Clouds.png" />
+    <Resource Include="Image\016\CloudUpload.png" />
+    <Resource Include="Image\016\Code.png" />
+    <Resource Include="Image\016\Collapse.png" />
+    <Resource Include="Image\016\Color.png" />
+    <Resource Include="Image\016\Colors.png" />
+    <Resource Include="Image\016\ColorWheel.png" />
+    <Resource Include="Image\016\Columns.png" />
+    <Resource Include="Image\016\Compare.png" />
+    <Resource Include="Image\016\Computer.png" />
+    <Resource Include="Image\016\Console.png" />
+    <Resource Include="Image\016\Control.png" />
+    <Resource Include="Image\016\Convert.png" />
+    <Resource Include="Image\016\Copy.png" />
+    <Resource Include="Image\016\CopyNumber.png" />
+    <Resource Include="Image\016\CopyText.png" />
+    <Resource Include="Image\016\CopyTo.png" />
+    <Resource Include="Image\016\Count.png" />
+    <Resource Include="Image\016\CrossOutline.png" />
+    <Resource Include="Image\016\CustomShape.png" />
+    <Resource Include="Image\016\Cut.png" />
+    <Resource Include="Image\016\DecreaseFontSize.png" />
+    <Resource Include="Image\016\Dialog.png" />
+    <Resource Include="Image\016\Dice.png" />
+    <Resource Include="Image\016\Dice2.png" />
+    <Resource Include="Image\016\Dimension1.png" />
+    <Resource Include="Image\016\Dimension2.png" />
+    <Resource Include="Image\016\Dimension3.png" />
+    <Resource Include="Image\016\Dock.png" />
+    <Resource Include="Image\016\DockAll.png" />
+    <Resource Include="Image\016\DockBottom.png" />
+    <Resource Include="Image\016\DockCenter.png" />
+    <Resource Include="Image\016\DockEmpty.png" />
+    <Resource Include="Image\016\DockEmptyLarge.png" />
+    <Resource Include="Image\016\DockHorizontal.png" />
+    <Resource Include="Image\016\DockLeft.png" />
+    <Resource Include="Image\016\DockRight.png" />
+    <Resource Include="Image\016\DockTop.png" />
+    <Resource Include="Image\016\DockVertical.png" />
+    <Resource Include="Image\016\Dot.png" />
+    <Resource Include="Image\016\Dots.png" />
+    <Resource Include="Image\016\Download.png" />
+    <Resource Include="Image\016\Drive.png" />
+    <Resource Include="Image\016\Eject.png" />
+    <Resource Include="Image\016\Ellipse.png" />
+    <Resource Include="Image\016\Enum.png" />
+    <Resource Include="Image\016\Event.png" />
+    <Resource Include="Image\016\Exclamation.png" />
+    <Resource Include="Image\016\Exif.png" />
+    <Resource Include="Image\016\Expand.png" />
+    <Resource Include="Image\016\Explorer.png" />
+    <Resource Include="Image\016\Export.png" />
+    <Resource Include="Image\016\ExportAll.png" />
+    <Resource Include="Image\016\Eye.png" />
+    <Resource Include="Image\016\Facebook.png" />
+    <Resource Include="Image\016\Field.png" />
+    <Resource Include="Image\016\File.png" />
+    <Resource Include="Image\016\FileExtension.png" />
+    <Resource Include="Image\016\Filter.png" />
+    <Resource Include="Image\016\Find.png" />
+    <Resource Include="Image\016\FindAll.png" />
+    <Resource Include="Image\016\FindNext.png" />
+    <Resource Include="Image\016\FindPrevious.png" />
+    <Resource Include="Image\016\Flag.png" />
+    <Resource Include="Image\016\FlagFrance.png" />
+    <Resource Include="Image\016\FlagItaly.png" />
+    <Resource Include="Image\016\FlagJapan.png" />
+    <Resource Include="Image\016\FlagUnitedStates.png" />
+    <Resource Include="Image\016\Float.png" />
+    <Resource Include="Image\016\FloatAll.png" />
+    <Resource Include="Image\016\FloatDocument.png" />
+    <Resource Include="Image\016\Folder.png" />
+    <Resource Include="Image\016\FolderAdd.png" />
+    <Resource Include="Image\016\FolderDelete.png" />
+    <Resource Include="Image\016\FolderEdit.png" />
+    <Resource Include="Image\016\FolderReset.png" />
+    <Resource Include="Image\016\Font.png" />
+    <Resource Include="Image\016\Fx.png" />
+    <Resource Include="Image\016\Gauge.png" />
+    <Resource Include="Image\016\General.png" />
+    <Resource Include="Image\016\GitHub.png" />
+    <Resource Include="Image\016\Globe.png" />
+    <Resource Include="Image\016\Gradient.png" />
+    <Resource Include="Image\016\GradientAngle.png" />
+    <Resource Include="Image\016\GradientDiamond.png" />
+    <Resource Include="Image\016\GradientPlus.png" />
+    <Resource Include="Image\016\GradientRadial.png" />
+    <Resource Include="Image\016\GradientRadialInvert.png" />
+    <Resource Include="Image\016\Grid.png" />
+    <Resource Include="Image\016\Group.png" />
+    <Resource Include="Image\016\GroupHorizontal.png" />
+    <Resource Include="Image\016\GroupVertical.png" />
+    <Resource Include="Image\016\Heart.png" />
+    <Resource Include="Image\016\Help.png" />
+    <Resource Include="Image\016\Hexagon.png" />
+    <Resource Include="Image\016\Hidden.png" />
+    <Resource Include="Image\016\Hide.png" />
+    <Resource Include="Image\016\HideAll.png" />
+    <Resource Include="Image\016\Home.png" />
+    <Resource Include="Image\016\HourGlass.png" />
+    <Resource Include="Image\016\Image.png" />
+    <Resource Include="Image\016\ImageGif.png" />
+    <Resource Include="Image\016\Import.png" />
+    <Resource Include="Image\016\ImportImage.png" />
+    <Resource Include="Image\016\Inbox.png" />
+    <Resource Include="Image\016\IncreaseFontSize.png" />
+    <Resource Include="Image\016\IndentDecrease.png" />
+    <Resource Include="Image\016\IndentIncrease.png" />
+    <Resource Include="Image\016\Info.png" />
+    <Resource Include="Image\016\InsertAbove.png" />
+    <Resource Include="Image\016\InsertBelow.png" />
+    <Resource Include="Image\016\Italic.png" />
+    <Resource Include="Image\016\Key.png" />
+    <Resource Include="Image\016\Keyboard.png" />
+    <Resource Include="Image\016\Layout.png" />
+    <Resource Include="Image\016\LeftRightArrows.png" />
+    <Resource Include="Image\016\LightBulb.png" />
+    <Resource Include="Image\016\Lightning.png" />
+    <Resource Include="Image\016\LineGraph.png" />
+    <Resource Include="Image\016\Link.png" />
+    <Resource Include="Image\016\LinkHorizontal.png" />
+    <Resource Include="Image\016\List.png" />
+    <Resource Include="Image\016\Location.png" />
+    <Resource Include="Image\016\Lock.png" />
+    <Resource Include="Image\016\Log.png" />
+    <Resource Include="Image\016\Log2.png" />
+    <Resource Include="Image\016\MarkDown.png" />
+    <Resource Include="Image\016\MatchCase.png" />
+    <Resource Include="Image\016\MatchWord.png" />
+    <Resource Include="Image\016\Matrix.png" />
+    <Resource Include="Image\016\MatrixXY.png" />
+    <Resource Include="Image\016\Maximize.png" />
+    <Resource Include="Image\016\Menu.png" />
+    <Resource Include="Image\016\Message.png" />
+    <Resource Include="Image\016\Method.png" />
+    <Resource Include="Image\016\Microscope.png" />
+    <Resource Include="Image\016\Minimize.png" />
+    <Resource Include="Image\016\MinimizeAll.png" />
+    <Resource Include="Image\016\Minus.png" />
+    <Resource Include="Image\016\MinusRound.png" />
+    <Resource Include="Image\016\Monitor.png" />
+    <Resource Include="Image\016\Move.png" />
+    <Resource Include="Image\016\MoveAllToNextGroup.png" />
+    <Resource Include="Image\016\MoveAllToPreviousGroup.png" />
+    <Resource Include="Image\016\MoveToNextGroup.png" />
+    <Resource Include="Image\016\MoveToPreviousGroup.png" />
+    <Resource Include="Image\016\Music.png" />
+    <Resource Include="Image\016\Note.png" />
+    <Resource Include="Image\016\Number.png" />
+    <Resource Include="Image\016\Numbering.png" />
+    <Resource Include="Image\016\Numbers.png" />
+    <Resource Include="Image\016\Opacity.png" />
+    <Resource Include="Image\016\Open.png" />
+    <Resource Include="Image\016\OpenBox.png" />
+    <Resource Include="Image\016\OpenIn.png" />
+    <Resource Include="Image\016\OpenInWindowsExplorer.png" />
+    <Resource Include="Image\016\OpenNew.png" />
+    <Resource Include="Image\016\OpenRecent.png" />
+    <Resource Include="Image\016\Options.png" />
+    <Resource Include="Image\016\PageSetup.png" />
+    <Resource Include="Image\016\Palette.png" />
+    <Resource Include="Image\016\Panel.png" />
+    <Resource Include="Image\016\Paste.png" />
+    <Resource Include="Image\016\PasteInvert.png" />
+    <Resource Include="Image\016\Path.png" />
+    <Resource Include="Image\016\Pause.png" />
+    <Resource Include="Image\016\PauseRound.png" />
+    <Resource Include="Image\016\Pencil.png" />
+    <Resource Include="Image\016\Pencil2.png" />
+    <Resource Include="Image\016\Period.png" />
+    <Resource Include="Image\016\Phone.png" />
+    <Resource Include="Image\016\Photoshop.png" />
+    <Resource Include="Image\016\Pin.png" />
+    <Resource Include="Image\016\PinAll.png" />
+    <Resource Include="Image\016\PinStart.png" />
+    <Resource Include="Image\016\PinStop.png" />
+    <Resource Include="Image\016\Play.png" />
+    <Resource Include="Image\016\PlayAll.png" />
+    <Resource Include="Image\016\PlayRound.png" />
+    <Resource Include="Image\016\Plus.png" />
+    <Resource Include="Image\016\PlusCurrent.png" />
+    <Resource Include="Image\016\PlusFile.png" />
+    <Resource Include="Image\016\PlusPreset.png" />
+    <Resource Include="Image\016\PlusRound.png" />
+    <Resource Include="Image\016\PlusXY.png" />
+    <Resource Include="Image\016\Preset.png" />
+    <Resource Include="Image\016\Print.png" />
+    <Resource Include="Image\016\Properties.png" />
+    <Resource Include="Image\016\Property.png" />
+    <Resource Include="Image\016\Puzzle.png" />
+    <Resource Include="Image\016\Queue.png" />
+    <Resource Include="Image\016\Random.png" />
+    <Resource Include="Image\016\Read.png" />
+    <Resource Include="Image\016\ReadOnly.png" />
+    <Resource Include="Image\016\Rectangle.png" />
+    <Resource Include="Image\016\Recycle.png" />
+    <Resource Include="Image\016\Redo.png" />
+    <Resource Include="Image\016\Refresh.png" />
+    <Resource Include="Image\016\RefreshRound.png" />
+    <Resource Include="Image\016\Rename.png" />
+    <Resource Include="Image\016\Repeat.png" />
+    <Resource Include="Image\016\ReplaceAll.png" />
+    <Resource Include="Image\016\ReplaceNext.png" />
+    <Resource Include="Image\016\ReplacePrevious.png" />
+    <Resource Include="Image\016\Reset.png" />
+    <Resource Include="Image\016\Resize.png" />
+    <Resource Include="Image\016\ResizeHeight.png" />
+    <Resource Include="Image\016\ResizeWidth.png" />
+    <Resource Include="Image\016\Restore.png" />
+    <Resource Include="Image\016\RestoreAll.png" />
+    <Resource Include="Image\016\Revert.png" />
+    <Resource Include="Image\016\RightTriangle.png" />
+    <Resource Include="Image\016\Rotate.png" />
+    <Resource Include="Image\016\Rotate180.png" />
+    <Resource Include="Image\016\Rotate45Left.png" />
+    <Resource Include="Image\016\Rotate45Right.png" />
+    <Resource Include="Image\016\Rotate90Left.png" />
+    <Resource Include="Image\016\Rotate90Right.png" />
+    <Resource Include="Image\016\Rows.png" />
+    <Resource Include="Image\016\Ruler.png" />
+    <Resource Include="Image\016\Save.png" />
+    <Resource Include="Image\016\SaveAll.png" />
+    <Resource Include="Image\016\SaveAs.png" />
+    <Resource Include="Image\016\SaveAsPreset.png" />
+    <Resource Include="Image\016\Scissors.png" />
+    <Resource Include="Image\016\Scroll.png" />
+    <Resource Include="Image\016\Search.png" />
+    <Resource Include="Image\016\SelectAll.png" />
+    <Resource Include="Image\016\SelectInvert.png" />
+    <Resource Include="Image\016\Selection.png" />
+    <Resource Include="Image\016\SelectNone.png" />
+    <Resource Include="Image\016\Shape.png" />
+    <Resource Include="Image\016\Share.png" />
+    <Resource Include="Image\016\Shortcut.png" />
+    <Resource Include="Image\016\ShowAll.png" />
+    <Resource Include="Image\016\Shuffle.png" />
+    <Resource Include="Image\016\Shutdown.png" />
+    <Resource Include="Image\016\SmallPeriod.png" />
+    <Resource Include="Image\016\SmallTriangle.png" />
+    <Resource Include="Image\016\Sort.png" />
+    <Resource Include="Image\016\Square.png" />
+    <Resource Include="Image\016\Stairs.png" />
+    <Resource Include="Image\016\Star.png" />
+    <Resource Include="Image\016\StarRound.png" />
+    <Resource Include="Image\016\Stop.png" />
+    <Resource Include="Image\016\StopAll.png" />
+    <Resource Include="Image\016\StopRound.png" />
+    <Resource Include="Image\016\Strike.png" />
+    <Resource Include="Image\016\Subscript.png" />
+    <Resource Include="Image\016\Superscript.png" />
+    <Resource Include="Image\016\Table.png" />
+    <Resource Include="Image\016\Tack.png" />
+    <Resource Include="Image\016\Tag.png" />
+    <Resource Include="Image\016\Text.png" />
+    <Resource Include="Image\016\Thermometer.png" />
+    <Resource Include="Image\016\ThreeDots.png" />
+    <Resource Include="Image\016\Tick.png" />
+    <Resource Include="Image\016\TickRound.png" />
+    <Resource Include="Image\016\Toggle.png" />
+    <Resource Include="Image\016\ToolBox.png" />
+    <Resource Include="Image\016\Transfer.png" />
+    <Resource Include="Image\016\Transform.png" />
+    <Resource Include="Image\016\TransformMove.png" />
+    <Resource Include="Image\016\Trash.png" />
+    <Resource Include="Image\016\Tree.png" />
+    <Resource Include="Image\016\TreePalm.png" />
+    <Resource Include="Image\016\Trend.png" />
+    <Resource Include="Image\016\Triangle.png" />
+    <Resource Include="Image\016\TriangleDown.png" />
+    <Resource Include="Image\016\TriangleDownRound.png" />
+    <Resource Include="Image\016\TriangleLeft.png" />
+    <Resource Include="Image\016\TriangleRight.png" />
+    <Resource Include="Image\016\TriangleUp.png" />
+    <Resource Include="Image\016\TriangleUpRound.png" />
+    <Resource Include="Image\016\Twitter.png" />
+    <Resource Include="Image\016\Underline.png" />
+    <Resource Include="Image\016\Undo.png" />
+    <Resource Include="Image\016\Unlock.png" />
+    <Resource Include="Image\016\Unpin.png" />
+    <Resource Include="Image\016\UnpinAll.png" />
+    <Resource Include="Image\016\Unread.png" />
+    <Resource Include="Image\016\UpDownArrows.png" />
+    <Resource Include="Image\016\Upload.png" />
+    <Resource Include="Image\016\Vector.png" />
+    <Resource Include="Image\016\View.png" />
+    <Resource Include="Image\016\ViewBlock.png" />
+    <Resource Include="Image\016\ViewDetail.png" />
+    <Resource Include="Image\016\ViewPage.png" />
+    <Resource Include="Image\016\ViewSlide.png" />
+    <Resource Include="Image\016\ViewThumb.png" />
+    <Resource Include="Image\016\ViewTile.png" />
+    <Resource Include="Image\016\Visible.png" />
+    <Resource Include="Image\016\Warning.png" />
+    <Resource Include="Image\016\Window.png" />
+    <Resource Include="Image\016\Windows.png" />
+    <Resource Include="Image\016\WindowsExplorer.png" />
+    <Resource Include="Image\016\Wrench.png" />
+    <Resource Include="Image\016\X.png" />
+    <Resource Include="Image\016\XRound.png" />
+    <Resource Include="Image\016\XSmall.png" />
+    <Resource Include="Image\016\XYZ.png" />
+    <Resource Include="Image\016\XYZRound.png" />
+    <Resource Include="Image\016\Zoom.png" />
+    <Resource Include="Image\016\ZoomContent.png" />
+    <Resource Include="Image\016\ZoomFit.png" />
+    <Resource Include="Image\016\ZoomIn.png" />
+    <Resource Include="Image\016\ZoomOut.png" />
+    <Resource Include="Image\016\ZoomWidth.png" />
+    <Resource Include="Image\128\128-Activity.png" />
+    <Resource Include="Image\128\128-Adjust.png" />
+    <Resource Include="Image\128\128-AlignCenter.png" />
+    <Resource Include="Image\128\128-AlignJustify.png" />
+    <Resource Include="Image\128\128-AlignLeft.png" />
+    <Resource Include="Image\128\128-AlignRight.png" />
+    <Resource Include="Image\128\128-Analyze.png" />
+    <Resource Include="Image\128\128-Archive.png" />
+    <Resource Include="Image\128\128-Arrange.png" />
+    <Resource Include="Image\128\128-Arrow.png" />
+    <Resource Include="Image\128\128-ArrowBoth.png" />
+    <Resource Include="Image\128\128-ArrowDown.png" />
+    <Resource Include="Image\128\128-ArrowDownDouble.png" />
+    <Resource Include="Image\128\128-ArrowDownLeft.png" />
+    <Resource Include="Image\128\128-ArrowDownLeftRound.png" />
+    <Resource Include="Image\128\128-ArrowDownRight.png" />
+    <Resource Include="Image\128\128-ArrowDownRound.png" />
+    <Resource Include="Image\128\128-ArrowDownSmall.png" />
+    <Resource Include="Image\128\128-ArrowE.png" />
+    <Resource Include="Image\128\128-ArrowLeftDown.png" />
+    <Resource Include="Image\128\128-ArrowLeftDownRound.png" />
+    <Resource Include="Image\128\128-ArrowLeftRound.png" />
+    <Resource Include="Image\128\128-ArrowLeftUp.png" />
+    <Resource Include="Image\128\128-ArrowLeftUpRound.png" />
+    <Resource Include="Image\128\128-ArrowN.png" />
+    <Resource Include="Image\128\128-ArrowNE.png" />
+    <Resource Include="Image\128\128-ArrowNext.png" />
+    <Resource Include="Image\128\128-ArrowNW.png" />
+    <Resource Include="Image\128\128-ArrowP.png" />
+    <Resource Include="Image\128\128-ArrowPrevious.png" />
+    <Resource Include="Image\128\128-ArrowRightDown.png" />
+    <Resource Include="Image\128\128-ArrowRightRound.png" />
+    <Resource Include="Image\128\128-ArrowRightUp.png" />
+    <Resource Include="Image\128\128-ArrowS.png" />
+    <Resource Include="Image\128\128-ArrowSE.png" />
+    <Resource Include="Image\128\128-ArrowSW.png" />
+    <Resource Include="Image\128\128-ArrowUp.png" />
+    <Resource Include="Image\128\128-ArrowUpLeft.png" />
+    <Resource Include="Image\128\128-ArrowUpRight.png" />
+    <Resource Include="Image\128\128-ArrowUpRound.png" />
+    <Resource Include="Image\128\128-ArrowW.png" />
+    <Resource Include="Image\128\128-Bell.png" />
+    <Resource Include="Image\128\128-Binary.png" />
+    <Resource Include="Image\128\128-Binoculars.png" />
+    <Resource Include="Image\128\128-Blend.png" />
+    <Resource Include="Image\128\128-Block.png" />
+    <Resource Include="Image\128\128-Bold.png" />
+    <Resource Include="Image\128\128-Bookmark.png" />
+    <Resource Include="Image\128\128-BottomRightTriangle.png" />
+    <Resource Include="Image\128\128-Briefcase.png" />
+    <Resource Include="Image\128\128-Broom.png" />
+    <Resource Include="Image\128\128-Brush.png" />
+    <Resource Include="Image\128\128-Bug.png" />
+    <Resource Include="Image\128\128-Bullets.png" />
+    <Resource Include="Image\128\128-Calendar.png" />
+    <Resource Include="Image\128\128-Camera.png" />
+    <Resource Include="Image\128\128-Carousel.png" />
+    <Resource Include="Image\128\128-CarouselGradient.png" />
+    <Resource Include="Image\128\128-Category.png" />
+    <Resource Include="Image\128\128-Channels.png" />
+    <Resource Include="Image\128\128-Chat.png" />
+    <Resource Include="Image\128\128-Checkers.png" />
+    <Resource Include="Image\128\128-Checkmark.png" />
+    <Resource Include="Image\128\128-CheckmarkRound.png" />
+    <Resource Include="Image\128\128-Circle.png" />
+    <Resource Include="Image\128\128-Class.png" />
+    <Resource Include="Image\128\128-Clock.png" />
+    <Resource Include="Image\128\128-Clone.png" />
+    <Resource Include="Image\128\128-CloneFile.png" />
+    <Resource Include="Image\128\128-CloneFolder.png" />
+    <Resource Include="Image\128\128-Close.png" />
+    <Resource Include="Image\128\128-CloseAll.png" />
+    <Resource Include="Image\128\128-CloseAllButThis.png" />
+    <Resource Include="Image\128\128-Cloud.png" />
+    <Resource Include="Image\128\128-CloudDownload.png" />
+    <Resource Include="Image\128\128-Clouds.png" />
+    <Resource Include="Image\128\128-CloudUpload.png" />
+    <Resource Include="Image\128\128-Code.png" />
+    <Resource Include="Image\128\128-Collapse.png" />
+    <Resource Include="Image\128\128-Color.png" />
+    <Resource Include="Image\128\128-Colors.png" />
+    <Resource Include="Image\128\128-ColorWheel.png" />
+    <Resource Include="Image\128\128-Columns.png" />
+    <Resource Include="Image\128\128-Compare.png" />
+    <Resource Include="Image\128\128-Computer.png" />
+    <Resource Include="Image\128\128-Console.png" />
+    <Resource Include="Image\128\128-Control.png" />
+    <Resource Include="Image\128\128-Convert.png" />
+    <Resource Include="Image\128\128-Copy.png" />
+    <Resource Include="Image\128\128-CopyNumber.png" />
+    <Resource Include="Image\128\128-CopyText.png" />
+    <Resource Include="Image\128\128-CopyTo.png" />
+    <Resource Include="Image\128\128-Count.png" />
+    <Resource Include="Image\128\128-CrossOutline.png" />
+    <Resource Include="Image\128\128-CustomShape.png" />
+    <Resource Include="Image\128\128-Cut.png" />
+    <Resource Include="Image\128\128-DecreaseFontSize.png" />
+    <Resource Include="Image\128\128-Dialog.png" />
+    <Resource Include="Image\128\128-Dice.png" />
+    <Resource Include="Image\128\128-Dice2.png" />
+    <Resource Include="Image\128\128-Dimension1.png" />
+    <Resource Include="Image\128\128-Dimension2.png" />
+    <Resource Include="Image\128\128-Dimension3.png" />
+    <Resource Include="Image\128\128-Dock.png" />
+    <Resource Include="Image\128\128-DockAll.png" />
+    <Resource Include="Image\128\128-DockBottom.png" />
+    <Resource Include="Image\128\128-DockCenter.png" />
+    <Resource Include="Image\128\128-DockEmpty.png" />
+    <Resource Include="Image\128\128-DockEmptyLarge.png" />
+    <Resource Include="Image\128\128-DockHorizontal.png" />
+    <Resource Include="Image\128\128-DockLeft.png" />
+    <Resource Include="Image\128\128-DockRight.png" />
+    <Resource Include="Image\128\128-DockTop.png" />
+    <Resource Include="Image\128\128-DockVertical.png" />
+    <Resource Include="Image\128\128-Dot.png" />
+    <Resource Include="Image\128\128-Dots.png" />
+    <Resource Include="Image\128\128-Download.png" />
+    <Resource Include="Image\128\128-Drive.png" />
+    <Resource Include="Image\128\128-Eject.png" />
+    <Resource Include="Image\128\128-Ellipse.png" />
+    <Resource Include="Image\128\128-Email.png" />
+    <Resource Include="Image\128\128-Enum.png" />
+    <Resource Include="Image\128\128-Error.png" />
+    <Resource Include="Image\128\128-Event.png" />
+    <Resource Include="Image\128\128-Exclamation.png" />
+    <Resource Include="Image\128\128-Exif.png" />
+    <Resource Include="Image\128\128-Expand.png" />
+    <Resource Include="Image\128\128-Explorer.png" />
+    <Resource Include="Image\128\128-Export.png" />
+    <Resource Include="Image\128\128-ExportAll.png" />
+    <Resource Include="Image\128\128-Eye.png" />
+    <Resource Include="Image\128\128-Facebook.png" />
+    <Resource Include="Image\128\128-Field.png" />
+    <Resource Include="Image\128\128-File.png" />
+    <Resource Include="Image\128\128-FileExtension.png" />
+    <Resource Include="Image\128\128-Filter.png" />
+    <Resource Include="Image\128\128-Find.png" />
+    <Resource Include="Image\128\128-FindAll.png" />
+    <Resource Include="Image\128\128-FindNext.png" />
+    <Resource Include="Image\128\128-FindPrevious.png" />
+    <Resource Include="Image\128\128-Flag.png" />
+    <Resource Include="Image\128\128-FlagFrance.png" />
+    <Resource Include="Image\128\128-FlagItaly.png" />
+    <Resource Include="Image\128\128-FlagJapan.png" />
+    <Resource Include="Image\128\128-FlagUnitedStates.png" />
+    <Resource Include="Image\128\128-Float.png" />
+    <Resource Include="Image\128\128-FloatAll.png" />
+    <Resource Include="Image\128\128-FloatDocument.png" />
+    <Resource Include="Image\128\128-Folder.png" />
+    <Resource Include="Image\128\128-FolderAdd.png" />
+    <Resource Include="Image\128\128-FolderDelete.png" />
+    <Resource Include="Image\128\128-FolderEdit.png" />
+    <Resource Include="Image\128\128-FolderReset.png" />
+    <Resource Include="Image\128\128-Font.png" />
+    <Resource Include="Image\128\128-Fx.png" />
+    <Resource Include="Image\128\128-Gauge.png" />
+    <Resource Include="Image\128\128-General.png" />
+    <Resource Include="Image\128\128-GitHub.png" />
+    <Resource Include="Image\128\128-Globe.png" />
+    <Resource Include="Image\128\128-Gradient.png" />
+    <Resource Include="Image\128\128-GradientAngle.png" />
+    <Resource Include="Image\128\128-GradientDiamond.png" />
+    <Resource Include="Image\128\128-GradientPlus.png" />
+    <Resource Include="Image\128\128-GradientRadial.png" />
+    <Resource Include="Image\128\128-GradientRadialInvert.png" />
+    <Resource Include="Image\128\128-Grid.png" />
+    <Resource Include="Image\128\128-Group.png" />
+    <Resource Include="Image\128\128-GroupHorizontal.png" />
+    <Resource Include="Image\128\128-GroupVertical.png" />
+    <Resource Include="Image\128\128-Heart.png" />
+    <Resource Include="Image\128\128-Help.png" />
+    <Resource Include="Image\128\128-Hexagon.png" />
+    <Resource Include="Image\128\128-Hidden.png" />
+    <Resource Include="Image\128\128-Hide.png" />
+    <Resource Include="Image\128\128-HideAll.png" />
+    <Resource Include="Image\128\128-Home.png" />
+    <Resource Include="Image\128\128-HourGlass.png" />
+    <Resource Include="Image\128\128-Image.png" />
+    <Resource Include="Image\128\128-ImageGif.png" />
+    <Resource Include="Image\128\128-Import.png" />
+    <Resource Include="Image\128\128-ImportImage.png" />
+    <Resource Include="Image\128\128-Inbox.png" />
+    <Resource Include="Image\128\128-IncreaseFontSize.png" />
+    <Resource Include="Image\128\128-IndentDecrease.png" />
+    <Resource Include="Image\128\128-IndentIncrease.png" />
+    <Resource Include="Image\128\128-Info.png" />
+    <Resource Include="Image\128\128-InsertAbove.png" />
+    <Resource Include="Image\128\128-InsertBelow.png" />
+    <Resource Include="Image\128\128-Italic.png" />
+    <Resource Include="Image\128\128-Key.png" />
+    <Resource Include="Image\128\128-Keyboard.png" />
+    <Resource Include="Image\128\128-Layout.png" />
+    <Resource Include="Image\128\128-LeftRightArrows.png" />
+    <Resource Include="Image\128\128-LightBulb.png" />
+    <Resource Include="Image\128\128-Lightning.png" />
+    <Resource Include="Image\128\128-LineGraph.png" />
+    <Resource Include="Image\128\128-Link.png" />
+    <Resource Include="Image\128\128-LinkHorizontal.png" />
+    <Resource Include="Image\128\128-List.png" />
+    <Resource Include="Image\128\128-Location.png" />
+    <Resource Include="Image\128\128-Lock.png" />
+    <Resource Include="Image\128\128-Log.png" />
+    <Resource Include="Image\128\128-Log2.png" />
+    <Resource Include="Image\128\128-MarkDown.png" />
+    <Resource Include="Image\128\128-MatchCase.png" />
+    <Resource Include="Image\128\128-MatchWord.png" />
+    <Resource Include="Image\128\128-Matrix.png" />
+    <Resource Include="Image\128\128-MatrixXY.png" />
+    <Resource Include="Image\128\128-Maximize.png" />
+    <Resource Include="Image\128\128-Menu.png" />
+    <Resource Include="Image\128\128-Message.png" />
+    <Resource Include="Image\128\128-Method.png" />
+    <Resource Include="Image\128\128-Microscope.png" />
+    <Resource Include="Image\128\128-Minimize.png" />
+    <Resource Include="Image\128\128-MinimizeAll.png" />
+    <Resource Include="Image\128\128-Minus.png" />
+    <Resource Include="Image\128\128-MinusRound.png" />
+    <Resource Include="Image\128\128-Monitor.png" />
+    <Resource Include="Image\128\128-Move.png" />
+    <Resource Include="Image\128\128-MoveAllToNextGroup.png" />
+    <Resource Include="Image\128\128-MoveAllToPreviousGroup.png" />
+    <Resource Include="Image\128\128-MoveToNextGroup.png" />
+    <Resource Include="Image\128\128-MoveToPreviousGroup.png" />
+    <Resource Include="Image\128\128-Music.png" />
+    <Resource Include="Image\128\128-Note.png" />
+    <Resource Include="Image\128\128-Number.png" />
+    <Resource Include="Image\128\128-Numbering.png" />
+    <Resource Include="Image\128\128-Numbers.png" />
+    <Resource Include="Image\128\128-Opacity.png" />
+    <Resource Include="Image\128\128-Open.png" />
+    <Resource Include="Image\128\128-OpenBox.png" />
+    <Resource Include="Image\128\128-OpenIn.png" />
+    <Resource Include="Image\128\128-OpenInWindowsExplorer.png" />
+    <Resource Include="Image\128\128-OpenNew.png" />
+    <Resource Include="Image\128\128-OpenRecent.png" />
+    <Resource Include="Image\128\128-Options.png" />
+    <Resource Include="Image\128\128-PageSetup.png" />
+    <Resource Include="Image\128\128-Palette.png" />
+    <Resource Include="Image\128\128-Panel.png" />
+    <Resource Include="Image\128\128-Paste.png" />
+    <Resource Include="Image\128\128-PasteInvert.png" />
+    <Resource Include="Image\128\128-Path.png" />
+    <Resource Include="Image\128\128-Pause.png" />
+    <Resource Include="Image\128\128-PauseRound.png" />
+    <Resource Include="Image\128\128-Pencil.png" />
+    <Resource Include="Image\128\128-Pencil2.png" />
+    <Resource Include="Image\128\128-Period.png" />
+    <Resource Include="Image\128\128-Phone.png" />
+    <Resource Include="Image\128\128-Photoshop.png" />
+    <Resource Include="Image\128\128-Pin.png" />
+    <Resource Include="Image\128\128-PinAll.png" />
+    <Resource Include="Image\128\128-PinStart.png" />
+    <Resource Include="Image\128\128-PinStop.png" />
+    <Resource Include="Image\128\128-Play.png" />
+    <Resource Include="Image\128\128-PlayAll.png" />
+    <Resource Include="Image\128\128-PlayRound.png" />
+    <Resource Include="Image\128\128-Plus.png" />
+    <Resource Include="Image\128\128-PlusCurrent.png" />
+    <Resource Include="Image\128\128-PlusFile.png" />
+    <Resource Include="Image\128\128-PlusPreset.png" />
+    <Resource Include="Image\128\128-PlusRound.png" />
+    <Resource Include="Image\128\128-PlusXY.png" />
+    <Resource Include="Image\128\128-Preset.png" />
+    <Resource Include="Image\128\128-Print.png" />
+    <Resource Include="Image\128\128-Properties.png" />
+    <Resource Include="Image\128\128-Property.png" />
+    <Resource Include="Image\128\128-Puzzle.png" />
+    <Resource Include="Image\128\128-Queue.png" />
+    <Resource Include="Image\128\128-Random.png" />
+    <Resource Include="Image\128\128-Read.png" />
+    <Resource Include="Image\128\128-ReadOnly.png" />
+    <Resource Include="Image\128\128-Rectangle.png" />
+    <Resource Include="Image\128\128-Recycle.png" />
+    <Resource Include="Image\128\128-Redo.png" />
+    <Resource Include="Image\128\128-Refresh.png" />
+    <Resource Include="Image\128\128-RefreshRound.png" />
+    <Resource Include="Image\128\128-Rename.png" />
+    <Resource Include="Image\128\128-Repeat.png" />
+    <Resource Include="Image\128\128-ReplaceAll.png" />
+    <Resource Include="Image\128\128-ReplaceNext.png" />
+    <Resource Include="Image\128\128-ReplacePrevious.png" />
+    <Resource Include="Image\128\128-Reset.png" />
+    <Resource Include="Image\128\128-Resize.png" />
+    <Resource Include="Image\128\128-ResizeHeight.png" />
+    <Resource Include="Image\128\128-ResizeWidth.png" />
+    <Resource Include="Image\128\128-Restore.png" />
+    <Resource Include="Image\128\128-RestoreAll.png" />
+    <Resource Include="Image\128\128-Revert.png" />
+    <Resource Include="Image\128\128-RightTriangle.png" />
+    <Resource Include="Image\128\128-Rotate.png" />
+    <Resource Include="Image\128\128-Rotate180.png" />
+    <Resource Include="Image\128\128-Rotate45Left.png" />
+    <Resource Include="Image\128\128-Rotate45Right.png" />
+    <Resource Include="Image\128\128-Rotate90Left.png" />
+    <Resource Include="Image\128\128-Rotate90Right.png" />
+    <Resource Include="Image\128\128-Rows.png" />
+    <Resource Include="Image\128\128-Ruler.png" />
+    <Resource Include="Image\128\128-Save.png" />
+    <Resource Include="Image\128\128-SaveAll.png" />
+    <Resource Include="Image\128\128-SaveAs.png" />
+    <Resource Include="Image\128\128-SaveAsPreset.png" />
+    <Resource Include="Image\128\128-Scissors.png" />
+    <Resource Include="Image\128\128-Scroll.png" />
+    <Resource Include="Image\128\128-Search.png" />
+    <Resource Include="Image\128\128-SelectAll.png" />
+    <Resource Include="Image\128\128-SelectInvert.png" />
+    <Resource Include="Image\128\128-Selection.png" />
+    <Resource Include="Image\128\128-SelectNone.png" />
+    <Resource Include="Image\128\128-Settings.png" />
+    <Resource Include="Image\128\128-Shape.png" />
+    <Resource Include="Image\128\128-Share.png" />
+    <Resource Include="Image\128\128-ShowAll.png" />
+    <Resource Include="Image\128\128-Shuffle.png" />
+    <Resource Include="Image\128\128-Shutdown.png" />
+    <Resource Include="Image\128\128-SmallPeriod.png" />
+    <Resource Include="Image\128\128-SmallTriangle.png" />
+    <Resource Include="Image\128\128-Sort.png" />
+    <Resource Include="Image\128\128-Square.png" />
+    <Resource Include="Image\128\128-Stairs.png" />
+    <Resource Include="Image\128\128-Star.png" />
+    <Resource Include="Image\128\128-StarRound.png" />
+    <Resource Include="Image\128\128-Stop.png" />
+    <Resource Include="Image\128\128-StopAll.png" />
+    <Resource Include="Image\128\128-StopRound.png" />
+    <Resource Include="Image\128\128-Strike.png" />
+    <Resource Include="Image\128\128-Subscript.png" />
+    <Resource Include="Image\128\128-Success.png" />
+    <Resource Include="Image\128\128-Superscript.png" />
+    <Resource Include="Image\128\128-Table.png" />
+    <Resource Include="Image\128\128-Tack.png" />
+    <Resource Include="Image\128\128-Tag.png" />
+    <Resource Include="Image\128\128-Text.png" />
+    <Resource Include="Image\128\128-Thermometer.png" />
+    <Resource Include="Image\128\128-ThreeDots.png" />
+    <Resource Include="Image\128\128-Tick.png" />
+    <Resource Include="Image\128\128-TickRound.png" />
+    <Resource Include="Image\128\128-Toggle.png" />
+    <Resource Include="Image\128\128-ToolBox.png" />
+    <Resource Include="Image\128\128-Transfer.png" />
+    <Resource Include="Image\128\128-Transform.png" />
+    <Resource Include="Image\128\128-TransformMove.png" />
+    <Resource Include="Image\128\128-Trash.png" />
+    <Resource Include="Image\128\128-Tree.png" />
+    <Resource Include="Image\128\128-TreePalm.png" />
+    <Resource Include="Image\128\128-Trend.png" />
+    <Resource Include="Image\128\128-Triangle.png" />
+    <Resource Include="Image\128\128-TriangleDown.png" />
+    <Resource Include="Image\128\128-TriangleDownRound.png" />
+    <Resource Include="Image\128\128-TriangleLeft.png" />
+    <Resource Include="Image\128\128-TriangleRight.png" />
+    <Resource Include="Image\128\128-TriangleUp.png" />
+    <Resource Include="Image\128\128-TriangleUpRound.png" />
+    <Resource Include="Image\128\128-Twitter.png" />
+    <Resource Include="Image\128\128-Underline.png" />
+    <Resource Include="Image\128\128-Undo.png" />
+    <Resource Include="Image\128\128-Unlock.png" />
+    <Resource Include="Image\128\128-Unpin.png" />
+    <Resource Include="Image\128\128-UnpinAll.png" />
+    <Resource Include="Image\128\128-Unread.png" />
+    <Resource Include="Image\128\128-UpDownArrows.png" />
+    <Resource Include="Image\128\128-Upload.png" />
+    <Resource Include="Image\128\128-Vector.png" />
+    <Resource Include="Image\128\128-View.png" />
+    <Resource Include="Image\128\128-ViewBlock.png" />
+    <Resource Include="Image\128\128-ViewDetail.png" />
+    <Resource Include="Image\128\128-ViewPage.png" />
+    <Resource Include="Image\128\128-ViewSlide.png" />
+    <Resource Include="Image\128\128-ViewThumb.png" />
+    <Resource Include="Image\128\128-ViewTile.png" />
+    <Resource Include="Image\128\128-Visible.png" />
+    <Resource Include="Image\128\128-Warning.png" />
+    <Resource Include="Image\128\128-Window.png" />
+    <Resource Include="Image\128\128-Windows.png" />
+    <Resource Include="Image\128\128-WindowsExplorer.png" />
+    <Resource Include="Image\128\128-Wrench.png" />
+    <Resource Include="Image\128\128-X.png" />
+    <Resource Include="Image\128\128-XRound.png" />
+    <Resource Include="Image\128\128-XSmall.png" />
+    <Resource Include="Image\128\128-XYZ.png" />
+    <Resource Include="Image\128\128-XYZRound.png" />
+    <Resource Include="Image\128\128-Zoom.png" />
+    <Resource Include="Image\128\128-ZoomContent.png" />
+    <Resource Include="Image\128\128-ZoomFit.png" />
+    <Resource Include="Image\128\128-ZoomIn.png" />
+    <Resource Include="Image\128\128-ZoomOut.png" />
+    <Resource Include="Image\128\128-ZoomWidth.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="EntityFramework" Version="6.5.1" />
+    <PackageReference Include="gong-wpf-dragdrop" Version="3.2.1" />
+    <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.1.0" />
+    <PackageReference Include="Magick.NET-Q16-AnyCPU" Version="14.8.2" />
+    <PackageReference Include="Microsoft-WindowsAPICodePack-Core" Version="1.1.4" />
+    <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.4" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Microsoft.HLSL.CSharpVB" Version="1.0.2" />
+    <PackageReference Include="Microsoft.VisualBasic" Version="10.3.0" />
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Wpf" Version="1.1.135" />
+    <PackageReference Include="System.ComponentModel.Composition" Version="9.0.0" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+    <PackageReference Include="System.Management" Version="9.0.0" />
+    <PackageReference Include="WpfAnimatedGif" Version="2.0.2" />
+    <PackageReference Include="WPFLocalizeExtension" Version="3.10.0" />
+    <PackageReference Include="XAMLMarkupExtensions" Version="2.1.3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Controls\ColorView\GradientModel.cs" />
+    <Compile Remove="App\App\SingleInstance.cs" />
+    <Compile Remove="Controls\ConsoleBox\Imports.cs" />
+    <Compile Remove="Controls\FrameworkElement\ElementHandler %28Old%29.cs" />
+    <Compile Remove="Core\Panel\Rename.cs" />
+    <Compile Remove="Reflect\Members\Member.Item.cs" />
+    <None Remove=".gitignore" />
+    <None Remove="LICENSE" />
+  </ItemGroup>
+</Project>

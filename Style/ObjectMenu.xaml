@@ -1,0 +1,42 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="clr-namespace:Ion.Controls"
+    xmlns:Data="clr-namespace:Ion.Data"
+    xmlns:Reflection="clr-namespace:System.Reflection;assembly=mscorlib">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="{i:Style Key=ContextMenu}"/>
+        <ResourceDictionary Source="{i:Style Key=Menu}"/>
+    </ResourceDictionary.MergedDictionaries>
+    <Style x:Key="{x:Type i:ObjectMenu}" TargetType="{x:Type i:ObjectMenu}" BasedOn="{StaticResource {x:Type ContextMenu}}">
+        <Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                    <Setter Property="Header" Value="{Data:MultiBindMemberName}"/>
+                    <Setter Property="Icon" Value="{i:Bind Convert=Data:ConvertAttributeImage}"/>
+                    <Setter Property="Visibility" Value="{i:MemberVisibilityBinding}"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{i:Bind StyleType}" Value="{x:Type ICommand}">
+                            <Setter Property="Command" Value="{i:Bind Value}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{i:Bind StyleType}" Value="{x:Type Reflection:MethodInfo}">
+                            <Setter Property="Command" Value="{i:Bind InvokeCommand}"/>
+                            <Setter Property="CommandParameter" Value="{i:Bind Member}"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XContextMenu.Header" Value="{i:Bind Convert=Data:ConvertAttributeName, From=Self, Path=(i:XObjectControl.SourceModel).Value}"/>
+        <Setter Property="i:XContextMenu.HeaderIcon" Value="{i:Bind Convert=Data:ConvertAttributeImage, From=Self, Path=(i:XObjectControl.SourceModel).Value}"/>
+        <Setter Property="i:XContextMenu.HeaderIconTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <i:ImageElement Foreground="{i:Theme Key=Text}" Source="{i:Bind Convert=Data:ConvertToImageSource}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XItemsControl.GroupStyle" Value="{DynamicResource {x:Static i:XMenu.GroupStyle}}"/>
+        <Setter Property="ItemsSource" Value="{i:Bind From=Self, Path=(i:XObjectControl.SourceModel).Members.Default.View}"/>
+    </Style>
+</ResourceDictionary>

@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="clr-namespace:Ion.Controls"
+    xmlns:Data="clr-namespace:Ion.Data">
+    <DataTemplate x:Key="ShapeTemplates">
+        <Viewbox Height="16" HorizontalAlignment="Center" Width="16">
+            <i:ClipBorder Background="{Data:Ancestor Foreground, MenuItem}" Height="1" Width="1">
+                <i:ClipBorder.Clip>
+                    <Data:MultiBind ConverterName="ShapeClip">
+                        <i:Bind/>
+                    </Data:MultiBind>
+                </i:ClipBorder.Clip>
+            </i:ClipBorder>
+        </Viewbox>
+    </DataTemplate>
+</ResourceDictionary>

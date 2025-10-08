@@ -1,0 +1,79 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:l="http://wpflocalizeextension.codeplex.com"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="clr-namespace:Ion.Controls"
+    xmlns:Data="clr-namespace:Ion.Data"
+    xmlns:Storage="clr-namespace:Ion.Storage;assembly=Ion">
+    <DataTemplate x:Key="{x:Static i:XStorage.IconTemplateKey}">
+        <i:Thumbnail Height="16" Width="16" Path="{i:Bind}"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="{x:Static i:XStorage.ToolTipTemplateKey}">
+        <ContentPresenter Content="{i:Bind}" i:Display.Condition="{i:Equal Convert=Data:ConvertItemType, Value={x:Static Storage:ItemType.Nothing}}">
+            <i:Display.ConditionalTemplate>
+                <DataTemplate>
+                    <TextBlock FontStyle="Italic" Text="Invalid path"/>
+                </DataTemplate>
+            </i:Display.ConditionalTemplate>
+            <i:Display.DefaultTemplate>
+                <DataTemplate>
+                    <Grid i:XGrid.AutoColumns="True" i:XGrid.Columns="Auto,Auto">
+                        <i:Thumbnail 
+                            Height="32" 
+                            Margin="0,0,10,0"
+                            Path="{i:Bind}"
+                            VerticalAlignment="Top"
+                            Width="32"/>
+                        <StackPanel i:XPanel.Spacing="0,0,0,5"
+                            i:XPanel.SpacingExcept="Last"
+                            VerticalAlignment="Top">
+                            <TextBlock Text="{i:Bind Convert={x:Type Data:ConvertFileName}}" 
+                                FontWeight="Bold"
+                                TextTrimming="CharacterEllipsis"/>
+                            <TextBlock Opacity="0.5" Text="{i:Bind Convert={x:Type Data:ConvertItemDescription}}"
+                                TextTrimming="CharacterEllipsis"/>
+                            <ContentPresenter Content="{i:Bind}"
+                                i:Display.TemplateKey="{i:Bind Convert={x:Type Data:ConvertItemType}}">
+                                <i:Display.TemplateSelector>
+                                    <i:KeyTemplateSelector>
+                                        <i:KeyTemplate DataKey="{x:Static Storage:ItemType.Drive}">
+                                            <Grid i:XGrid.AutoColumns="True" i:XGrid.Columns="*,Auto">
+                                                <ProgressBar x:Name="ProgressBar"
+                                                    HorizontalAlignment="Stretch"
+                                                    Height="14"
+                                                    i:XProgressBar.ContentTemplate="{i:Template Key=Default}"
+                                                    Margin="0,0,5,0"
+                                                    Maximum="1"
+                                                    Minimum="0"
+                                                    MinWidth="164"
+                                                    Value="{i:Bind Convert={x:Type Data:ConvertDriveSizeUsedPercent}, Mode=OneWay}"/>
+                                                <TextBlock FontSize="11" Foreground="{i:Theme Text}" Text="{i:Bind Convert={x:Type Data:ConvertDriveSizeUsedPercent}, StringFormat={}{0:p0}}"/>
+                                            </Grid>
+                                            <DataTemplate.Triggers>
+                                                <DataTrigger Binding="{i:Bind Convert={x:Type Data:ConvertDriveSizeLow}}" Value="True">
+                                                    <Setter TargetName="ProgressBar" Property="Foreground" Value="{i:Theme Red}"/>
+                                                </DataTrigger>
+                                            </DataTemplate.Triggers>
+                                        </i:KeyTemplate>
+                                        <i:KeyTemplate DataKey="{x:Static Storage:ItemType.File}">
+                                            <TextBlock Text="{i:Bind Convert={x:Type Data:ConvertItemSize}}"/>
+                                        </i:KeyTemplate>
+                                        <i:KeyTemplate DataKey="{x:Static Storage:ItemType.Folder}">
+                                            <TextBlock>
+                                                <Run Text="Last modified"/> <Run FontStyle="Italic" Text="{i:Bind Convert={x:Type Data:ConvertItemModified},Mode=OneWay}"/>
+                                            </TextBlock>
+                                        </i:KeyTemplate>
+                                        <i:KeyTemplate DataKey="{x:Static Storage:ItemType.Shortcut}">
+                                            <TextBlock Text="{i:Bind Convert={x:Type Data:ConvertShortcutTarget}}"/>
+                                        </i:KeyTemplate>
+                                    </i:KeyTemplateSelector>
+                                </i:Display.TemplateSelector>
+                            </ContentPresenter>
+                        </StackPanel>
+                    </Grid>
+                </DataTemplate>
+            </i:Display.DefaultTemplate>
+        </ContentPresenter>
+    </DataTemplate>
+</ResourceDictionary>

@@ -1,0 +1,940 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:l="http://wpflocalizeextension.codeplex.com"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="clr-namespace:Ion.Controls"
+    xmlns:Core="clr-namespace:Ion;assembly=Ion"
+    xmlns:Data="clr-namespace:Ion.Data"
+    xmlns:Media="clr-namespace:Ion.Media"
+    xmlns:Numbers="clr-namespace:Ion.Numeral;assembly=Ion"
+    xmlns:System="clr-namespace:System;assembly=mscorlib">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="{i:Style Key=Button}"/>
+        <ResourceDictionary Source="{i:Style Key=ComboBox}"/>
+        <ResourceDictionary Source="{i:Style Key=Control}"/>
+        <ResourceDictionary Source="{i:Style Key=ProgressBar}"/>
+        <ResourceDictionary Source="{i:Style Key=TextBlock}"/>
+        <ResourceDictionary Source="{i:Style Key=TextBox}"/>
+        <ResourceDictionary Source="{i:Style Key=UpDown}"/>
+    </ResourceDictionary.MergedDictionaries>
+    <!--#region BinaryControl-->
+
+    <Style x:Key="{x:Type i:BinaryControl}" TargetType="{x:Type i:BinaryControl}" BasedOn="{StaticResource {x:Type Control}}">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type i:BinaryControl}">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding Border.CornerRadius}"
+                        Padding="{TemplateBinding Padding}">
+                        <Grid x:Name="Grid">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition x:Name="Column1"/>
+                                <ColumnDefinition x:Name="Column2"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition x:Name="Row1"/>
+                                <RowDefinition x:Name="Row2"/>
+                            </Grid.RowDefinitions>
+                            <ContentPresenter x:Name="Content1" Content="{i:Bind Content, From=TemplatedParent}"
+                                ContentTemplate="{TemplateBinding ContentTemplate1}"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            <ContentPresenter x:Name="Content2" Content="{i:Bind Content, From=TemplatedParent}"
+                                ContentTemplate="{TemplateBinding ContentTemplate2}"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Orientation" Value="Horizontal"/>
+                                <Condition Property="Side" Value="LeftOrTop"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Column1" Property="Width" Value="Auto"/>
+                            <Setter TargetName="Column2" Property="Width" Value="Auto"/>
+                            <Setter TargetName="Row1" Property="Height" Value="*"/>
+                            <Setter TargetName="Row2" Property="Height" Value="Auto"/>
+
+                            <Setter TargetName="Content1" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="Content1" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="Content1" Property="Margin" Value="{i:Bind Space, Convert=Data:ConvertDoubleToThickness, ConverterParameter=2, From=TemplatedParent}"/>
+
+                            <Setter TargetName="Content2" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="Content2" Property="Grid.Row" Value="0"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Orientation" Value="Horizontal"/>
+                                <Condition Property="Side" Value="RightOrBottom"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Column1" Property="Width" Value="Auto"/>
+                            <Setter TargetName="Column2" Property="Width" Value="Auto"/>
+                            <Setter TargetName="Row1" Property="Height" Value="*"/>
+                            <Setter TargetName="Row2" Property="Height" Value="Auto"/>
+
+                            <Setter TargetName="Content1" Property="Grid.Column" Value="1"/>
+                            <Setter TargetName="Content1" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="Content1" Property="Margin" Value="{i:Bind Space, Convert=Data:ConvertDoubleToThickness, ConverterParameter=0, From=TemplatedParent}"/>
+
+                            <Setter TargetName="Content2" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="Content2" Property="Grid.Row" Value="0"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Orientation" Value="Vertical"/>
+                                <Condition Property="Side" Value="LeftOrTop"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Column1" Property="Width" Value="*"/>
+                            <Setter TargetName="Column2" Property="Width" Value="Auto"/>
+                            <Setter TargetName="Row1" Property="Height" Value="Auto"/>
+                            <Setter TargetName="Row2" Property="Height" Value="Auto"/>
+
+                            <Setter TargetName="Content1" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="Content1" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="Content1" Property="Margin" Value="{i:Bind Space, Convert=Data:ConvertDoubleToThickness, ConverterParameter=3, From=TemplatedParent}"/>
+
+                            <Setter TargetName="Content2" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="Content2" Property="Grid.Row" Value="1"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="Orientation" Value="Vertical"/>
+                                <Condition Property="Side" Value="RightOrBottom"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="Column1" Property="Width" Value="*"/>
+                            <Setter TargetName="Column2" Property="Width" Value="Auto"/>
+                            <Setter TargetName="Row1" Property="Height" Value="Auto"/>
+                            <Setter TargetName="Row2" Property="Height" Value="Auto"/>
+
+                            <Setter TargetName="Content1" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="Content1" Property="Grid.Row" Value="1"/>
+                            <Setter TargetName="Content1" Property="Margin" Value="{i:Bind Space, Convert=Data:ConvertDoubleToThickness, ConverterParameter=1, From=TemplatedParent}"/>
+
+                            <Setter TargetName="Content2" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="Content2" Property="Grid.Row" Value="0"/>
+                        </MultiTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+    </Style>
+
+    <!--#endregion-->
+
+    <!--#region CurveControl-->
+
+    <Style x:Key="{x:Type i:CurveControl}" TargetType="{x:Type i:CurveControl}"/>
+
+    <!--#endregion-->
+
+    <!--#region DirectionControl-->
+
+    <Style x:Key="{x:Type i:DirectionControl}" TargetType="{x:Type i:DirectionControl}" BasedOn="{StaticResource {x:Type Control}}">
+        <Setter Property="EIcon" 
+            Value="{i:Image Key=ArrowE}" />
+        <Setter Property="ELabel" 
+            Value="{i:Text Right}" />
+        <Setter Property="NIcon" 
+            Value="{i:Image Key=ArrowN}" />
+        <Setter Property="NLabel" 
+            Value="{i:Text Top}" />
+        <Setter Property="NEIcon" 
+            Value="{i:Image Key=ArrowNE}" />
+        <Setter Property="NELabel" 
+            Value="{i:Text TopRight}" />
+        <Setter Property="NWIcon" 
+            Value="{i:Image Key=ArrowNW}" />
+        <Setter Property="NWLabel" 
+            Value="{i:Text TopLeft}" />
+        <Setter Property="OriginIcon" 
+            Value="{i:Image Key=ArrowP}" />
+        <Setter Property="OriginLabel" 
+            Value="{i:Text Center}" />
+        <Setter Property="SIcon" 
+            Value="{i:Image Key=ArrowS}" />
+        <Setter Property="SLabel" 
+            Value="{i:Text Bottom}" />
+        <Setter Property="SEIcon" 
+            Value="{i:Image Key=ArrowSE}" />
+        <Setter Property="SELabel" 
+            Value="{i:Text BottomRight}" />
+        <Setter Property="SWIcon" 
+            Value="{i:Image Key=ArrowSW}" />
+        <Setter Property="SWLabel" 
+            Value="{i:Text BottomLeft}" />
+        <Setter Property="WIcon" 
+            Value="{i:Image Key=ArrowW}" />
+        <Setter Property="WLabel" 
+            Value="{i:Text Left}" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="i:DirectionControl">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding Border.CornerRadius}"
+                        Padding="{TemplateBinding Padding}">
+                        <ItemsControl ClipToBounds="True" ItemsSource="{TemplateBinding Directions}">
+                            <ItemsControl.ItemContainerStyle>
+                                <Style TargetType="{x:Type ContentPresenter}">
+                                    <Setter Property="Grid.Row" Value="{i:Bind Row}" />
+                                    <Setter Property="Grid.Column" Value="{i:Bind Column}" />
+                                    <Setter Property="Opacity" Value="0" />
+                                    <Style.Triggers>
+                                        <EventTrigger RoutedEvent="ContentPresenter.SizeChanged">
+                                            <BeginStoryboard>
+                                                <BeginStoryboard.Storyboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" From="0" To="1.0" Duration="0:0:0.5" AccelerationRatio="0.4" DecelerationRatio="0.4"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard.Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ItemsControl.ItemContainerStyle>
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <Grid i:XGrid.Columns="0,24,24,24,0" i:XGrid.Rows="0,24,24,24,0"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <i:ImageButton
+                                        Command="{Data:Ancestor ShiftCommand, i:DirectionControl}"
+                                        CommandParameter="{i:Bind}"
+                                        Source="{i:Bind Icon}"
+                                        SourceSize="16,16"
+                                        ToolTip="{i:Bind Name}"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--#endregion-->
+
+    <!--#region DotControl-->
+
+    <Style x:Key="{x:Type i:DotControl}" TargetType="{x:Type i:DotControl}" BasedOn="{StaticResource {x:Type Control}}">
+        <Setter Property="Stretch" Value="Fill"/>
+        <Style.Triggers>
+            <Trigger Property="Type" Value="Dot1">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type i:DotControl}">
+                            <Rectangle Height="5" Stretch="{TemplateBinding Stretch}">
+                                <Rectangle.Fill>
+                                    <VisualBrush 
+                                        TileMode="Tile" Viewport="0,0,4,5" 
+                                        ViewportUnits="Absolute" Viewbox="0,0,4,5"    
+                                        ViewboxUnits="Absolute">
+                                        <VisualBrush.Visual>
+                                            <Canvas Height="5">
+                                                <Rectangle Canvas.Left="0" Canvas.Top="2" 
+                                                    Fill="{TemplateBinding Foreground}" Height="1" Width="1"/>
+                                            </Canvas>
+                                        </VisualBrush.Visual>
+                                    </VisualBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="Type" Value="Dot2">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type i:DotControl}">
+                            <Rectangle Height="5" Stretch="{TemplateBinding Stretch}">
+                                <Rectangle.Fill>
+                                    <VisualBrush 
+                                        TileMode="Tile" Viewport="0,0,4,5" 
+                                        ViewportUnits="Absolute" Viewbox="0,0,4,5"    
+                                        ViewboxUnits="Absolute">
+                                        <VisualBrush.Visual>
+                                            <Canvas Height="5">
+                                                <Rectangle Canvas.Left="0" Canvas.Top="1" 
+                                                    Fill="{TemplateBinding Foreground}" Height="1" Width="1"/>
+                                                <Rectangle Canvas.Left="2" Canvas.Top="3" 
+                                                    Fill="{TemplateBinding Foreground}" Height="1" Width="1"/>
+                                            </Canvas>
+                                        </VisualBrush.Visual>
+                                    </VisualBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+            <Trigger Property="Type" Value="Dot3">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type i:DotControl}">
+                            <Rectangle Height="5" Stretch="{TemplateBinding Stretch}">
+                                <Rectangle.Fill>
+                                    <VisualBrush 
+                                        TileMode="Tile" Viewport="0,0,4,5" 
+                                        ViewportUnits="Absolute" Viewbox="0,0,4,5"    
+                                        ViewboxUnits="Absolute">
+                                        <VisualBrush.Visual>
+                                            <Canvas Height="5">
+                                                <Rectangle Canvas.Left="0" Canvas.Top="0" 
+                                                    Fill="{TemplateBinding Foreground}" Height="1" Width="1"/>
+                                                <Rectangle Canvas.Left="2" Canvas.Top="2" 
+                                                    Fill="{TemplateBinding Foreground}" Height="1" Width="1"/>
+                                                <Rectangle Canvas.Left="0" Canvas.Top="4" 
+                                                    Fill="{TemplateBinding Foreground}" Height="1" Width="1"/>
+                                            </Canvas>
+                                        </VisualBrush.Visual>
+                                    </VisualBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <!--#endregion-->
+
+    <!--#region DownloadControl-->
+
+    <Style x:Key="{x:Static i:DownloadControl.ProgressBarStyleKey}" TargetType="{x:Type ProgressBar}" BasedOn="{StaticResource {x:Type ProgressBar}}">
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="MinHeight" Value="15"/>
+    </Style>
+
+    <Style x:Key="{x:Static i:DownloadControl.TextBlockStyleKey}" TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}"/>
+
+    <Style x:Key="{x:Type i:DownloadControl}" TargetType="{x:Type i:DownloadControl}" BasedOn="{StaticResource {x:Type Control}}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="i:DownloadControl">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding Border.CornerRadius}"
+                        Padding="{TemplateBinding Padding}">
+                        <StackPanel i:XPanel.Spacing="0,0,0,5" i:XPanel.SpacingExcept="Last">
+                            <ContentPresenter Content="{TemplateBinding Message}"
+                                ContentTemplate="{TemplateBinding MessageTemplate}"
+                                ContentTemplateSelector="{TemplateBinding MessageTemplateSelector}"
+                                Visibility="{i:Bind Message, Convert=Data:ConvertObjectToVisibility, From=TemplatedParent}"/>
+
+                            <ProgressBar Value="{TemplateBinding Progress}"
+                                Style="{StaticResource {x:Static i:DownloadControl.ProgressBarStyleKey}}"/>
+
+                            <Label Content="{i:Text Progress, Suffix=:}"
+                                Style="{DynamicResource {x:Static i:XLabel.Header1}}"/>
+                            <TextBlock FontStyle="Italic" Text="{TemplateBinding Processed}"
+                                Style="{StaticResource {x:Static i:DownloadControl.TextBlockStyleKey}}"/>
+
+                            <Label Content="{i:Text Remaining, Suffix=:}"
+                                Style="{DynamicResource {x:Static i:XLabel.Header1}}"/>
+                            <TextBlock FontStyle="Italic" Text="{i:Bind From=TemplatedParent, Path=Remaining, Convert={x:Type Data:ConvertToStringTimeShort}}"
+                                Style="{StaticResource {x:Static i:DownloadControl.TextBlockStyleKey}}"/>
+
+                            <Label Content="{i:Text Speed, Suffix=:}"
+                                Style="{DynamicResource {x:Static i:XLabel.Header1}}"/>
+                            <TextBlock FontStyle="Italic" Text="{i:Bind From=TemplatedParent, Path=Speed, Convert={x:Type Data:ConvertFileSize}}"
+                                Style="{StaticResource {x:Static i:DownloadControl.TextBlockStyleKey}}"/>
+                        </StackPanel>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--#endregion-->
+
+    <!--#region DualColorBox-->
+
+    <Style x:Key="{x:Type i:DualColorBox}" TargetType="{x:Type i:DualColorBox}" BasedOn="{StaticResource {x:Type FrameworkElement}}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="i:DualColorBox">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding Border.CornerRadius}"
+                        Padding="{TemplateBinding Padding}">
+                        <Grid i:XGrid.Rows="Auto,*">
+                            <Grid 
+                                x:Name="PART_Grid"
+                                Background="Transparent"
+                                ToolTip="{i:Text Reset}">
+                                <Border 
+                                    Cursor="Hand"
+                                    Background="{x:Static Media:CheckerBrush.Default}"
+                                    BorderThickness="1"
+                                    BorderBrush="Black"
+                                    Margin="5,5,0,0"
+                                    HorizontalAlignment="Left" 
+                                    VerticalAlignment="Top">
+                                    <Rectangle 
+                                        Width="10" 
+                                        Height="10" 
+                                        Fill="{i:Bind From=TemplatedParent, Path=DefaultBackground, Convert={x:Type Data:ConvertColorToSolidColorBrush}}"/>
+                                </Border>
+                                <Border 
+                                    Cursor="Hand" 
+                                    Background="{x:Static Media:CheckerBrush.Default}"
+                                    BorderThickness="1"
+                                    BorderBrush="Black"
+                                    HorizontalAlignment="Left" 
+                                    VerticalAlignment="Top">
+                                    <Rectangle
+                                        Width="10" 
+                                        Height="10" 
+                                        Fill="{i:Bind From=TemplatedParent, Path=DefaultForeground, Convert={x:Type Data:ConvertColorToSolidColorBrush}}"/>
+                                </Border>
+                            </Grid>
+                            <Grid 
+                                Grid.Row="1" 
+                                Margin="0,5,0,0">
+                                <i:ColorBox  
+                                    Height="22" 
+                                    HorizontalAlignment="Left"
+                                    Margin="10,10,0,0" 
+                                    ToolTip="{i:Text Background}"
+                                    Value="{i:Bind From=TemplatedParent, Path=BackgroundColor, Mode=TwoWay}"
+                                    VerticalAlignment="Top"
+                                    Width="22"/>
+                                <i:ColorBox  
+                                    Height="22" 
+                                    HorizontalAlignment="Left"
+                                    ToolTip="{i:Text Foreground}"
+                                    Value="{i:Bind From=TemplatedParent, Path=ForegroundColor, Mode=TwoWay}"
+                                    VerticalAlignment="Top"
+                                    Width="22"/>
+
+                                <Rectangle
+                                    x:Name="PART_Rectangle"
+                                    Cursor="Hand" 
+                                    Height="15" 
+                                    HorizontalAlignment="Left" 
+                                    Margin="20,-10,0,0" 
+                                    Stroke="{x:Null}" 
+                                    ToolTip="{i:Text Swap}"
+                                    VerticalAlignment="Top" 
+                                    Width="16">
+                                    <Rectangle.Fill>
+                                        <DrawingBrush Viewbox="0,0,11.381,12.011" ViewboxUnits="Absolute"  Stretch="Uniform">
+                                            <DrawingBrush.Drawing>
+                                                <DrawingGroup>
+                                                    <GeometryDrawing Brush="#FF231F20" Geometry="M3.45,5.3119929 L-3.0517605E-06,2.6559988 3.45,4.6386617E-06 z"/>
+                                                    <DrawingGroup>
+                                                        <DrawingGroup.Transform>
+                                                            <MatrixTransform Matrix="1,0,0,1,6.069,8.561"/>
+                                                        </DrawingGroup.Transform>
+                                                        <GeometryDrawing Brush="#FF231F20" Geometry="M5.3120054,0 L2.6560036,3.4499878 1.8798841E-06,0 z"/>
+                                                    </DrawingGroup>
+                                                    <DrawingGroup>
+                                                        <DrawingGroup.Transform>
+                                                            <MatrixTransform Matrix="1,0,0,1,2.009,2.1"/>
+                                                        </DrawingGroup.Transform>
+                                                        <GeometryDrawing Geometry="M6.5110028,6.5119882 C6.5110028,3.1890015 3.8230035,0.50001216 0.50000435,0.50001216">
+                                                            <GeometryDrawing.Pen>
+                                                                <Pen Brush="#FF231F20" DashCap="Flat" EndLineCap="Flat" LineJoin="Miter" MiterLimit="10" StartLineCap="Flat" Thickness="1"/>
+                                                            </GeometryDrawing.Pen>
+                                                        </GeometryDrawing>
+                                                    </DrawingGroup>
+                                                </DrawingGroup>
+                                            </DrawingBrush.Drawing>
+                                        </DrawingBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </Grid>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--#endregion-->
+
+    <!--#region GridLines-->
+
+    <Style x:Key="{x:Type i:GridLines}" TargetType="{x:Type i:GridLines}" BasedOn="{StaticResource {x:Type Control}}">
+        <Setter Property="Pen">
+            <Setter.Value>
+                <Pen Thickness="1" Brush="Black" />
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type i:GridLines}">
+                    <Border
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding Border.CornerRadius}"
+                        Padding="{TemplateBinding Padding}">
+                        <Border.Background>
+                            <DrawingBrush Viewport="0,0,5,5" ViewportUnits="Absolute" TileMode="Tile">
+                                <DrawingBrush.Drawing>
+                                    <DrawingGroup>
+                                        <DrawingGroup.Children>
+                                            <GeometryDrawing Geometry="M-.5,0 L50,0 M0,10 L50,10 M0,20 L50,20 M0,30 L50,30 M0,40 L50,40 M0,0 L0,50 M10,0 L10,50 M20,0 L20,50 M30,0 L30,50 M40,0 L40,50"
+                                                Pen="{i:Bind From=TemplatedParent, Path=Pen}"/>
+                                        </DrawingGroup.Children>
+                                    </DrawingGroup>
+                                </DrawingBrush.Drawing>
+                            </DrawingBrush>
+                        </Border.Background>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--#endregion-->
+
+    <!--#region PatternControl-->
+
+    <Style x:Key="{x:Type i:PatternControl}" TargetType="{x:Type i:PatternControl}" BasedOn="{StaticResource {x:Type Control}}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="#11000000"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="ClosedLineStroke">
+            <Setter.Value>
+                <LinearGradientBrush>
+                    <GradientStop Offset="0" Color="#55008C00"/>
+                    <GradientStop Offset="0.5" Color="#AA008C00"/>
+                    <GradientStop Offset="1" Color="#008C00"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="DotBackground">
+            <Setter.Value>
+                <LinearGradientBrush>
+                    <GradientStop Offset="0" Color="#555"/>
+                    <GradientStop Offset="1" Color="#383c40"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="DotBorderBrush" Value="#181818"/>
+        <Setter Property="DotBorderThickness" Value="1"/>
+        <Setter Property="DotLength" Value="48"/>
+        <Setter Property="InnerDotBackground">
+            <Setter.Value>
+                <LinearGradientBrush>
+                    <GradientStop Offset="0" Color="#e8e8e8"/>
+                    <GradientStop Offset="0.5" Color="#FFF"/>
+                    <GradientStop Offset="1" Color="#e8e8e8"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="InnerDotConnectedBackground">
+            <Setter.Value>
+                <LinearGradientBrush>
+                    <GradientStop Offset="0" Color="#46b546"/>
+                    <GradientStop Offset="0.5" Color="#73d073"/>
+                    <GradientStop Offset="1" Color="#46b546"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="InnerDotLength" Value="28"/>
+        <Setter Property="LineStroke" Value="10"/>
+        <Setter Property="OpenLineStroke">
+            <Setter.Value>
+                <LinearGradientBrush>
+                    <GradientStop Offset="0" Color="#DDD"/>
+                    <GradientStop Offset="0.25" Color="#E0E0E0"/>
+                    <GradientStop Offset="0.5" Color="#EAEAEA"/>
+                    <GradientStop Offset="1" Color="#F0F0F0"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="i:PatternControl">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding Border.CornerRadius}"
+                        Padding="{TemplateBinding Padding}">
+                        <Border.Resources>
+                            <Data:Reference x:Key="PatternView" Data="{i:Bind From=TemplatedParent}"/>
+                        </Border.Resources>
+                        <Viewbox>
+                            <Grid x:Name="PART_Grid">
+                                <ItemsControl ItemsSource="{TemplateBinding Lines}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Line
+                                                x:Name="PART_Line"
+                                                Stroke="{i:Bind Data.ClosedLineStroke, Source={StaticResource PatternView}}"
+                                                StrokeThickness="{i:Bind Data.LineStroke, Source={StaticResource PatternView}}"
+                                                X1="{i:Bind X1, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                X2="{i:Bind X2, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Y1="{i:Bind Y1, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                                Y2="{i:Bind Y2, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                            <DataTemplate.Triggers>
+                                                <DataTrigger Binding="{i:Bind IsOpen}" Value="True">
+                                                    <Setter TargetName="PART_Line" Property="Stroke" Value="{i:Bind Data.OpenLineStroke, Source={StaticResource PatternView}}"/>
+                                                </DataTrigger>
+                                            </DataTemplate.Triggers>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <Canvas/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
+                                <ItemsControl ItemsSource="{TemplateBinding Dots}"
+                                    Height="{TemplateBinding CanvasLength}"
+                                    Width="{TemplateBinding CanvasLength}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border 
+                                                x:Name="PART_Border"
+                                                Background="{i:Bind Data.DotBackground, Source={StaticResource PatternView}}"
+                                                BorderBrush="{i:Bind Data.DotBorderBrush, Source={StaticResource PatternView}}"
+                                                BorderThickness="{i:Bind Data.DotBorderThickness, Source={StaticResource PatternView}}"
+                                                CornerRadius="999"
+                                                Height="{i:Bind Data.DotLength, Source={StaticResource PatternView}}"
+                                                HorizontalAlignment="Center"
+                                                VerticalAlignment="Center"
+                                                Width="{i:Bind Data.DotLength, Source={StaticResource PatternView}}">
+                                                <Border 
+                                                    x:Name="PART_InnerBorder"
+                                                    Background="{i:Bind Data.InnerDotBackground, Source={StaticResource PatternView}}"
+                                                    CornerRadius="999"
+                                                    Height="{i:Bind Data.InnerDotLength, Source={StaticResource PatternView}}"
+                                                    Width="{i:Bind Data.InnerDotLength, Source={StaticResource PatternView}}">
+                                                </Border>
+                                            </Border>
+                                            <DataTemplate.Triggers>
+                                                <DataTrigger Binding="{i:Bind IsConnected}" Value="True">
+                                                    <Setter TargetName="PART_InnerBorder" Property="Background" Value="{i:Bind Data.InnerDotConnectedBackground, Source={StaticResource PatternView}}"/>
+                                                </DataTrigger>
+                                            </DataTemplate.Triggers>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <UniformGrid Columns="3" Rows="3"/>
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
+                            </Grid>
+                        </Viewbox>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--#endregion-->
+
+    <!--#region SelectionControl-->
+
+    <Storyboard x:Key="MarchingAnts">
+        <DoubleAnimationUsingKeyFrames 
+            BeginTime="00:00:00" 
+            Storyboard.TargetProperty="(Shape.StrokeDashOffset)" 
+            RepeatBehavior="Forever">
+            <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
+            <SplineDoubleKeyFrame KeyTime="00:00:00.5000000" Value="10"/>
+        </DoubleAnimationUsingKeyFrames>
+    </Storyboard>
+
+    <Style x:Key="{x:Type i:SelectionControl}" TargetType="{x:Type i:SelectionControl}" BasedOn="{StaticResource {x:Type FrameworkElement}}"/>
+
+    <Style x:Key="{x:Type i:SelectionRectangle}" TargetType="{x:Type i:SelectionRectangle}" BasedOn="{StaticResource {x:Type i:SelectionControl}}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="i:SelectionRectangle">
+                    <Grid>
+                        <Rectangle
+                            HorizontalAlignment="Stretch"
+                            SnapsToDevicePixels="True"
+                            Stroke="{TemplateBinding StrokePrimary}"
+                            StrokeThickness="{TemplateBinding StrokeThickness}"
+                            VerticalAlignment="Stretch"/>
+                        <Rectangle
+                            Fill="{TemplateBinding Fill}"
+                            HorizontalAlignment="Stretch"
+                            SnapsToDevicePixels="True"
+                            Stroke="{TemplateBinding StrokeSecondary}"
+                            StrokeDashArray="2"
+                            StrokeDashOffset="0"
+                            StrokeThickness="{TemplateBinding StrokeThickness}"
+                            VerticalAlignment="Stretch">
+                            <Rectangle.Triggers>
+                                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                    <BeginStoryboard Storyboard="{StaticResource MarchingAnts}"/>
+                                </EventTrigger>
+                            </Rectangle.Triggers>
+                        </Rectangle>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="{x:Type i:SelectionPolygon}" TargetType="{x:Type i:SelectionPolygon}" BasedOn="{StaticResource {x:Type i:SelectionControl}}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="i:SelectionPolygon">
+                    <Grid>
+                        <Polygon
+                            Points="{i:Bind From=TemplatedParent, Path=Path.Points}"
+                            Stroke="{TemplateBinding StrokePrimary}"
+                            StrokeThickness="{TemplateBinding StrokeThickness}"/>
+                        <Polygon
+                            Fill="{TemplateBinding Fill}" 
+                            Points="{i:Bind From=TemplatedParent, Path=Path.Points}"
+                            Stroke="{TemplateBinding StrokeSecondary}"
+                            StrokeDashArray="2" 
+                            StrokeDashOffset="0"
+                            StrokeThickness="{TemplateBinding StrokeThickness}">
+                            <Polygon.Triggers>
+                                <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                                    <BeginStoryboard Storyboard="{StaticResource MarchingAnts}"/>
+                                </EventTrigger>
+                            </Polygon.Triggers>
+                        </Polygon>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--#endregion-->
+
+    <!--#region SlideshowControl-->
+
+    <Style x:Key="{x:Type i:SlideshowControl}" TargetType="{x:Type i:SlideshowControl}" BasedOn="{StaticResource {x:Type Control}}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type i:SlideshowControl}">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding Border.CornerRadius}"
+                        Padding="{TemplateBinding Padding}">
+                        <Border.Resources>
+                            <Data:Reference x:Key="SlideshowControl" Data="{i:Bind From=TemplatedParent}"/>
+                        </Border.Resources>
+                        <Grid>
+                            <i:FillElement x:Name="PART_Background" 
+                                Fill="{TemplateBinding DefaultBackground}"
+                                Visibility="Collapsed"/>
+                            <i:TransitionControl
+                                Background="Transparent"
+                                Content="{TemplateBinding SelectedImageSource}"
+                                Transition="{TemplateBinding Transition}">
+                                <i:TransitionControl.ContentTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Image 
+                                                HorizontalAlignment="Stretch"
+                                                Opacity="{i:Bind Data.BackgroundOpacity, Source={StaticResource SlideshowControl}}"
+                                                RenderOptions.BitmapScalingMode="{i:Bind Data.ScalingMode, Mode=OneWay, Source={StaticResource SlideshowControl}}"
+                                                Source="{i:Bind}"
+                                                Stretch="UniformToFill"
+                                                VerticalAlignment="Stretch"
+                                                Visibility="{i:Bind Data.BackgroundBlur, Convert={x:Type Data:ConvertBooleanToVisibility}, Source={StaticResource SlideshowControl}}">
+                                                <Image.Effect>
+                                                    <BlurEffect Radius="100"/>
+                                                </Image.Effect>
+                                            </Image>
+                                            <Grid i:XElement.ShellContextMenu="{i:Bind Data.SelectedImage, Source={StaticResource SlideshowControl}}">
+                                                <Grid.Background>
+                                                    <ImageBrush
+                                                        RenderOptions.BitmapScalingMode="{i:Bind Data.ScalingMode, Mode=OneWay, Source={StaticResource SlideshowControl}}"
+                                                        ImageSource="{i:Bind}"
+                                                        Stretch="{i:Bind Data.Stretch, Source={StaticResource SlideshowControl}}"/>
+                                                </Grid.Background>
+                                            </Grid>
+                                            <!--
+                                            <Viewbox>
+                                                <Image/>
+                                            </Viewbox>
+                                            -->
+                                        </Grid>
+                                    </DataTemplate>
+                                </i:TransitionControl.ContentTemplate>
+                                <i:TransitionControl.ToolTip>
+                                    <ContentPresenter Content="{i:Bind Data.SelectedImage, Source={StaticResource SlideshowControl}}"
+                                        ContentTemplate="{StaticResource {x:Static i:XStorage.ToolTipTemplateKey}}"/>
+                                </i:TransitionControl.ToolTip>
+                            </i:TransitionControl>
+                            <i:ImageButton
+                                x:Name="PART_Previous"
+                                Command="{i:Bind From=TemplatedParent, Path=PreviousCommand}"
+                                HorizontalAlignment="Left"
+                                Margin="10,0,0,0"
+                                Opacity="0"
+                                Source="{i:Image Key=ArrowLeft, Size=Large}"
+                                SourceSize="72,48"
+                                VerticalAlignment="Center"
+                                Visibility="Collapsed"/>
+                            <i:ImageButton
+                                x:Name="PART_Next"
+                                Command="{i:Bind From=TemplatedParent, Path=NextCommand}"
+                                HorizontalAlignment="Right"
+                                Margin="0,0,10,0"
+                                Opacity="0"
+                                Source="{i:Image Key=ArrowRight, Size=Large}"
+                                SourceSize="72,48"
+                                VerticalAlignment="Center"
+                                Visibility="Collapsed"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Trigger.EnterActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Duration="0:0:0.3"
+                                            From="0"
+                                            To="1"
+                                            Storyboard.TargetName="PART_Previous"
+                                            Storyboard.TargetProperty="Opacity"/>
+                                        <DoubleAnimation
+                                            Duration="0:0:0.3"
+                                            From="0"
+                                            To="1"
+                                            Storyboard.TargetName="PART_Next"
+                                            Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.EnterActions>
+                            <Trigger.ExitActions>
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Duration="0:0:0.3"
+                                            From="1"
+                                            To="0"
+                                            Storyboard.TargetName="PART_Previous"
+                                            Storyboard.TargetProperty="Opacity"/>
+                                        <DoubleAnimation
+                                            Duration="0:0:0.3"
+                                            From="1"
+                                            To="0"
+                                            Storyboard.TargetName="PART_Next"
+                                            Storyboard.TargetProperty="Opacity"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </Trigger.ExitActions>
+                        </Trigger>
+                        <Trigger Property="PathType" Value="Folder">
+                            <Setter TargetName="PART_Previous" Property="Visibility" Value="Visible"/>
+                            <Setter TargetName="PART_Next" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                        <Trigger Property="SelectedImageSource" Value="{x:Null}">
+                            <Setter TargetName="PART_Background" Property="Visibility" Value="Visible"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--#endregion-->
+
+    <!--#region StackControl-->
+
+    <Style x:Key="{x:Type i:StackControl}" TargetType="{x:Type i:StackControl}" BasedOn="{StaticResource {x:Type Control}}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="i:StackControl">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding Border.CornerRadius}"
+                        Padding="{TemplateBinding Padding}">
+                        <StackPanel i:XElement.Name="{x:Static i:StackControl.StackPanelKey}" Orientation="{i:Bind From=TemplatedParent, Path=Orientation, Convert=Data:Invert}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--#endregion-->
+
+    <!--#region UnitControl-->
+
+    <Style x:Key="{x:Static i:UnitControl.ComboBoxStyleKey}" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}"/>
+
+    <Style x:Key="{x:Static i:UnitControl.DoubleUpDownStyleKey}" TargetType="{x:Type i:DoubleUpDown}" BasedOn="{StaticResource {x:Type i:DoubleUpDown}}"/>
+
+    <Style x:Key="{x:Type i:UnitControl}" TargetType="{x:Type i:UnitControl}" BasedOn="{StaticResource {x:Type Control}}">
+        <Setter Property="Spacing" Value="0,0,2,0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="i:UnitControl">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding Border.CornerRadius}"
+                        Padding="{TemplateBinding Padding}">
+                        <Grid i:XGrid.AutoColumns="True" i:XGrid.Columns="*,Auto"
+                            i:XPanel.Spacing="{TemplateBinding Spacing}"
+                            i:XPanel.SpacingExcept="Last"
+                            i:XPanel.VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}">
+                            <i:DoubleUpDown Margin="0,0,5,0"
+                                IsReadOnly="{TemplateBinding IsReadOnly}"
+                                Style="{StaticResource {x:Static i:UnitControl.DoubleUpDownStyleKey}}"
+                                ToolTip="{i:Text Value}"
+                                Value="{i:Bind From=TemplatedParent, Path=ActualValue, Mode=TwoWay}"/>
+                            <ContentPresenter x:Name="ContentPresenter0" Content="{TemplateBinding IsReadOnly}"/>
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsReadOnly" Value="True">
+                            <Setter TargetName="ContentPresenter0" Property="ContentTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <TextBlock Text="{i:Bind Unit, Convert=Data:ConvertAttributeSymbol, From=FindAncestor, FromType={x:Type i:UnitControl}}"/>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                        <Trigger Property="IsReadOnly" Value="False">
+                            <Setter TargetName="ContentPresenter0" Property="ContentTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <ComboBox
+                                            ItemsSource="{i:Enumerate {x:Type Numbers:UnitType}}"
+                                            SelectedItem="{Data:Ancestor Unit, i:UnitControl, Mode=TwoWay}"
+                                            Style="{StaticResource {x:Static i:UnitControl.ComboBoxStyleKey}}"
+                                            ToolTip="{i:Text Unit}"/>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+    </Style>
+
+    <!--#endregion-->
+</ResourceDictionary>

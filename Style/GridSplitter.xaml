@@ -1,0 +1,62 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="clr-namespace:Ion.Controls"
+    xmlns:Data="clr-namespace:Ion.Data">
+    <Style x:Key="{x:Type GridSplitter}" TargetType="{x:Type GridSplitter}">
+        <Setter Property="Background" Value="{i:Theme GridSplitterBackground}" />
+        <Setter Property="Height" Value="Auto"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="IsTabStop" Value="True" />
+        <Setter Property="i:XGridSplitter.Content" Value="{x:Null}"/>
+        <Setter Property="i:XGridSplitter.ContentTemplate" Value="{x:Null}"/>
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Padding" Value="1"/>
+        <Setter Property="PreviewStyle">
+            <Setter.Value>
+                <Style TargetType="Control">
+                    <Setter Property="Background" Value="#22000000" />
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Control}">
+                                <Grid x:Name="Root" Background="{TemplateBinding Background}"/>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ResizeBehavior" Value="PreviousAndNext" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type GridSplitter}">
+                    <Grid x:Name="Root" IsHitTestVisible="{TemplateBinding IsEnabled}">
+                        <Border
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            Padding="{TemplateBinding Padding}">
+                            <Grid>
+                                <Grid x:Name="PART_Cursor"
+                                    Background="Transparent"/>
+                                <ContentPresenter
+                                    Content="{i:Bind From=TemplatedParent, Path=(i:XGridSplitter.Content)}"
+                                    ContentTemplate="{i:Bind From=TemplatedParent, Path=(i:XGridSplitter.ContentTemplate)}"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="ResizeDirection" Value="Columns">
+                            <Setter TargetName="PART_Cursor" Property="Cursor" Value="SizeWE"/>
+                        </Trigger>
+                        <Trigger Property="ResizeDirection" Value="Rows">
+                            <Setter TargetName="PART_Cursor" Property="Cursor" Value="SizeNS"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="Width" Value="Auto"/>
+    </Style>
+</ResourceDictionary>

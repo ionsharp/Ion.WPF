@@ -1,0 +1,1563 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:e="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:g="urn:gong-wpf-dragdrop"
+    xmlns:l="http://wpflocalizeextension.codeplex.com"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="clr-namespace:Ion.Controls"
+    xmlns:Base0="clr-namespace:Ion;assembly=Ion"
+    xmlns:Base1="clr-namespace:Ion"
+    xmlns:Behavior="clr-namespace:Ion.Behavior"
+    xmlns:Collections0="clr-namespace:Ion.Collect;assembly=Ion"
+    xmlns:Collections="clr-namespace:Ion.Collect"
+    xmlns:Core0="clr-namespace:Ion.Core;assembly=Ion"
+    xmlns:Core1="clr-namespace:Ion.Core"
+    xmlns:Data="clr-namespace:Ion.Data"
+    xmlns:Numeral="clr-namespace:Ion.Numeral;assembly=Ion"
+    xmlns:Storage0="clr-namespace:Ion.Storage;assembly=Ion"
+    xmlns:Storage1="clr-namespace:Ion.Storage"
+    xmlns:System="clr-namespace:System;assembly=mscorlib"
+    xmlns:Text="clr-namespace:Ion.Text;assembly=Ion">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="{i:Style Key=Constants}"/>
+        <ResourceDictionary Source="{i:Style Key=Control}"/>
+        <ResourceDictionary Source="{i:Style Key=DataGrid}"/>
+        <ResourceDictionary Source="{i:Style Key=ItemsControl}"/>
+        <ResourceDictionary Source="{i:Style Key=ListBox}"/>
+        <ResourceDictionary Source="{i:Style Key=Storage}"/>
+        <ResourceDictionary Source="{i:Style Key=TextBox}"/>
+        <ResourceDictionary Source="{i:Style Key=ToggleButton}"/>
+    </ResourceDictionary.MergedDictionaries>
+    <!--#region Constants-->
+
+    <System:Double x:Key="{x:Static i:DataViewControl.MaximumToolTipWidth}">720.0</System:Double>
+
+    <System:Double x:Key="{x:Static i:DataViewControl.MinimumToolTipWidth}">360.0</System:Double>
+
+    <!--#endregion-->
+
+    <!--#region DataControl-->
+
+    <Style x:Key="{x:Type i:DataControl}" TargetType="{x:Type i:DataControl}" BasedOn="{StaticResource {x:Type Control}}">
+        <Setter Property="ItemToolTipTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock x:Name="Description" Opacity="0.5" Text="{i:Bind Description}" TextAlignment="Center" TextWrapping="Wrap"/>
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{i:Bind Description}" Value="{i:String Key=Empty}">
+                            <Setter TargetName="Description" Property="FontStyle" Value="Italic"/>
+                            <Setter TargetName="Description" Property="Text" Value="{i:Text NoDescription}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{i:Bind Description}" Value="{x:Null}">
+                            <Setter TargetName="Description" Property="FontStyle" Value="Italic"/>
+                            <Setter TargetName="Description" Property="Text" Value="{i:Text NoDescription}"/>
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemToolTipHeaderTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock x:Name="Text" Text="{i:Bind Name}"/>
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{i:Bind Name}" Value="{i:String Key=Empty}">
+                            <Setter TargetName="Text" Property="FontStyle" Value="Italic"/>
+                            <Setter TargetName="Text" Property="Text" Value="{i:Text NoName}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{i:Bind Name}" Value="{x:Null}">
+                            <Setter TargetName="Text" Property="FontStyle" Value="Italic"/>
+                            <Setter TargetName="Text" Property="Text" Value="{i:Text NoName}"/>
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemToolTipHeaderIconTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <i:Display Content="{i:Bind Value}" ContentTemplate="{DynamicResource {x:Static i:ObjectControlKey.ObjectImage}}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XElement.Reference" Value="{i:Bind Model, From=Self}"/>
+        <Setter Property="i:XElement.ReferenceKey" Value="{x:Static Core1:DataPanel.ControlKey}"/>
+        <Setter Property="NoItemTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.5" Orientation="Horizontal">
+                        <i:ImageElement Source="{i:Image Key=X}"
+                            Margin="{i:Constant Key=ThickRight}"/>
+                        <TextBlock FontStyle="Italic">No items</TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="NoItemSourceTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0.5" Orientation="Horizontal">
+                        <i:ImageElement Source="{i:Image Key=Group}"
+                            Margin="{i:Constant Key=ThickRight}"/>
+                        <TextBlock FontStyle="Italic">Select a group</TextBlock>
+                    </StackPanel>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="PresentationTraceSources.TraceLevel" Value="High"/>
+    </Style>
+
+    <!--#endregion-->
+
+    <!--#region DataGridControl-->
+
+    <DataTemplate x:Key="{x:Static i:DataGridControl.DetailViewTemplate}">
+        <i:Element>
+            <i:Element.Resources>
+                <Data:Reference x:Key="Control" Data="{i:Bind From=FindAncestor, FromType=i:DataGridControl}"/>
+            </i:Element.Resources>
+            <DataGrid
+                BorderThickness="0"
+                CanUserAddRows="{i:Bind CanAddRows}"
+                CanUserDeleteRows="{i:Bind CanDeleteRows}"
+                CanUserReorderColumns="{i:Bind CanReorderColumns}"
+                CanUserResizeColumns="{i:Bind CanResizeColumns}"
+                CanUserResizeRows="{i:Bind CanResizeRows}"
+                CanUserSortColumns="{i:Bind CanSortColumns}"
+                HeadersVisibility="{i:Bind HeaderVisibility}"
+                i:XDataGrid.Columns="{Data:Ancestor Columns, i:DataGridControl}"
+                i:XDataGrid.ColumnVisibility="{i:Bind ShowColumns, Mode=TwoWay}"
+                i:XDataGrid.DisplayRowNumber="{i:Equal ShowBullet, Invert=True, Value={x:Static Text:Bullet.None}}"
+                i:XDataGrid.DisplayRowNumberBullet="{i:Bind ShowBullet}"
+                i:XDataGrid.DisplayRowNumberOffset="1"
+                i:XItemsControl.GroupStyle="{DynamicResource {x:Static i:XDataGrid.GroupStyle}}"
+                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                VirtualizingPanel.IsVirtualizing="False"
+                VirtualizingPanel.VirtualizationMode="Standard"
+                ItemsSource="{i:Bind ItemView}">
+                <DataGrid.ItemContainerStyle>
+                    <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                        <!--
+                        <Setter Property="ContextMenu">
+                            <Setter.Value>
+                                <i:ObjectMenu i:XObjectControl.Source="{Data:BindSection Data.Model, Section=ItemOption, Source={StaticResource Control}}"/>
+                            </Setter.Value>
+                        </Setter>
+                        -->
+                        <Setter Property="i:XControl.MouseDoubleClickCommand" Value="{i:Bind Model.DoubleClickCommand, From=FindAncestor, FromType=i:DataGridControl}"/>
+                        <Setter Property="i:XControl.MouseDoubleClickCommandButton" Value="Left"/>
+                        <Setter Property="i:XControl.MouseDoubleClickCommandParameter" Value="{i:Bind}"/>
+                        <Setter Property="i:XElement.MouseDownCommand" Value="{i:Bind Model.ClickCommand, From=FindAncestor, FromType=i:DataGridControl}"/>
+                        <Setter Property="i:XElement.MouseDownCommandButton" Value="Left"/>
+                        <Setter Property="i:XElement.MouseDownCommandParameter" Value="{i:Bind}"/>
+                        <Setter Property="i:XToolTip.Header" Value="{i:Bind}"/>
+                        <Setter Property="i:XToolTip.HeaderTemplate" Value="{i:Bind Data.ItemToolTipHeaderTemplate, Source={StaticResource Control}}"/>
+                        <Setter Property="i:XToolTip.HeaderIcon" Value="{i:Bind}"/>
+                        <Setter Property="i:XToolTip.HeaderIconTemplate" Value="{i:Bind Data.ItemToolTipHeaderIconTemplate, Source={StaticResource Control}}"/>
+                        <Setter Property="i:XToolTip.Template" Value="{i:Bind Data.ItemToolTipTemplate, Source={StaticResource Control}}"/>
+                        <Setter Property="ToolTip" Value="{i:Bind}"/>
+                        <Setter Property="Visibility">
+                            <Setter.Value>
+                                <Data:MultiBind Converter="{x:Static Core1:DataPanel.VisibilityConverter}">
+                                    <Binding Path="Data.Model" Source="{StaticResource Control}"/>
+                                    <Binding/>
+                                    <Binding Path="Data.Model.ItemVisibility" Source="{StaticResource Control}"/>
+                                </Data:MultiBind>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </DataGrid.ItemContainerStyle>
+                <e:Interaction.Behaviors>
+                    <Behavior:ReferenceBehavior Key="{x:Static Core1:DataPanel.SelectorKey}" Source="{i:Bind Data.Model, Source={StaticResource Control}}"/>
+                </e:Interaction.Behaviors>
+            </DataGrid>
+        </i:Element>
+    </DataTemplate>
+
+    <DataTemplate x:Key="{x:Static i:DataGridControl.TextViewTemplate}">
+        <RichTextBox
+            AcceptsReturn="True"
+            BorderThickness="0"
+            HorizontalAlignment="Stretch"
+            IsReadOnly="True"
+            i:XElement.Wheel="True"
+            i:XElement.WheelIncrement="0.01"
+            i:XElement.WheelMaximum="5"
+            i:XElement.WheelMinimum="0.1"
+            i:XElement.WheelValue="{i:Bind FontScale, AppSource=Data, Mode=TwoWay}"
+            i:XTextBoxBase.ScrollToEnd="True"
+            i:XTextBoxBase.TextTrimming="None"
+            i:XRichTextBox.Lines="{i:Bind Items}"
+            i:XRichTextBox.LineStyle="{Data:Ancestor LineStyle, i:DataGridControl}"
+            i:XRichTextBox.LineTemplate="{Data:Ancestor LineTemplate, i:DataGridControl}"
+            ScrollViewer.HorizontalScrollBarVisibility="Auto"
+            ScrollViewer.VerticalScrollBarVisibility="Auto"
+            VerticalAlignment="Stretch"
+            VerticalContentAlignment="Top"/>
+    </DataTemplate>
+
+    <ControlTemplate x:Key="{x:Static i:DataGridControl.TemplateKey}" TargetType="{x:Type i:DataGridControl}">
+        <Border
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            CornerRadius="{TemplateBinding Border.CornerRadius}">
+            <ContentPresenter Content="{TemplateBinding Model}">
+                <ContentPresenter.ContentTemplate>
+                    <DataTemplate>
+                        <ContentPresenter Content="{i:Bind}" i:Display.TemplateKey="{i:Bind View}">
+                            <i:Display.TemplateSelector>
+                                <i:KeyTemplateSelector>
+                                    <i:KeyTemplate DataKey="{x:Static i:DataGridViews.Detail}">
+                                        <ContentPresenter Content="{i:Bind}" ContentTemplate="{DynamicResource {x:Static i:DataGridControl.DetailViewTemplate}}"/>
+                                    </i:KeyTemplate>
+                                    <i:KeyTemplate DataKey="{x:Static i:DataGridViews.Text}">
+                                        <ContentPresenter Content="{i:Bind}" ContentTemplate="{DynamicResource {x:Static i:DataGridControl.TextViewTemplate}}"/>
+                                    </i:KeyTemplate>
+                                </i:KeyTemplateSelector>
+                            </i:Display.TemplateSelector>
+                        </ContentPresenter>
+                    </DataTemplate>
+                </ContentPresenter.ContentTemplate>
+            </ContentPresenter>
+        </Border>
+    </ControlTemplate>
+
+    <Style x:Key="{x:Type i:DataGridControl}" TargetType="{x:Type i:DataGridControl}" BasedOn="{StaticResource {x:Type i:DataControl}}">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="LineStyle">
+            <Setter.Value>
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="Visibility">
+                        <Setter.Value>
+                            <Data:MultiBind Converter="{x:Static Core1:DataPanel.VisibilityConverter}">
+                                <Data:Ancestor FromType="i:DataGridControl" Path="Model"/>
+                                <Binding/>
+                                <Data:Ancestor FromType="i:DataGridControl" Path="Model.ItemVisibility"/>
+                            </Data:MultiBind>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XElement.Wheel" Value="True"/>
+        <Setter Property="i:XElement.WheelIncrement" Value="0.01"/>
+        <Setter Property="i:XElement.WheelMaximum" Value="5"/>
+        <Setter Property="i:XElement.WheelMinimum" Value="0.1"/>
+        <Setter Property="i:XElement.WheelValue" Value="{i:Bind FontScale, AppSource=Data, Mode=TwoWay}"/>
+        <Setter Property="Template" Value="{StaticResource {x:Static i:DataGridControl.TemplateKey}}"/>
+    </Style>
+
+    <!--#endregion-->
+
+    <!--#region DataViewControl-->
+
+    <!--#region Item > Style-->
+
+    <!-- * -->
+    <Style x:Key="{x:Static i:DataViewControl.ViewDefaultItemStyle}" TargetType="ListViewItem" BasedOn="{StaticResource {x:Type ListViewItem}}">
+        <Setter Property="AllowDrop" Value="{i:Bind Model.CanDrop, From=FindAncestor, FromType=i:DataViewControl}"/>
+        <Setter Property="ContextMenu" Value="{i:Bind ItemContextMenu, From=FindAncestor, FromType=i:DataViewControl}"/>
+        <Setter Property="g:DragDrop.DropHandler" Value="{i:Bind Model.DropHandler, From=FindAncestor, FromType=i:DataViewControl}"/>
+        <Setter Property="g:DragDrop.IsDragSource" Value="{i:Bind Model.CanDrag, From=FindAncestor, FromType=i:DataViewControl}"/>
+        <Setter Property="g:DragDrop.IsDropTarget" Value="{i:Bind Model.CanDrop, From=FindAncestor, FromType=i:DataViewControl}"/>
+        <Setter Property="g:DragDrop.UseDefaultDragAdorner" Value="True"/>
+        <Setter Property="i:XControl.MouseDoubleClickCommand" Value="{i:Bind Model.DoubleClickCommand, From=FindAncestor, FromType=i:DataViewControl}"/>
+        <Setter Property="i:XControl.MouseDoubleClickCommandButton" Value="Left"/>
+        <Setter Property="i:XControl.MouseDoubleClickCommandParameter" Value="{i:Bind}"/>
+        <Setter Property="i:XElement.MouseDownCommand" Value="{i:Bind Model.ClickCommand, From=FindAncestor, FromType=i:DataViewControl}"/>
+        <Setter Property="i:XElement.MouseDownCommandButton" Value="Left"/>
+        <Setter Property="i:XElement.MouseDownCommandParameter" Value="{i:Bind}"/>
+        <Setter Property="i:XToolTip.Header" Value="{i:Bind}"/>
+        <Setter Property="i:XToolTip.HeaderTemplate" Value="{Data:Ancestor ItemToolTipHeaderTemplate, i:DataViewControl}"/>
+        <Setter Property="i:XToolTip.HeaderIcon" Value="{i:Bind}"/>
+        <Setter Property="i:XToolTip.HeaderIconTemplate" Value="{Data:Ancestor ItemToolTipHeaderIconTemplate, i:DataViewControl}"/>
+        <Setter Property="i:XToolTip.MaximumWidth" Value="{StaticResource {x:Static i:DataViewControl.MaximumToolTipWidth}}"/>
+        <Setter Property="i:XToolTip.MinimumWidth" Value="{StaticResource {x:Static i:DataViewControl.MinimumToolTipWidth}}"/>
+        <Setter Property="i:XToolTip.Template" Value="{Data:Ancestor ItemToolTipTemplate, i:DataViewControl}"/>
+        <Setter Property="Padding" Value="5" />
+        <Setter Property="Margin" Value="0,0,5,5"/>
+        <Setter Property="Tag" Value="{i:Bind From=FindAncestor, FromType=i:DataViewControl}" />
+        <Setter Property="ToolTip" Value="{i:Bind}"/>
+        <Setter Property="Visibility">
+            <Setter.Value>
+                <Data:MultiBind Converter="{x:Static Core1:DataPanel.VisibilityConverter}">
+                    <i:Bind From="FindAncestor" FromType="i:DataViewControl" Path="Model"/>
+                    <Binding/>
+                    <i:Bind From="FindAncestor" FromType="i:DataViewControl" Path="Model.ItemVisibility"/>
+                </Data:MultiBind>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <!--
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Data:Is Type=Storage1:Item}" Value="True"/>
+                    <Condition Binding="{i:Bind IsChanged}" Value="True"/>
+                </MultiDataTrigger.Conditions>
+                <MultiDataTrigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <ColorAnimation Storyboard.TargetProperty="Background.Color"
+                                AccelerationRatio="0.2" DecelerationRatio="0.8" AutoReverse="True" Duration="0:0:3" FillBehavior="Stop" 
+                                To="#55000000"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </MultiDataTrigger.EnterActions>
+            </MultiDataTrigger>
+            -->
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Data:Is Type=Storage1:Item}" Value="True"/>
+                    <Condition Binding="{i:Bind IsHidden}" Value="False"/>
+                </MultiDataTrigger.Conditions>
+                <Setter Property="i:XElement.FadeIn" Value="True" />
+                <Setter Property="i:XElement.FadeOut" Value="True" />
+            </MultiDataTrigger>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Data:Is Type=Storage1:Item}" Value="True"/>
+                    <Condition Binding="{i:Bind IsHidden}" Value="True"/>
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Opacity" Value="{x:Static i:ItemViewControl.HiddenOpacity}"/>
+                <!--
+                <MultiDataTrigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity"
+                                AccelerationRatio="0.2" DecelerationRatio="0.8" AutoReverse="True" Duration="0:0:3" FillBehavior="Stop" 
+                                From="1.0" To="{x:Static i:ItemViewControl.HiddenOpacity}"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </MultiDataTrigger.EnterActions>
+                <MultiDataTrigger.ExitActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1.0"
+                                AccelerationRatio="0.2" DecelerationRatio="0.8" AutoReverse="True" Duration="0:0:3" FillBehavior="Stop"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </MultiDataTrigger.ExitActions>
+                -->
+            </MultiDataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- Block -->
+    <Style x:Key="{x:Static i:DataViewControl.ViewBlockItemStyle}" TargetType="ListViewItem" BasedOn="{StaticResource {x:Static i:DataViewControl.ViewDefaultItemStyle}}">
+        <Setter Property="Margin" Value="0,0,0,5" />
+    </Style>
+
+    <!-- Detail -->
+    <Style x:Key="{x:Static i:DataViewControl.ViewDetailItemStyle}" TargetType="ListViewItem" BasedOn="{StaticResource {x:Static i:DataViewControl.ViewDefaultItemStyle}}">
+        <Setter Property="Margin" Value="0,0,0,1"/>
+        <Setter Property="Padding" Value="0" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListViewItem">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding Border.CornerRadius}"
+                        Padding="{TemplateBinding Padding}"
+                        SnapsToDevicePixels="True">
+                        <GridViewRowPresenter/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Page -->
+    <Style x:Key="{x:Static i:DataViewControl.ViewPageItemStyle}" TargetType="ListViewItem" BasedOn="{StaticResource {x:Static i:DataViewControl.ViewDefaultItemStyle}}">
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Visibility">
+            <Setter.Value>
+                <Data:MultiBind Converter="{x:Static Core1:DataViewPanel.SlideVisibilityConverter}">
+                    <Binding/>
+                    <i:Bind From="FindAncestor" FromType="ListView"/>
+                    <i:Bind From="FindAncestor" FromType="i:DataViewControl"/>
+                    <Binding>
+                        <Binding.Source>
+                            <System:Int32>1</System:Int32>
+                        </Binding.Source>
+                    </Binding>
+                    <i:Bind Path="View.Index" From="FindAncestor" FromType="ListView"/>
+                </Data:MultiBind>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Slide -->
+    <Style x:Key="{x:Static i:DataViewControl.ViewSlideItemStyle}" TargetType="ListViewItem" BasedOn="{StaticResource {x:Static i:DataViewControl.ViewDefaultItemStyle}}">
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Visibility">
+            <Setter.Value>
+                <Data:MultiBind Converter="{x:Static Core1:DataViewPanel.SlideVisibilityConverter}">
+                    <Binding/>
+                    <i:Bind From="FindAncestor" FromType="ListView"/>
+                    <i:Bind From="FindAncestor" FromType="i:DataViewControl"/>
+                    <i:Bind Path="Model.ViewSlideColumns" From="FindAncestor" FromType="i:DataViewControl"/>
+                    <i:Bind Path="View.Index" From="FindAncestor" FromType="ListView"/>
+                </Data:MultiBind>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- Thumb -->
+    <Style x:Key="{x:Static i:DataViewControl.ViewThumbItemStyle}" TargetType="ListViewItem" BasedOn="{StaticResource {x:Static i:DataViewControl.ViewDefaultItemStyle}}">
+        <Setter Property="Margin" Value="0,0,5,5" />
+        <Setter Property="Padding" Value="1" />
+        <Setter Property="Width" Value="{Data:Ancestor Model.ViewThumbSize, i:DataViewControl}" />
+    </Style>
+
+    <!-- Tile -->
+    <Style x:Key="{x:Static i:DataViewControl.ViewTileItemStyle}" TargetType="ListViewItem" BasedOn="{StaticResource {x:Static i:DataViewControl.ViewDefaultItemStyle}}">
+        <Setter Property="Margin" Value="0,0,5,5" />
+        <Setter Property="Width" Value="{Data:Ancestor Model.ViewTileWidth, i:DataViewControl}" />
+    </Style>
+
+    <!--#endregion-->
+
+    <!--#region Item > Template > Bullet-->
+
+    <DataTemplate x:Key="{x:Static i:DataViewControl.BulletTemplate}">
+        <i:TextBullet Bullet="{i:Bind Model.ShowBullet, From=FindAncestor, FromType=i:DataViewControl}"
+            Value="{i:Bind From=FindAncestor, FromType=ListViewItem, Path=(i:XItemsControl.ContainerIndex)}"
+            Visibility="{i:Equal Model.ShowBullet, From=FindAncestor, FromType=i:DataViewControl, Invert=True, Result=Visibility, Value={x:Static Text:Bullet.None}}"/>
+    </DataTemplate>
+
+    <!--#endregion-->
+
+    <!--#region Item > Template > Check-->
+
+    <DataTemplate x:Key="{x:Static i:DataViewControl.CheckTemplate}">
+        <CheckBox IsChecked="{i:Bind IsSelected, From=FindAncestor, FromType=ListViewItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            Visibility="{i:Bind Model.ShowCheckBox, Convert=Data:ConvertBooleanToVisibility, From=FindAncestor, FromType=i:DataViewControl}"/>
+    </DataTemplate>
+
+    <!--#endregion-->
+
+    <!--#region Item > Template > Description-->
+
+    <DataTemplate x:Key="{x:Static i:DataViewControl.ItemDescriptionTemplateKey}">
+        <ContentPresenter Content="{i:Bind}" i:Display.DefaultTemplate="{i:Bind ItemDescriptionTemplate, From=FindAncestor, FromType=i:DataViewControl}"
+            i:Display.TemplateKey="{i:Bind Model.View, From=FindAncestor, FromType=i:DataViewControl}"
+            i:Display.TemplateSelector="{i:Bind ItemDescriptionTemplateSelector, From=FindAncestor, FromType=i:DataViewControl}"/>
+    </DataTemplate>
+
+    <!--#endregion-->
+
+    <!--#region Item > Template > Detail 1-->
+
+    <DataTemplate x:Key="{x:Static i:DataViewControl.ItemDetail1TemplateKey}">
+        <ContentPresenter Content="{i:Bind}" i:Display.DefaultTemplate="{i:Bind ItemDetail1Template, From=FindAncestor, FromType=i:DataViewControl}"
+            i:Display.TemplateKey="{i:Bind Model.View, From=FindAncestor, FromType=i:DataViewControl}"
+            i:Display.TemplateSelector="{i:Bind ItemDetail1TemplateSelector, From=FindAncestor, FromType=i:DataViewControl}"/>
+    </DataTemplate>
+
+    <!--#endregion-->
+
+    <!--#region Item > Template > Detail 2-->
+
+    <DataTemplate x:Key="{x:Static i:DataViewControl.ItemDetail2TemplateKey}">
+        <ContentPresenter Content="{i:Bind}" i:Display.DefaultTemplate="{i:Bind ItemDetail2Template, From=FindAncestor, FromType=i:DataViewControl}"
+            i:Display.TemplateKey="{i:Bind Model.View, From=FindAncestor, FromType=i:DataViewControl}"
+            i:Display.TemplateSelector="{i:Bind ItemDetail2TemplateSelector, From=FindAncestor, FromType=i:DataViewControl}"/>
+    </DataTemplate>
+
+    <!--#endregion-->
+
+    <!--#region Item > Template > Image-->
+
+    <DataTemplate x:Key="{x:Static i:DataViewControl.ItemImageTemplateKey}">
+        <i:Element>
+            <i:Element.Style>
+                <Style TargetType="i:Element">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Data:Ancestor Model.View, i:DataViewControl}" Value="{x:Static i:DataViews.Block}">
+                            <Setter Property="Height" Value="{Data:Ancestor Model.ViewBlockIconSize, i:DataViewControl}"/>
+                            <Setter Property="Width" Value="{Data:Ancestor Model.ViewBlockIconSize, i:DataViewControl}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Data:Ancestor Model.View, i:DataViewControl}" Value="{x:Static i:DataViews.Detail}">
+                            <Setter Property="Height" Value="{Data:Ancestor Model.ViewDetailIconSize, i:DataViewControl}"/>
+                            <Setter Property="Width" Value="{Data:Ancestor Model.ViewDetailIconSize, i:DataViewControl}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Data:Ancestor Model.View, i:DataViewControl}" Value="{x:Static i:DataViews.Page}"/>
+                        <DataTrigger Binding="{Data:Ancestor Model.View, i:DataViewControl}" Value="{x:Static i:DataViews.Slide}">
+                            <Setter Property="Height" Value="32"/>
+                            <Setter Property="Width" Value="32"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Data:Ancestor Model.View, i:DataViewControl}" Value="{x:Static i:DataViews.Thumb}">
+                            <Setter Property="Height">
+                                <Setter.Value>
+                                    <Data:MultiBind ConverterName="Math">
+                                        <i:Bind Path="Model.ViewThumbSize" From="FindAncestor" FromType="i:DataViewControl"/>
+                                        <Binding Source="{x:Static Numeral:Operator.Subtract}"/>
+                                        <Binding>
+                                            <Binding.Source>
+                                                <System:Double>10.0</System:Double>
+                                            </Binding.Source>
+                                        </Binding>
+                                    </Data:MultiBind>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter Property="Width">
+                                <Setter.Value>
+                                    <Data:MultiBind ConverterName="Math">
+                                        <i:Bind Path="Model.ViewThumbSize" From="FindAncestor" FromType="i:DataViewControl"/>
+                                        <Binding Source="{x:Static Numeral:Operator.Subtract}"/>
+                                        <Binding>
+                                            <Binding.Source>
+                                                <System:Double>10.0</System:Double>
+                                            </Binding.Source>
+                                        </Binding>
+                                    </Data:MultiBind>
+                                </Setter.Value>
+                            </Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Data:Ancestor Model.View, i:DataViewControl}" Value="{x:Static i:DataViews.Tile}">
+                            <Setter Property="Height" Value="{Data:Ancestor Model.ViewTileIconSize, i:DataViewControl}"/>
+                            <Setter Property="Width" Value="{Data:Ancestor Model.ViewTileIconSize, i:DataViewControl}"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </i:Element.Style>
+            <ContentPresenter Content="{i:Bind}" i:Display.DefaultTemplate="{i:Bind ItemImageTemplate, From=FindAncestor, FromType=i:DataViewControl}"
+                i:Display.TemplateKey="{i:Bind Model.View, From=FindAncestor, FromType=i:DataViewControl}"
+                i:Display.TemplateSelector="{i:Bind ItemImageTemplateSelector, From=FindAncestor, FromType=i:DataViewControl}"/>
+        </i:Element>
+    </DataTemplate>
+
+    <!--#endregion-->
+
+    <!--#region Item > Template > Name-->
+
+    <DataTemplate x:Key="{x:Static i:DataViewControl.ItemNameTemplateKey}">
+        <ContentPresenter Content="{i:Bind}" i:Display.DefaultTemplate="{i:Bind ItemNameTemplate, From=FindAncestor, FromType=i:DataViewControl}"
+            i:Display.TemplateKey="{i:Bind Model.View, From=FindAncestor, FromType=i:DataViewControl}"
+            i:Display.TemplateSelector="{i:Bind ItemNameTemplateSelector, From=FindAncestor, FromType=i:DataViewControl}"/>
+    </DataTemplate>
+
+    <!--#endregion-->
+
+    <!--#region Item > Template-->
+
+    <!-- Block -->
+    <DataTemplate x:Key="{x:Static i:DataViewControl.ViewBlockItemTemplate}">
+        <Grid i:XGrid.AutoColumns="True" i:XGrid.Columns="Auto,Auto,Auto,*,*"
+            i:XPanel.Spacing="0,0,5,0" i:XPanel.VerticalContentAlignment="Center">
+            <Grid.Resources>
+                <Data:Reference x:Key="Control" Data="{i:Bind From=FindAncestor, FromType=i:DataViewControl}"/>
+            </Grid.Resources>
+            <!-- Check -->
+            <ContentPresenter Content="{i:Bind}" ContentTemplate="{DynamicResource {x:Static i:DataViewControl.CheckTemplate}}"/>
+            <!-- Bullet -->
+            <ContentPresenter Content="{i:Bind}" ContentTemplate="{DynamicResource {x:Static i:DataViewControl.BulletTemplate}}"/>
+            <!-- Image -->
+            <ContentPresenter Content="{i:Bind}" ContentTemplate="{i:Bind View.ItemImageTemplate, From=FindAncestor, FromType=ListView}"/>
+            <!-- Name | Description -->
+            <Grid i:XGrid.AutoRows="True" i:XGrid.Rows="*,*" 
+                i:XPanel.Spacing="0,0,0,5">
+                <Grid.Visibility>
+                    <Data:MultiBindTrue For="Any" Result="Visibility">
+                        <i:Bind From="FindAncestor" FromType="i:DataViewControl" Path="Model.ShowDescription"/>
+                        <i:Bind From="FindAncestor" FromType="i:DataViewControl" Path="Model.ShowName"/>
+                    </Data:MultiBindTrue>
+                </Grid.Visibility>
+                <ContentPresenter Content="{i:Bind}" ContentTemplate="{i:Bind View.ItemNameTemplate, From=FindAncestor, FromType=ListView}"
+                    Visibility="{i:Bind Model.ShowName, Convert=Data:ConvertBooleanToVisibility, From=FindAncestor, FromType=i:DataViewControl}"/>
+                <ContentPresenter Content="{i:Bind}" ContentTemplate="{i:Bind View.ItemDescriptionTemplate, From=FindAncestor, FromType=ListView}"
+                    Visibility="{i:Bind Model.ShowDescription, Convert=Data:ConvertBooleanToVisibility, From=FindAncestor, FromType=i:DataViewControl}"/>
+            </Grid>
+            <!-- Detail 1 | Detail 2 -->
+            <Grid i:XGrid.AutoRows="True" i:XGrid.Rows="*,*" 
+                i:XPanel.Spacing="0,0,0,5" i:XPanel.VerticalContentAlignment="Center">
+                <Grid.Visibility>
+                    <Data:MultiBindTrue For="Any" Result="Visibility">
+                        <i:Bind From="FindAncestor" FromType="i:DataViewControl" Path="Model.ShowDetail1"/>
+                        <i:Bind From="FindAncestor" FromType="i:DataViewControl" Path="Model.ShowDetail2"/>
+                    </Data:MultiBindTrue>
+                </Grid.Visibility>
+                <ContentPresenter Content="{i:Bind}" ContentTemplate="{i:Bind View.ItemDetail1Template, From=FindAncestor, FromType=ListView}"
+                    Visibility="{i:Bind Model.ShowDetail1, Convert=Data:ConvertBooleanToVisibility, From=FindAncestor, FromType=i:DataViewControl}"/>
+                <ContentPresenter Content="{i:Bind}" ContentTemplate="{i:Bind View.ItemDetail2Template, From=FindAncestor, FromType=ListView}"
+                    Visibility="{i:Bind Model.ShowDetail2, Convert=Data:ConvertBooleanToVisibility, From=FindAncestor, FromType=i:DataViewControl}"/>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <!-- Page -->
+    <DataTemplate x:Key="{x:Static i:DataViewControl.ViewPageItemTemplate}">
+        <Grid i:XGrid.AutoRows="True" i:XGrid.Rows="Auto,*,Auto,Auto"
+            i:XPanel.Spacing="0,0,0,5" i:XPanel.HorizontalContentAlignment="Center">
+            <!-- Check -->
+            <ContentPresenter Content="{i:Bind}" ContentTemplate="{DynamicResource {x:Static i:DataViewControl.CheckTemplate}}"
+                HorizontalAlignment="Center"/>
+            <!-- Image -->
+            <ContentPresenter Content="{i:Bind}" ContentTemplate="{i:Bind View.ItemImageTemplate, From=FindAncestor, FromType=ListView}"/>
+            <Grid i:XGrid.AutoColumns="True" i:XGrid.Columns="Auto,Auto"
+                i:XPanel.Spacing="0,0,5,0">
+                <!-- Bullet -->
+                <ContentPresenter Content="{i:Bind}" ContentTemplate="{DynamicResource {x:Static i:DataViewControl.BulletTemplate}}"/>
+                <!-- Name -->
+                <ContentPresenter Content="{i:Bind}" ContentTemplate="{i:Bind View.ItemNameTemplate, From=FindAncestor, FromType=ListView}"
+                    HorizontalAlignment="Center"
+                    Visibility="{i:Bind Model.ShowName, Convert=Data:ConvertBooleanToVisibility, From=FindAncestor, FromType=i:DataViewControl}"/>
+            </Grid>
+            <!-- Description -->
+            <ContentPresenter Content="{i:Bind}" ContentTemplate="{i:Bind View.ItemDescriptionTemplate, From=FindAncestor, FromType=ListView}"
+                Visibility="{i:Bind Model.ShowDescription, Convert=Data:ConvertBooleanToVisibility, From=FindAncestor, FromType=i:DataViewControl}"/>
+        </Grid>
+    </DataTemplate>
+
+    <!-- Slide -->
+    <DataTemplate x:Key="{x:Static i:DataViewControl.ViewSlideItemTemplate}">
+        <Grid i:XGrid.AutoRows="True" i:XGrid.Rows="Auto,Auto,Auto,Auto"
+            i:XPanel.Spacing="0,0,0,5" i:XPanel.HorizontalContentAlignment="Center" VerticalAlignment="Center">
+            <!-- Check -->
+            <ContentPresenter Content="{i:Bind}" ContentTemplate="{DynamicResource {x:Static i:DataViewControl.CheckTemplate}}"
+                HorizontalAlignment="Center"/>
+            <!-- Image -->
+            <ContentPresenter Content="{i:Bind}" ContentTemplate="{i:Bind View.ItemImageTemplate, From=FindAncestor, FromType=ListView}"/>
+            <Grid i:XGrid.AutoColumns="True" i:XGrid.Columns="Auto,Auto"
+                i:XPanel.Spacing="0,0,5,0">
+                <!-- Bullet -->
+                <ContentPresenter Content="{i:Bind}" ContentTemplate="{DynamicResource {x:Static i:DataViewControl.BulletTemplate}}"/>
+                <!-- Name -->
+                <ContentPresenter Content="{i:Bind}" ContentTemplate="{i:Bind View.ItemNameTemplate, From=FindAncestor, FromType=ListView}"
+                    HorizontalAlignment="Center"
+                    Visibility="{i:Bind Model.ShowName, Convert=Data:ConvertBooleanToVisibility, From=FindAncestor, FromType=i:DataViewControl}"/>
+            </Grid>
+            <!-- Description -->
+            <ContentPresenter Content="{i:Bind}" ContentTemplate="{i:Bind View.ItemDescriptionTemplate, From=FindAncestor, FromType=ListView}"
+                Visibility="{i:Bind Model.ShowDescription, Convert=Data:ConvertBooleanToVisibility, From=FindAncestor, FromType=i:DataViewControl}"/>
+        </Grid>
+    </DataTemplate>
+
+    <!-- Thumb -->
+    <DataTemplate x:Key="{x:Static i:DataViewControl.ViewThumbItemTemplate}">
+        <Grid i:XGrid.Rows="*,Auto">
+            <!-- Image -->
+            <ContentPresenter Content="{i:Bind}" ContentTemplate="{i:Bind View.ItemImageTemplate, From=FindAncestor, FromType=ListView}"/>
+            <!-- Check -->
+            <ContentPresenter Content="{i:Bind}" ContentTemplate="{DynamicResource {x:Static i:DataViewControl.CheckTemplate}}"
+                HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <!-- Name -->
+            <Grid Grid.Row="1" i:XGrid.AutoColumns="True" i:XGrid.Columns="Auto,*"
+                i:XPanel.Spacing="0,0,5,0"
+                Margin="0,5,0,0"
+                Visibility="{i:Bind Model.ShowName, Convert=Data:ConvertBooleanToVisibility, From=FindAncestor, FromType=i:DataViewControl}">
+                <!-- Bullet -->
+                <ContentPresenter Content="{i:Bind}" ContentTemplate="{DynamicResource {x:Static i:DataViewControl.BulletTemplate}}"/>
+                <!-- Name -->
+                <ContentPresenter Content="{i:Bind}" ContentTemplate="{i:Bind View.ItemNameTemplate, From=FindAncestor, FromType=ListView}"/>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <!-- Tile -->
+    <DataTemplate x:Key="{x:Static i:DataViewControl.ViewTileItemTemplate}">
+        <Grid i:XGrid.AutoColumns="True" i:XGrid.Columns="Auto,Auto,Auto,*"
+            i:XPanel.Spacing="0,0,5,0" i:XPanel.VerticalContentAlignment="Center">
+            <Grid.Resources>
+                <Data:Reference x:Key="Control" Data="{i:Bind From=FindAncestor, FromType=i:DataViewControl}"/>
+            </Grid.Resources>
+            <!-- Check -->
+            <ContentPresenter Content="{i:Bind}" ContentTemplate="{DynamicResource {x:Static i:DataViewControl.CheckTemplate}}"/>
+            <!-- Bullet -->
+            <ContentPresenter Content="{i:Bind}" ContentTemplate="{DynamicResource {x:Static i:DataViewControl.BulletTemplate}}"/>
+            <!-- Image -->
+            <ContentPresenter Content="{i:Bind}" ContentTemplate="{i:Bind View.ItemImageTemplate, From=FindAncestor, FromType=ListView}"/>
+            <!-- Name + Description + Detail 1 -->
+            <Grid i:XGrid.AutoRows="True" i:XGrid.Rows="Auto,Auto,Auto"
+                i:XPanel.Spacing="0,0,0,5">
+                <Grid.Visibility>
+                    <Data:MultiBindTrue For="Any" Result="Visibility">
+                        <i:Bind From="FindAncestor" FromType="i:DataViewControl" Path="Model.ShowDescription"/>
+                        <i:Bind From="FindAncestor" FromType="i:DataViewControl" Path="Model.ShowDetail1"/>
+                        <i:Bind From="FindAncestor" FromType="i:DataViewControl" Path="Model.ShowName"/>
+                    </Data:MultiBindTrue>
+                </Grid.Visibility>
+                <!-- Name -->
+                <ContentPresenter Content="{i:Bind}" ContentTemplate="{i:Bind View.ItemNameTemplate, From=FindAncestor, FromType=ListView}"
+                    Visibility="{i:Bind Model.ShowName, Convert=Data:ConvertBooleanToVisibility, From=FindAncestor, FromType=i:DataViewControl}"/>
+                <!-- Description -->
+                <ContentPresenter Content="{i:Bind}" ContentTemplate="{i:Bind View.ItemDescriptionTemplate, From=FindAncestor, FromType=ListView}"
+                    Visibility="{i:Bind Model.ShowDescription, Convert=Data:ConvertBooleanToVisibility, From=FindAncestor, FromType=i:DataViewControl}"/>
+                <!-- Detail 1 -->
+                <ContentPresenter Content="{i:Bind}" ContentTemplate="{i:Bind View.ItemDetail1Template, From=FindAncestor, FromType=ListView}"
+                    Visibility="{i:Bind Model.ShowDetail1, Convert=Data:ConvertBooleanToVisibility, From=FindAncestor, FromType=i:DataViewControl}"/>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <!--#endregion-->
+
+    <!--#region Control > Template > Selector-->
+
+    <DataTemplate x:Key="{x:Static i:DataViewControl.ControlSelectorTemplate}">
+        <i:Element>
+            <i:Element.Resources>
+                <Data:Reference x:Key="Control" Data="{i:Bind From=FindAncestor, FromType=i:DataViewControl}"/>
+            </i:Element.Resources>
+            <ListView ItemsSource="{i:Bind Data.Model.ItemView, Source={StaticResource Control}}"
+                AllowDrop="{i:Bind Data.Model.CanDrop, Source={StaticResource Control}}"
+                Background="Transparent"
+                BorderThickness="0"
+                g:DragDrop.DropHandler="{i:Bind Data.Model.DropHandler, Source={StaticResource Control}}"
+                g:DragDrop.IsDropTarget="{i:Bind Data.Model.CanDrop, Source={StaticResource Control}}"
+                i:XItemsControl.CanDragSelect="{i:Bind Data.Model.CanDragSelect, Source={StaticResource Control}}"
+                i:XItemsControl.ContainerIndexEnable="True"
+                i:XItemsControl.KeySelect="{i:Bind Data.Model.CanKeySelect, Source={StaticResource Control}}"
+                i:XItemsControl.KeySelectProperty="{i:Bind Data.Model.KeySelectProperty, Source={StaticResource Control}}"
+                i:XItemsControl.EmptyTemplate="{i:Bind Data.NoItemTemplate, Source={StaticResource Control}}"
+                i:XItemsControl.GroupStyle="{DynamicResource {x:Static i:XItemsControl.GroupStyleKey}}"
+                i:XElement.Reference="{i:Bind Data.Model, Source={StaticResource Control}}"
+                i:XElement.ReferenceKey="{x:Static Core1:DataPanel.SelectorKey}"
+                SelectionMode="Extended">
+                <ListView.Resources>
+                    <Data:Reference x:Key="ListView" Data="{Data:Ancestor Child, i:Element}"/>
+                </ListView.Resources>
+                <ListView.Style>
+                    <Style TargetType="ListView" BasedOn="{StaticResource {x:Type ListView}}">
+                        <Setter Property="Padding" Value="{i:Bind Data.Padding, Source={StaticResource Control}}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Data:Is View, From=Self, Type=i:DefaultView}" Value="True">
+                                <Setter Property="ItemContainerStyle"
+                                    Value="{i:Bind View.ItemStyle, From=Self}"/>
+                                <Setter Property="ItemTemplate" 
+                                    Value="{i:Bind View.ItemTemplate, From=Self}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Data:Is View, From=Self, Type=i:DataView}" Value="True">
+                                <Setter Property="i:XElement.Wheel" Value="True"/>
+                                <Setter Property="i:XElement.WheelIncrement" 
+                                    Value="{i:Bind View.ItemSizeIncrement, From=Self}"/>
+                                <Setter Property="i:XElement.WheelMaximum" 
+                                    Value="{i:Bind View.ItemSizeMaximum, From=Self}"/>
+                                <Setter Property="i:XElement.WheelMinimum" 
+                                    Value="{i:Bind View.ItemSizeMinimum, From=Self}"/>
+                                <Setter Property="i:XElement.WheelValue" 
+                                    Value="{i:Bind View.ItemSize, From=Self, Way=2}"/>
+                            </DataTrigger>
+
+                            <!-- View = Block -->
+                            <DataTrigger Binding="{i:Bind Data.Model.View, Source={StaticResource Control}}" Value="{x:Static i:DataViews.Block}">
+                                <Setter Property="ItemsPanel">
+                                    <Setter.Value>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel/>
+                                        </ItemsPanelTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"/>
+                                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+                                <Setter Property="View">
+                                    <Setter.Value>
+                                        <i:DataView
+                                            ItemDescriptionTemplate="{DynamicResource {x:Static i:DataViewControl.ItemDescriptionTemplateKey}}"
+                                            ItemDetail1Template="{DynamicResource {x:Static i:DataViewControl.ItemDetail1TemplateKey}}"
+                                            ItemDetail2Template="{DynamicResource {x:Static i:DataViewControl.ItemDetail2TemplateKey}}"
+                                            ItemImageTemplate="{DynamicResource {x:Static i:DataViewControl.ItemImageTemplateKey}}"
+                                            ItemNameTemplate="{DynamicResource {x:Static i:DataViewControl.ItemNameTemplateKey}}"
+                                            ItemStyle="{DynamicResource {x:Static i:DataViewControl.ViewBlockItemStyle}}"
+                                            ItemTemplate="{DynamicResource {x:Static i:DataViewControl.ViewBlockItemTemplate}}"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                            <!-- View = Detail -->
+                            <DataTrigger Binding="{i:Bind Data.Model.View, Source={StaticResource Control}}" Value="{x:Static i:DataViews.Detail}">
+                                <Setter Property="ItemContainerStyle" Value="{DynamicResource {x:Static i:DataViewControl.ViewDetailItemStyle}}"/>
+                                <Setter Property="Margin" Value="0,-1,0,0"/>
+                                <Setter Property="Padding" Value="0,5"/>
+                                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+                                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+                                <Setter Property="View">
+                                    <Setter.Value>
+                                        <GridView AllowsColumnReorder="{i:Bind Data.Model.CanReorderColumns, Source={StaticResource Control}}"
+                                            i:XGridView.Columns="{i:Bind Data.Columns, Source={StaticResource Control}}"
+                                            i:XGridView.ColumnVisibility="{i:Bind Data.Model.ShowColumns, Mode=TwoWay, Source={StaticResource Control}}">
+                                            <!--
+                                            CanUserAddRows="{i:Bind Data.Model.CanAddRows, Source={StaticResource Control}}"
+                                            CanUserDeleteRows="{i:Bind Data.Model.CanDeleteRows, Source={StaticResource Control}}"
+                                            CanUserResizeColumns="{i:Bind Data.Model.CanResizeColumns, Source={StaticResource Control}}"
+                                            CanUserResizeRows="{i:Bind Data.Model.CanResizeRows, Source={StaticResource Control}}"
+                                            CanUserSortColumns="{i:Bind Data.Model.CanSortColumns, Source={StaticResource Control}}"
+                                            -->
+                                            <!-- Check -->
+                                            <GridViewColumn Width="32" Header="{i:Bind Data.Model, Source={StaticResource Control}}">
+                                                <GridViewColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <ContentPresenter Content="{i:Bind}" ContentTemplate="{DynamicResource {x:Static i:DataViewControl.CheckTemplate}}"
+                                                            HorizontalAlignment="Center"/>
+                                                    </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                                <GridViewColumn.HeaderTemplate>
+                                                    <DataTemplate>
+                                                        <CheckBox HorizontalAlignment="Center"
+                                                            i:XCheckBox.CheckedCommand="{i:Bind SelectAllCommand}"
+                                                            i:XCheckBox.UncheckedCommand="{i:Bind UnselectAllCommand}"/>
+                                                    </DataTemplate>
+                                                </GridViewColumn.HeaderTemplate>
+                                            </GridViewColumn>
+                                            <!-- Image -->
+                                            <GridViewColumn Width="32" CellTemplate="{DynamicResource {x:Static i:DataViewControl.ItemImageTemplateKey}}"/>
+                                            <!-- Name -->
+                                            <GridViewColumn Width="128" Header="{i:Bind Data.Model.ItemNameLabel, Source={StaticResource Control}}" 
+                                                i:XGridViewColumn.CanSort="True"
+                                                i:XGridViewColumn.SortName="Name">
+                                                <GridViewColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <Grid i:XGrid.AutoColumns="True" i:XGrid.Columns="Auto,*"
+                                                            i:XPanel.Spacing="0,0,5,0">
+                                                            <!-- Bullet -->
+                                                            <ContentPresenter Content="{i:Bind}" ContentTemplate="{DynamicResource {x:Static i:DataViewControl.BulletTemplate}}"/>
+                                                            <!-- Name -->
+                                                            <ContentPresenter Content="{i:Bind}" ContentTemplate="{DynamicResource {x:Static i:DataViewControl.ItemNameTemplateKey}}"/>
+                                                        </Grid>
+                                                    </DataTemplate>
+                                                </GridViewColumn.CellTemplate>
+                                            </GridViewColumn>
+                                            <!-- Description -->
+                                            <GridViewColumn Width="180" Header="{i:Bind Data.Model.ItemDescriptionLabel, Source={StaticResource Control}}" 
+                                                CellTemplate="{DynamicResource {x:Static i:DataViewControl.ItemDescriptionTemplateKey}}"
+                                                i:XGridViewColumn.CanSort="True"
+                                                i:XGridViewColumn.SortName="{i:Bind Data.ItemDescriptionSortName, Source={StaticResource Control}}"/>
+                                        </GridView>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                            <!-- View = Page -->
+                            <DataTrigger Binding="{i:Bind Data.Model.View, Source={StaticResource Control}}" Value="{x:Static i:DataViews.Page}">
+                                <Setter Property="ItemsPanel">
+                                    <Setter.Value>
+                                        <ItemsPanelTemplate>
+                                            <Grid/>
+                                        </ItemsPanelTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"/>
+                                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden"/>
+                                <Setter Property="View">
+                                    <Setter.Value>
+                                        <i:PageView
+                                            ItemDescriptionTemplate="{DynamicResource {x:Static i:DataViewControl.ItemDescriptionTemplateKey}}"
+                                            ItemDetail1Template="{DynamicResource {x:Static i:DataViewControl.ItemDetail1TemplateKey}}"
+                                            ItemDetail2Template="{DynamicResource {x:Static i:DataViewControl.ItemDetail2TemplateKey}}"
+                                            ItemImageTemplate="{DynamicResource {x:Static i:DataViewControl.ItemImageTemplateKey}}"
+                                            ItemNameTemplate="{DynamicResource {x:Static i:DataViewControl.ItemNameTemplateKey}}"
+                                            ItemStyle="{DynamicResource {x:Static i:DataViewControl.ViewPageItemStyle}}"
+                                            ItemTemplate="{DynamicResource {x:Static i:DataViewControl.ViewPageItemTemplate}}"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                            <!-- View = Slide -->
+                            <DataTrigger Binding="{i:Bind Data.Model.View, Source={StaticResource Control}}" Value="{x:Static i:DataViews.Slide}">
+                                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"/>
+                                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden"/>
+                                <Setter Property="View">
+                                    <Setter.Value>
+                                        <i:SlideView
+                                            ItemDescriptionTemplate="{DynamicResource {x:Static i:DataViewControl.ItemDescriptionTemplateKey}}"
+                                            ItemDetail1Template="{DynamicResource {x:Static i:DataViewControl.ItemDetail1TemplateKey}}"
+                                            ItemDetail2Template="{DynamicResource {x:Static i:DataViewControl.ItemDetail2TemplateKey}}"
+                                            ItemImageTemplate="{DynamicResource {x:Static i:DataViewControl.ItemImageTemplateKey}}"
+                                            ItemNameTemplate="{DynamicResource {x:Static i:DataViewControl.ItemNameTemplateKey}}"
+                                            ItemStyle="{DynamicResource {x:Static i:DataViewControl.ViewSlideItemStyle}}"
+                                            ItemTemplate="{DynamicResource {x:Static i:DataViewControl.ViewSlideItemTemplate}}"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                            <!-- View = Thumb -->
+                            <DataTrigger Binding="{i:Bind Data.Model.View, Source={StaticResource Control}}" Value="{x:Static i:DataViews.Thumb}">
+                                <Setter Property="View">
+                                    <Setter.Value>
+                                        <i:DataView
+                                            ItemDescriptionTemplate="{DynamicResource {x:Static i:DataViewControl.ItemDescriptionTemplateKey}}"
+                                            ItemDetail1Template="{DynamicResource {x:Static i:DataViewControl.ItemDetail1TemplateKey}}"
+                                            ItemDetail2Template="{DynamicResource {x:Static i:DataViewControl.ItemDetail2TemplateKey}}"
+                                            ItemHeight="{i:Bind ItemSize, From=Self}"
+                                            ItemImageTemplate="{DynamicResource {x:Static i:DataViewControl.ItemImageTemplateKey}}"
+                                            ItemNameTemplate="{DynamicResource {x:Static i:DataViewControl.ItemNameTemplateKey}}"
+                                            ItemSize="{i:Bind Data.Model.ViewThumbSize, Source={StaticResource Control}}"
+                                            ItemSizeIncrement="1"
+                                            ItemSizeMaximum="512"
+                                            ItemSizeMinimum="16"
+                                            ItemStyle="{DynamicResource {x:Static i:DataViewControl.ViewThumbItemStyle}}"
+                                            ItemTemplate="{DynamicResource {x:Static i:DataViewControl.ViewThumbItemTemplate}}"
+                                            ItemWidth="{i:Bind ItemSize, From=Self}"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                            <!-- View = Tile -->
+                            <DataTrigger Binding="{i:Bind Data.Model.View, Source={StaticResource Control}}" Value="{x:Static i:DataViews.Tile}">
+                                <Setter Property="View">
+                                    <Setter.Value>
+                                        <i:DataView
+                                            ItemDescriptionTemplate="{DynamicResource {x:Static i:DataViewControl.ItemDescriptionTemplateKey}}"
+                                            ItemDetail1Template="{DynamicResource {x:Static i:DataViewControl.ItemDetail1TemplateKey}}"
+                                            ItemDetail2Template="{DynamicResource {x:Static i:DataViewControl.ItemDetail2TemplateKey}}"
+                                            ItemImageTemplate="{DynamicResource {x:Static i:DataViewControl.ItemImageTemplateKey}}"
+                                            ItemNameTemplate="{DynamicResource {x:Static i:DataViewControl.ItemNameTemplateKey}}"
+                                            ItemSize="{i:Bind Data.Model.ViewTileWidth, Source={StaticResource Control}}"
+                                            ItemSizeIncrement="1"
+                                            ItemSizeMaximum="512"
+                                            ItemSizeMinimum="16"
+                                            ItemStyle="{DynamicResource {x:Static i:DataViewControl.ViewTileItemStyle}}"
+                                            ItemTemplate="{DynamicResource {x:Static i:DataViewControl.ViewTileItemTemplate}}"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+
+                            <!-- Horizontal | View = Slide -->
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{i:Bind Data.Model.View, Source={StaticResource Control}}" Value="{x:Static i:DataViews.Slide}"/>
+                                    <Condition Binding="{i:Bind Data.Model.ViewSlideOrientation, Source={StaticResource Control}}" Value="{x:Static Base1:Orient.Horizontal}"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="ItemsPanel">
+                                    <Setter.Value>
+                                        <ItemsPanelTemplate>
+                                            <UniformGrid Columns="{i:Bind Data.Model.ViewSlideColumns, Source={StaticResource Control}}"/>
+                                        </ItemsPanelTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </MultiDataTrigger>
+                            <!-- Horizontal | View = Thumb -->
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{i:Bind Data.Model.View, Source={StaticResource Control}}" Value="{x:Static i:DataViews.Thumb}"/>
+                                    <Condition Binding="{i:Bind Data.Model.ViewThumbOrientation, Source={StaticResource Control}}" Value="{x:Static Base1:Orient.Horizontal}"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="ItemsPanel">
+                                    <Setter.Value>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel Orientation="Horizontal"
+                                                ItemHeight="{Data:Ancestor Model.ViewThumbSize, i:DataViewControl}"
+                                                ItemWidth="{Data:Ancestor Model.ViewThumbSize, i:DataViewControl}"
+                                                Width="{Data:Ancestor ActualWidth, ScrollContentPresenter}"/>
+                                        </ItemsPanelTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"/>
+                                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+                            </MultiDataTrigger>
+                            <!-- Horizontal | View = Tile -->
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{i:Bind Data.Model.View, Source={StaticResource Control}}" Value="{x:Static i:DataViews.Tile}"/>
+                                    <Condition Binding="{i:Bind Data.Model.ViewTileOrientation, Source={StaticResource Control}}" Value="{x:Static Base1:Orient.Horizontal}"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="ItemsPanel">
+                                    <Setter.Value>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel Orientation="Horizontal"
+                                                Width="{Data:Ancestor ActualWidth, ScrollContentPresenter}"/>
+                                        </ItemsPanelTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"/>
+                                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+                            </MultiDataTrigger>
+
+                            <!-- Vertical | View = Slide -->
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{i:Bind Data.Model.View, Source={StaticResource Control}}" Value="{x:Static i:DataViews.Slide}"/>
+                                    <Condition Binding="{i:Bind Data.Model.ViewSlideOrientation, Source={StaticResource Control}}" Value="{x:Static Base1:Orient.Vertical}"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="ItemsPanel">
+                                    <Setter.Value>
+                                        <ItemsPanelTemplate>
+                                            <UniformGrid Rows="{i:Bind Data.Model.ViewSlideColumns, Source={StaticResource Control}}"/>
+                                        </ItemsPanelTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </MultiDataTrigger>
+                            <!-- Vertical | View = Thumb -->
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{i:Bind Data.Model.View, Source={StaticResource Control}}" Value="{x:Static i:DataViews.Thumb}"/>
+                                    <Condition Binding="{i:Bind Data.Model.ViewThumbOrientation, Source={StaticResource Control}}" Value="{x:Static Base1:Orient.Vertical}"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="ItemsPanel">
+                                    <Setter.Value>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel Orientation="Vertical"
+                                                Height="{Data:Ancestor ActualHeight, ScrollContentPresenter}"
+                                                ItemHeight="{Data:Ancestor Model.ViewThumbSize, i:DataViewControl}"
+                                                ItemWidth="{Data:Ancestor Model.ViewThumbSize, i:DataViewControl}"/>
+                                        </ItemsPanelTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+                                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden"/>
+                            </MultiDataTrigger>
+                            <!-- Vertical | View = Tile -->
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{i:Bind Data.Model.View, Source={StaticResource Control}}" Value="{x:Static i:DataViews.Tile}"/>
+                                    <Condition Binding="{i:Bind Data.Model.ViewTileOrientation, Source={StaticResource Control}}" Value="{x:Static Base1:Orient.Vertical}"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="ItemsPanel">
+                                    <Setter.Value>
+                                        <ItemsPanelTemplate>
+                                            <WrapPanel Orientation="Vertical"
+                                                Height="{Data:Ancestor ActualHeight, ScrollContentPresenter}"/>
+                                        </ItemsPanelTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+                                <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden"/>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListView.Style>
+            </ListView>
+        </i:Element>
+    </DataTemplate>
+
+    <!--#endregion-->
+
+    <!--#region Control > Template > Model-->
+
+    <DataTemplate x:Key="{x:Static i:DataViewControl.ControlModelTemplate}">
+        <Grid x:Name="PART_Grid" i:XGrid.Columns="Auto,*,Auto" i:XGrid.Rows="*">
+            <i:ImageButton x:Name="PART_Backward" Source="{i:Image Key=ArrowLeft}" 
+                Command="{i:Bind SlideBackwardCommand}" 
+                HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                Margin="5,0"
+                Visibility="Collapsed"/>
+            <ContentPresenter Grid.Column="1" Grid.Row="1" Content="{i:Bind}"
+                i:Display.Condition="{i:Equal Items, Value={x:Null}}" 
+                i:Display.ConditionalTemplate="{Data:Ancestor NoItemSourceTemplate, i:DataViewControl}"
+                i:Display.DefaultTemplate="{DynamicResource {x:Static i:DataViewControl.ControlSelectorTemplate}}"/>
+            <i:ImageButton Grid.Column="2" Grid.Row="2" x:Name="PART_Foreward" Source="{i:Image Key=ArrowRight}" 
+                Command="{i:Bind SlideForewardCommand}" 
+                HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                Margin="5,0"
+                Visibility="Collapsed"/>
+        </Grid>
+        <DataTemplate.Triggers>
+            <DataTrigger Binding="{i:Bind View}" Value="{x:Static i:DataViews.Page}">
+                <Setter TargetName="PART_Backward" Property="Visibility" Value="Visible"/>
+                <Setter TargetName="PART_Foreward" Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+            <DataTrigger Binding="{i:Bind View}" Value="{x:Static i:DataViews.Slide}">
+                <Setter TargetName="PART_Backward" Property="Visibility" Value="Visible"/>
+                <Setter TargetName="PART_Foreward" Property="Visibility" Value="Visible"/>
+            </DataTrigger>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{i:Bind View}" Value="{x:Static i:DataViews.Slide}"/>
+                    <Condition Binding="{i:Bind ViewSlideOrientation}" Value="{x:Static Base1:Orient.Vertical}"/>
+                </MultiDataTrigger.Conditions>
+                <Setter TargetName="PART_Grid" Property="i:XGrid.Columns" Value="*"/>
+                <Setter TargetName="PART_Grid" Property="i:XGrid.Rows" Value="Auto,*,Auto"/>
+
+                <Setter TargetName="PART_Backward" Property="Source" Value="{i:Image Key=ArrowUp}"/>
+                <Setter TargetName="PART_Foreward" Property="Source" Value="{i:Image Key=ArrowDown}"/>
+
+                <Setter TargetName="PART_Backward" Property="Margin" Value="0,5"/>
+                <Setter TargetName="PART_Foreward" Property="Margin" Value="0,5"/>
+
+                <Setter TargetName="PART_Backward" Property="HorizontalAlignment" Value="Center"/>
+                <Setter TargetName="PART_Foreward" Property="HorizontalAlignment" Value="Center"/>
+
+                <Setter TargetName="PART_Backward" Property="VerticalAlignment" Value="Stretch"/>
+                <Setter TargetName="PART_Foreward" Property="VerticalAlignment" Value="Stretch"/>
+            </MultiDataTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+
+    <!--#endregion-->
+
+    <!--#region Control > Template-->
+
+    <ControlTemplate x:Key="{x:Static i:DataViewControl.TemplateKey}" TargetType="{x:Type i:DataViewControl}">
+        <Border
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            CornerRadius="{TemplateBinding Border.CornerRadius}">
+            <ContentPresenter Content="{TemplateBinding Model}" ContentTemplate="{DynamicResource {x:Static i:DataViewControl.ControlModelTemplate}}"/>
+        </Border>
+    </ControlTemplate>
+
+    <!--#endregion-->
+
+    <!--#region Control-->
+
+    <Style x:Key="{x:Type i:DataViewControl}" TargetType="{x:Type i:DataViewControl}" BasedOn="{StaticResource {x:Type i:DataControl}}">
+        <Setter Property="Columns">
+            <Setter.Value>
+                <Collections0:ListObservable>
+                    <GridViewColumn Width="86" Header="{l:Loc Created}"
+                        i:XGridViewColumn.CanSort="True"
+                        i:XGridViewColumn.SortName="Created">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{i:Bind Created, Convert=Data:ConvertToStringTimeRelative}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Width="86" Header="{l:Loc LastModified}" 
+                        i:XGridViewColumn.CanSort="True"
+                        i:XGridViewColumn.SortName="LastModified">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{i:Bind LastModified, Convert=Data:ConvertToStringTimeRelative}"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </Collections0:ListObservable>
+            </Setter.Value>
+        </Setter>
+        <!--
+        <Setter Property="ItemContextMenu">
+            <Setter.Value>
+                <i:ObjectMenu i:XObjectControl.Source="{Data:BindSection PlacementTarget.Tag.Model, From=Self, Section=ItemOption}"/>
+            </Setter.Value>
+        </Setter>
+        -->
+        <Setter Property="ItemDescriptionSortName" Value="Description"/>
+        <Setter Property="ItemDescriptionTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock x:Name="Description" Text="{i:Bind Description}" Opacity="0.5" TextTrimming="CharacterEllipsis" ToolTip="{i:Bind From=Self, Path=Text}"/>
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{i:Bind Description}" Value="{i:String Key=Empty}">
+                            <Setter TargetName="Description" Property="FontStyle" Value="Italic"/>
+                            <Setter TargetName="Description" Property="Text" Value="{i:Text NoDescription}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{i:Bind Description}" Value="{x:Null}">
+                            <Setter TargetName="Description" Property="FontStyle" Value="Italic"/>
+                            <Setter TargetName="Description" Property="Text" Value="{i:Text NoDescription}"/>
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemDescriptionTemplateSelector" Value="{x:Null}"/>
+        <Setter Property="ItemImageTemplate" Value="{x:Null}"/>
+        <Setter Property="ItemImageTemplateSelector" Value="{x:Null}"/>
+        <Setter Property="ItemNameTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBox BorderThickness="0" Padding="0" Text="{i:Bind Name, Trigger=PropertyChanged, Way=2}"
+                        FontWeight="Bold"
+                        Foreground="{Data:Ancestor Foreground, {x:Type ListViewItem}}"
+                        i:XTextBox.CanLabel="True"
+                        i:XTextBox.ClearButtonVisibility="Collapsed"
+                        i:XTextBox.Label="{i:Bind Name}"
+                        i:XTextBox.EditMouseEvent="DelayedMouseDown"
+                        i:XTextBox.IsEditable="False"
+                        i:XTextBoxBase.Placeholder="{i:Text Name}"
+                        ToolTip="{i:Bind From=Self, Path=Text}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemNameTemplateSelector" Value="{x:Null}"/>
+        <Setter Property="ItemToolTipTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock x:Name="Description" Opacity="0.5" Text="{i:Bind Description}" TextAlignment="Center" TextWrapping="Wrap"/>
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{i:Bind Description}" Value="{i:String Key=Empty}">
+                            <Setter TargetName="Description" Property="FontStyle" Value="Italic"/>
+                            <Setter TargetName="Description" Property="Text" Value="{i:Text NoDescription}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{i:Bind Description}" Value="{x:Null}">
+                            <Setter TargetName="Description" Property="FontStyle" Value="Italic"/>
+                            <Setter TargetName="Description" Property="Text" Value="{i:Text NoDescription}"/>
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemToolTipHeaderTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock x:Name="Text" Text="{i:Bind Name}"/>
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding="{i:Bind Name}" Value="{i:String Key=Empty}">
+                            <Setter TargetName="Text" Property="FontStyle" Value="Italic"/>
+                            <Setter TargetName="Text" Property="Text" Value="{i:Text NoName}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{i:Bind Name}" Value="{x:Null}">
+                            <Setter TargetName="Text" Property="FontStyle" Value="Italic"/>
+                            <Setter TargetName="Text" Property="Text" Value="{i:Text NoName}"/>
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemToolTipHeaderIconTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <i:Display Content="{i:Bind Value}" ContentTemplate="{DynamicResource {x:Static i:ObjectControlKey.ObjectImage}}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="Template" Value="{StaticResource {x:Static i:DataViewControl.TemplateKey}}"/>
+    </Style>
+
+    <!--#endregion-->
+
+    <!--#endregion-->
+
+    <!--#region ItemViewControl-->
+
+    <!--#region Item > Name-->
+
+    <DataTemplate x:Key="{x:Static i:ItemViewControl.ItemNameLabelTemplate}">
+        <TextBlock
+            i:XTextBlock.SplitText="{i:Bind}"
+            i:XTextBlock.SplitTextCase="{i:Bind Model.SearchOptions.Case, From=FindAncestor, FromType=i:DataViewControl}"
+            i:XTextBlock.SplitTextCondition="{i:Bind Model.SearchOptions.Condition, From=FindAncestor, FromType=i:DataViewControl}"
+            i:XTextBlock.SplitTextKey="{i:Bind Model.SearchText, From=FindAncestor, FromType=i:DataViewControl}"
+            i:XTextBlock.SplitTextWord="{i:Bind Model.SearchOptions.Word, From=FindAncestor, FromType=i:DataViewControl}"
+            TextTrimming="CharacterEllipsis">
+            <i:XTextBlock.SplitTextStyle>
+                <Style TargetType="Run">
+                    <Setter Property="Background" Value="{i:Theme Accent}"/>
+                    <Setter Property="Foreground" Value="{i:Theme AccentForeground}"/>
+                </Style>
+            </i:XTextBlock.SplitTextStyle>
+        </TextBlock>
+    </DataTemplate>
+
+    <Style x:Key="{x:Static i:ItemViewControl.ItemNameStyle}" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+        <Setter Property="Foreground" Value="{Data:Ancestor Foreground, {x:Type ListViewItem}}"/>
+        <Setter Property="i:XTextBox.CanLabel" Value="True"/>
+        <Setter Property="i:XTextBox.EditMouseEvent" Value="DelayedMouseDown"/>
+        <Setter Property="i:XTextBoxBase.Ignore" Value="{x:Static Storage0:FilePath.InvalidCharacters}"/>
+        <Setter Property="i:XTextBox.IsEditable" Value="False"/>
+        <Setter Property="i:XTextBox.Label" Value="{i:Bind Path, Convert={x:Type Data:ConvertFileName}, ConverterParameter=1}"/>
+        <Setter Property="i:XTextBox.LabelTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <ContentPresenter Content="{i:Bind}" 
+                        i:Display.Condition="{i:Equal Model.SearchName, From=FindAncestor, FromType=i:DataViewControl, Value=Name}"
+                        i:Display.ConditionalTemplate="{DynamicResource {x:Static i:ItemViewControl.ItemNameLabelTemplate}}">
+                        <i:Display.DefaultTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{i:Bind}"
+                                    TextTrimming="CharacterEllipsis"/>
+                            </DataTemplate>
+                        </i:Display.DefaultTemplate>
+                    </ContentPresenter>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XTextBoxBase.TextTrimming" Value="CharacterEllipsis"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Text" Value="{i:Bind Path, Convert={x:Type Data:ConvertFileName}, ConverterParameter=1}"/>
+        <Style.Triggers>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{i:Bind Type}" Value="File"/>
+                    <Condition Binding="{Data:Ancestor Model.ShowFileExtensions, i:ItemViewControl}" Value="False"/>
+                </MultiDataTrigger.Conditions>
+                <Setter Property="i:XTextBox.Label" Value="{i:Bind Path, Convert={x:Type Data:ConvertFileName}, ConverterParameter=0}"/>
+                <Setter Property="Text" Value="{i:Bind Path, Convert={x:Type Data:ConvertFileName}, ConverterParameter=0}"/>
+            </MultiDataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <DataTemplate x:Key="{x:Static i:ItemViewControl.ItemNameLeftTemplate}">
+        <TextBox Style="{DynamicResource {x:Static i:ItemViewControl.ItemNameStyle}}"
+            HorizontalContentAlignment="Left"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="{x:Static i:ItemViewControl.ItemNameCenterTemplate}">
+        <TextBox Style="{DynamicResource {x:Static i:ItemViewControl.ItemNameStyle}}"
+            HorizontalContentAlignment="Center"/>
+    </DataTemplate>
+
+    <!--#endregion-->
+
+    <!--#region Item > Description-->
+
+    <DataTemplate x:Key="{x:Static i:ItemViewControl.DriveDescriptionTemplate}">
+        <ProgressBar Value="{i:Bind AvailableSize, Convert=Data:ConvertInt64ToDouble}"
+            HorizontalAlignment="Stretch"
+            Height="12"
+            i:XProgressBar.Content="{i:Bind}"
+            Margin="0,2"
+            Maximum="{i:Bind TotalSize, Convert=Data:ConvertInt64ToDouble}"
+            Minimum="0">
+            <i:XProgressBar.ContentTemplate>
+                <DataTemplate>
+                    <TextBlock Foreground="{i:Theme Text}" Text="{i:Bind Path, Convert=Data:ConvertDriveSizeUsedPercent, StringFormat={}{0:p0}}"/>
+                </DataTemplate>
+            </i:XProgressBar.ContentTemplate>
+        </ProgressBar>
+    </DataTemplate>
+
+    <DataTemplate x:Key="{x:Static i:ItemViewControl.FileDescriptionTemplate}">
+        <TextBlock Text="{i:Bind Path, Convert=Data:ConvertItemDescription}"
+            i:XTextBlock.FontScale="0.9"
+            Opacity="0.8"
+            TextTrimming="CharacterEllipsis"/>
+    </DataTemplate>
+
+    <!--#endregion-->
+
+    <!--#region Item > Detail (1 | 2)-->
+
+    <DataTemplate x:Key="{x:Static i:ItemViewControl.DriveDetail1Template}">
+        <TextBlock 
+            i:XTextBlock.FontScale="0.9"
+            Opacity="0.8"
+            Text="{i:Bind Format}"
+            TextTrimming="CharacterEllipsis"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="{x:Static i:ItemViewControl.DriveDetail2Template}">
+        <TextBlock 
+            i:XTextBlock.FontScale="0.9"
+            Opacity="0.8"
+            TextTrimming="CharacterEllipsis">
+            <Run Text="{i:Bind AvailableSize, Convert={x:Type Data:ConvertFileSize}}" 
+                FontStyle="Italic"/>
+            <Run Text="free of"/>
+            <Run Text="{i:Bind TotalSize, Convert={x:Type Data:ConvertFileSize}}"
+                FontStyle="Italic"/>
+        </TextBlock>
+    </DataTemplate>
+
+    <DataTemplate x:Key="{x:Static i:ItemViewControl.FileDetail1Template}">
+        <TextBlock 
+            i:XTextBlock.FontScale="0.9"
+            Opacity="0.8"
+            TextTrimming="CharacterEllipsis">
+            <Run Text="Modified"/>
+            <Run Text="{i:Bind LastModified, Convert=Data:ConvertToStringTimeRelative}"
+                FontStyle="Italic"/>
+        </TextBlock>
+    </DataTemplate>
+
+    <DataTemplate x:Key="{x:Static i:ItemViewControl.FileDetail2Template}">
+        <TextBlock FontSize="12"
+            i:XTextBlock.FontScale="0.9"
+            Opacity="0.8"
+            TextTrimming="CharacterEllipsis">
+            <TextBlock.Text>
+                <Data:MultiBind ConverterName="FileSize">
+                    <Binding Path="Size"/>
+                    <i:Bind From="FindAncestor" FromType="i:ItemViewControl" Path="Model.SizeFormat"/>
+                </Data:MultiBind>
+            </TextBlock.Text>
+        </TextBlock>
+    </DataTemplate>
+
+    <!--#endregion-->
+
+    <!--#region Item > Hidden-->
+
+    <DataTemplate x:Key="{x:Static i:ItemViewControl.HiddenIconTemplate}"/>
+
+    <!--#endregion-->
+
+    <!--#region Item > ReadOnly-->
+
+    <DataTemplate x:Key="{x:Static i:ItemViewControl.ReadOnlyIconTemplate}">
+        <Image Source="{i:Image Key=ReadOnly}"/>
+    </DataTemplate>
+
+    <!--#endregion-->
+
+    <!--#region Item > Shortcut-->
+
+    <DataTemplate x:Key="{x:Static i:ItemViewControl.ShortcutIconTemplate}">
+        <Image Source="{i:Image Shortcut.png}"/>
+    </DataTemplate>
+
+    <!--#endregion-->
+
+    <Style x:Key="{x:Type i:ItemViewControl}" TargetType="{x:Type i:ItemViewControl}" BasedOn="{StaticResource {x:Type i:DataViewControl}}">
+        <Setter Property="Columns">
+            <Setter.Value>
+                <Collections0:ListObservable>
+                    <!-- Size -->
+                    <GridViewColumn Width="32" Header="{i:Text Size}"
+                        i:XGridViewColumn.CanSort="True"
+                        i:XGridViewColumn.SortName="Size">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock 
+                                    TextTrimming="CharacterEllipsis">
+                                    <TextBlock.Text>
+                                        <Data:MultiBind ConverterName="FileSize">
+                                            <i:Bind Path="Size"/>
+                                            <i:Bind Path="Model.SizeFormat" From="FindAncestor" FromType="i:ItemViewControl"/>
+                                        </Data:MultiBind>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <!-- Created -->
+                    <GridViewColumn Width="64" Header="{i:Text Created}"
+                        i:XGridViewColumn.CanSort="True"
+                        i:XGridViewColumn.SortName="Created">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock 
+                                    Text="{i:Bind Created, Convert=Data:ConvertToStringTimeRelative}" 
+                                    TextTrimming="CharacterEllipsis"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <!-- Last accessed -->
+                    <GridViewColumn Width="64" Header="{i:Text LastAccessed}"
+                        i:XGridViewColumn.CanSort="True"
+                        i:XGridViewColumn.SortName="LastAccessed">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock 
+                                    Text="{i:Bind LastAccessed, Convert=Data:ConvertToStringTimeRelative}"
+                                    TextTrimming="CharacterEllipsis"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <!-- Last modified -->
+                    <GridViewColumn Width="64" Header="{i:Text LastModified}"
+                        i:XGridViewColumn.CanSort="True"
+                        i:XGridViewColumn.SortName="LastModified">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock 
+                                    Text="{i:Bind LastModified, Convert=Data:ConvertToStringTimeRelative}" 
+                                    TextTrimming="CharacterEllipsis"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </Collections0:ListObservable>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="DragTemplate">
+            <Setter.Value>
+                <DataTemplate DataType="Storage1:Item">
+                    <Grid i:XGrid.AutoRows="True" i:XGrid.Rows="Auto,Auto">
+                        <i:Thumbnail Path="{i:Bind Path}"
+                            Margin="0,0,10,0" 
+                            Height="64" 
+                            Width="64" 
+                            VerticalAlignment="Center"/>
+                        <TextBlock Text="{i:Bind Path, Convert=Data:ConvertFileName, ConverterParameter=0}"
+                            Foreground="White"
+                            HorizontalAlignment="Center"
+                            Margin="0,5,0,0"
+                            TextWrapping="NoWrap"
+                            TextTrimming="CharacterEllipsis"
+                            Width="64"/>
+                    </Grid>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XStorage.CopyWarningTitle" Value="{i:Text Copy}"/>
+        <Setter Property="i:XStorage.CopyWarningMessage" Value="{i:Text Continue, Suffix=?}"/>
+        <Setter Property="i:XStorage.MoveWarningTitle" Value="{i:Text Move}"/>
+        <Setter Property="i:XStorage.MoveWarningMessage" Value="{i:Text Continue, Suffix=?}"/>
+        <Setter Property="i:XStorage.Path" Value="{i:Bind Model.Path, From=Self, Mode=TwoWay}"/>
+        <Setter Property="i:XStorage.WarnBeforeDrop" Value="True"/>
+        <Setter Property="ItemContextMenu" Value="{x:Null}"/>
+        <Setter Property="ItemDescriptionSortName" Value="Type"/>
+        <Setter Property="ItemDescriptionTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <ContentPresenter Content="{i:Bind}" i:Display.Condition="{i:Equal Type, Value={x:Static Storage0:ItemType.Drive}}" 
+                        i:Display.ConditionalTemplate="{DynamicResource {x:Static i:ItemViewControl.DriveDescriptionTemplate}}"         
+                        i:Display.DefaultTemplate="{DynamicResource {x:Static i:ItemViewControl.FileDescriptionTemplate}}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemDescriptionTemplateSelector" Value="{x:Null}"/>
+        <Setter Property="ItemDetail1Template">
+            <Setter.Value>
+                <DataTemplate>
+                    <ContentPresenter Content="{i:Bind}" i:Display.Condition="{i:Equal Type, Value={x:Static Storage0:ItemType.Drive}}" 
+                        i:Display.ConditionalTemplate="{DynamicResource {x:Static i:ItemViewControl.DriveDetail1Template}}"         
+                        i:Display.DefaultTemplate="{DynamicResource {x:Static i:ItemViewControl.FileDetail1Template}}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemDetail1TemplateSelector" Value="{x:Null}"/>
+        <Setter Property="ItemDetail2Template">
+            <Setter.Value>
+                <DataTemplate>
+                    <ContentPresenter Content="{i:Bind}" i:Display.Condition="{i:Equal Type, Value={x:Static Storage0:ItemType.Drive}}" 
+                        i:Display.ConditionalTemplate="{DynamicResource {x:Static i:ItemViewControl.DriveDetail2Template}}"         
+                        i:Display.DefaultTemplate="{DynamicResource {x:Static i:ItemViewControl.FileDetail2Template}}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemDetail2TemplateSelector" Value="{x:Null}"/>
+        <Setter Property="ItemImageTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Grid>
+                        <ContentPresenter Content="{i:Bind}" i:Display.TemplateKey="{Data:Ancestor Model.View, i:ItemViewControl}">
+                            <i:Display.TemplateSelector>
+                                <i:KeyTemplateSelector>
+                                    <i:KeyTemplateSelector.Default>
+                                        <DataTemplate>
+                                            <i:Thumbnail Path="{i:Bind Path}"
+                                                Height="{Data:Ancestor Height, i:Element}" Width="{Data:Ancestor Width, i:Element}"/>
+                                        </DataTemplate>
+                                    </i:KeyTemplateSelector.Default>
+                                    <i:KeyTemplate DataKey="{x:Static i:DataViews.Page}">
+                                        <Viewbox Stretch="Fill" StretchDirection="Both">
+                                            <i:Thumbnail Path="{i:Bind Path}"/>
+                                        </Viewbox>
+                                    </i:KeyTemplate>
+                                </i:KeyTemplateSelector>
+                            </i:Display.TemplateSelector>
+                        </ContentPresenter>
+                        <Grid HorizontalAlignment="Left" VerticalAlignment="Bottom">
+                            <ContentPresenter Content="{i:Bind}" ContentTemplate="{DynamicResource {x:Static i:ItemViewControl.HiddenIconTemplate}}"
+                                Visibility="{i:Bind IsHidden, Convert=Data:ConvertBooleanToVisibility}"/>
+                            <ContentPresenter Content="{i:Bind}" ContentTemplate="{DynamicResource {x:Static i:ItemViewControl.ReadOnlyIconTemplate}}"
+                                Visibility="{i:Bind IsReadOnly, Convert=Data:ConvertBooleanToVisibility}"/>
+                            <ContentPresenter Content="{i:Bind}" ContentTemplate="{DynamicResource {x:Static i:ItemViewControl.ShortcutIconTemplate}}" 
+                                Visibility="{Data:Is Result=Visibility, Type=Storage1:Shortcut}"/>
+                        </Grid>
+                    </Grid>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemImageTemplateSelector" Value="{x:Null}"/>
+        <Setter Property="ItemNameTemplate" Value="{x:Null}"/>
+        <Setter Property="ItemNameTemplateSelector">
+            <Setter.Value>
+                <i:KeyTemplateSelector>
+                    <i:KeyTemplateSelector.Default>
+                        <DataTemplate>
+                            <ContentPresenter Content="{i:Bind}" ContentTemplate="{DynamicResource {x:Static i:ItemViewControl.ItemNameLeftTemplate}}"/>
+                        </DataTemplate>
+                    </i:KeyTemplateSelector.Default>
+                    <i:KeyTemplate DataKey="{x:Static i:DataViews.Thumb}">
+                        <ContentPresenter Content="{i:Bind}" ContentTemplate="{DynamicResource {x:Static i:ItemViewControl.ItemNameCenterTemplate}}"/>
+                    </i:KeyTemplate>
+                </i:KeyTemplateSelector>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemToolTipHeaderTemplate" Value="{x:Null}"/>
+        <Setter Property="ItemToolTipHeaderIconTemplate" Value="{x:Null}"/>
+        <Setter Property="ItemToolTipTemplate">
+            <Setter.Value>
+                <DataTemplate DataType="Storage1:Item">
+                    <ContentPresenter Content="{i:Bind Path}" ContentTemplate="{DynamicResource {x:Static i:XStorage.ToolTipTemplateKey}}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--#endregion-->
+</ResourceDictionary>

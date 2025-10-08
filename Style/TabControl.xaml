@@ -1,0 +1,215 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="clr-namespace:Ion.Controls"
+    xmlns:Data="clr-namespace:Ion.Data">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="{i:Style Key=ContextMenu}"/>
+        <ResourceDictionary Source="{i:Style Key=Menu}"/>
+        <ResourceDictionary Source="{i:Style Key=ToggleButton}"/>
+    </ResourceDictionary.MergedDictionaries>
+    <Style x:Key="{x:Type TabItem}" TargetType="{x:Type TabItem}">
+        <Setter Property="Background" Value="{i:Theme TabItemBackground}" />
+        <Setter Property="BorderBrush" Value="{i:Theme TabItemBorder}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="FontFamily" Value="{i:Bind FontFamily, AppSource=Data}"/>
+        <Setter Property="Foreground" Value="{i:Theme TabItemForeground}" />
+        <Setter Property="i:ImageElement.Foreground" Value="{i:Theme TabItemForeground}" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="Padding" Value="5,2" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TabItem}">
+                    <Border x:Name="PART_Border" 
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding Border.CornerRadius}"
+                        Margin="0,0,-1,0"
+                        Padding="{TemplateBinding Padding}" 
+                        SnapsToDevicePixels="True">
+                        <ContentPresenter x:Name="PART_Content"
+                            ContentSource="Header" 
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="{i:Theme TabItemSelectedBackground}" />
+                <Setter Property="BorderBrush" Value="{i:Theme TabItemSelectedBorder}" />
+                <Setter Property="BorderThickness" Value="1,1,1,0" />
+                <Setter Property="Cursor" Value="Arrow" />
+                <Setter Property="Foreground" Value="{i:Theme TabItemSelectedForeground}" />
+                <Setter Property="i:ImageElement.Foreground" Value="{i:Theme TabItemSelectedForeground}" />
+            </Trigger>
+            <Trigger Property="IsSelected" Value="False">
+                <Setter Property="Cursor" Value="Hand" />
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsSelected" Value="False"/>
+                    <Condition Property="IsMouseOver" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="Background" Value="{i:Theme TabItemMouseOverBackground}" />
+                <Setter Property="BorderBrush" Value="{i:Theme TabItemMouseOverBorder}" />
+                <Setter Property="Foreground" Value="{i:Theme TabItemMouseOverForeground}" />
+                <Setter Property="i:ImageElement.Foreground" Value="{i:Theme TabItemMouseOverForeground}" />
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+    
+    <Style x:Key="{x:Type TabControl}" TargetType="{x:Type TabControl}">
+        <Setter Property="Background" Value="{i:Theme TabControlBackground}"/>
+        <Setter Property="BorderBrush" Value="{i:Theme TabControlBorder}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="FontFamily" Value="{i:Bind FontFamily, AppSource=Data}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Padding" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TabControl}">
+                    <Grid 
+                        Background="{TemplateBinding Background}" 
+                        ClipToBounds="True"
+                        KeyboardNavigation.TabNavigation="Local"
+                        SnapsToDevicePixels="True">
+                        <Grid.Resources>
+                            <Data:Reference x:Key="TabControl" Data="{i:Bind From=TemplatedParent}"/>
+                        </Grid.Resources>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition x:Name="ColumnDefinition0" Width="Auto" />
+                            <ColumnDefinition x:Name="ColumnDefinition1" Width="*" />
+                            <ColumnDefinition x:Name="ColumnDefinition2" Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition x:Name="RowDefinition0" Height="Auto" />
+                            <RowDefinition x:Name="RowDefinition1" Height="*" />
+                            <RowDefinition x:Name="RowDefinition2" Height="Auto" />
+                        </Grid.RowDefinitions>
+                        <Border x:Name="PART_Header" Padding="{i:Bind From=TemplatedParent, Path=(i:XTabControl.HeaderPadding)}">
+                            <Grid x:Name="PART_HeaderGrid">
+                                <i:TabOverflowPanel x:Name="PART_TabOverflowPanel"
+                                    Orientation="{i:Bind From=TemplatedParent, Path=(i:XTabControl.OverflowPanelOrientation)}"
+                                    IsItemsHost="True"/>
+                                <i:ImageButton x:Name="PART_ImageToggleButton"
+                                    Grid.Column="1" Grid.Row="1"
+                                    HorizontalAlignment="Center" VerticalAlignment="Center"
+                                    Source="{i:Image Key=TriangleDown}"
+                                    IsChecked="{i:Bind From=TemplatedParent, Path=(i:XTabControl.IsOverflowOpen), Mode=TwoWay}">
+                                    <i:ImageButton.Menu>
+                                        <ContextMenu ItemsSource="{i:Bind Data.ItemsSource, Source={StaticResource TabControl}}" 
+                                            Style="{StaticResource {x:Type ContextMenu}}">
+                                            <ContextMenu.ItemContainerStyle>
+                                                <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                                                    <Setter Property="Command" Value="{i:Bind Path=Data.(i:XTabControl.OverflowCommand), Source={StaticResource TabControl}}" />
+                                                    <Setter Property="CommandParameter" Value="{i:Bind}" />
+                                                    <Setter Property="Header" Value="{i:Bind}" />
+                                                    <Setter Property="HeaderTemplate" Value="{i:Bind Path=Data.(i:XTabControl.OverflowHeaderTemplate), Source={StaticResource TabControl}}" />
+                                                    <Setter Property="Icon" Value="{i:Bind}" />
+                                                    <Setter Property="i:XMenuItem.IconTemplate" Value="{i:Bind Path=Data.(i:XTabControl.OverflowIconTemplate), Source={StaticResource TabControl}}" />
+                                                    <Setter Property="i:XToolTip.Header" Value="{i:Bind}" />
+                                                    <Setter Property="i:XToolTip.HeaderTemplate" Value="{i:Bind Path=Data.(i:XTabControl.OverflowToolTipHeaderTemplate), Source={StaticResource TabControl}}" />
+                                                    <Setter Property="i:XToolTip.HeaderIcon" Value="{i:Bind}" />
+                                                    <Setter Property="i:XToolTip.HeaderIconTemplate" Value="{i:Bind Path=Data.(i:XTabControl.OverflowToolTipHeaderIconTemplate), Source={StaticResource TabControl}}" />
+                                                    <Setter Property="ToolTip" Value="{i:Bind}" />
+                                                    <Setter Property="i:XToolTip.Template" Value="{i:Bind Path=Data.(i:XTabControl.OverflowToolTipTemplate), Source={StaticResource TabControl}}" />
+                                                </Style>
+                                            </ContextMenu.ItemContainerStyle>
+                                        </ContextMenu>
+                                    </i:ImageButton.Menu>
+                                </i:ImageButton>
+                            </Grid>
+                        </Border>
+                        <Border x:Name="PART_Content"
+                            Grid.Column="1" Grid.Row="1"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            KeyboardNavigation.DirectionalNavigation="Contained"
+                            KeyboardNavigation.TabIndex="2"
+                            KeyboardNavigation.TabNavigation="Local">
+                            <Grid i:XElement.Name="{x:Static i:TabControlCache.ContentKey}"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                Margin="{TemplateBinding Padding}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                <ContentPresenter ContentSource="SelectedContent"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="TabStripPlacement" Value="Top">
+                            <Setter TargetName="PART_Header" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="PART_Header" Property="Grid.ColumnSpan" Value="3"/>
+                            <Setter TargetName="PART_Header" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="PART_HeaderGrid" Property="i:XGrid.Columns" Value="*,Auto"/>
+                            <Setter TargetName="PART_HeaderGrid" Property="i:XGrid.Rows" Value="*"/>
+                        </Trigger>
+                        <Trigger Property="TabStripPlacement" Value="Bottom">
+                            <Setter TargetName="PART_Header" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="PART_Header" Property="Grid.ColumnSpan" Value="3"/>
+                            <Setter TargetName="PART_Header" Property="Grid.Row" Value="2"/>
+                            <Setter TargetName="PART_HeaderGrid" Property="i:XGrid.Columns" Value="*,Auto"/>
+                            <Setter TargetName="PART_HeaderGrid" Property="i:XGrid.Rows" Value="*"/>
+                        </Trigger>
+                        <Trigger Property="TabStripPlacement" Value="Left">
+                            <Setter TargetName="PART_Header" Property="Grid.Column" Value="0"/>
+                            <Setter TargetName="PART_Header" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="PART_Header" Property="Grid.RowSpan" Value="3"/>
+                            <Setter TargetName="PART_HeaderGrid" Property="i:XGrid.Columns" Value="*"/>
+                            <Setter TargetName="PART_HeaderGrid" Property="i:XGrid.Rows" Value="*,Auto"/>
+                        </Trigger>
+                        <Trigger Property="TabStripPlacement" Value="Right">
+                            <Setter TargetName="PART_Header" Property="Grid.Column" Value="2"/>
+                            <Setter TargetName="PART_Header" Property="Grid.Row" Value="0"/>
+                            <Setter TargetName="PART_Header" Property="Grid.RowSpan" Value="3"/>
+                            <Setter TargetName="PART_HeaderGrid" Property="i:XGrid.Columns" Value="*"/>
+                            <Setter TargetName="PART_HeaderGrid" Property="i:XGrid.Rows" Value="*,Auto"/>
+                        </Trigger>
+
+                        <Trigger Property="i:XTabControl.ContentVisibility" Value="Collapsed">
+                            <Setter TargetName="ColumnDefinition1" Property="Width" Value="0"/>
+                            <Setter TargetName="RowDefinition1" Property="Height" Value="0"/>
+                        </Trigger>
+                        <Trigger Property="i:XTabControl.HeaderVisibility" Value="Collapsed">
+                            <Setter TargetName="ColumnDefinition0" Property="Width" Value="0"/>
+                            <Setter TargetName="ColumnDefinition2" Property="Width" Value="0"/>
+                            <Setter TargetName="RowDefinition0" Property="Height" Value="0"/>
+                            <Setter TargetName="RowDefinition2" Property="Height" Value="0"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        <Style.Triggers>
+            <Trigger Property="TabStripPlacement" Value="Left">
+                <Setter Property="ItemsPanel">
+                    <Setter.Value>
+                        <ItemsPanelTemplate>
+                            <StackPanel/>
+                        </ItemsPanelTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="i:XTabControl.OverflowPanelOrientation" Value="Vertical"/>
+            </Trigger>
+            <Trigger Property="TabStripPlacement" Value="Right">
+                <Setter Property="ItemsPanel">
+                    <Setter.Value>
+                        <ItemsPanelTemplate>
+                            <StackPanel/>
+                        </ItemsPanelTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="i:XTabControl.OverflowPanelOrientation" Value="Vertical"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="{x:Type i:TabControlCache}" TargetType="{x:Type i:TabControlCache}" BasedOn="{StaticResource {x:Type TabControl}}"/>
+</ResourceDictionary>

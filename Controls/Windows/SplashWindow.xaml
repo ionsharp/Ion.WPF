@@ -1,0 +1,75 @@
+﻿<Window x:Class="Ion.Controls.SplashWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="clr-namespace:Ion.Controls"
+    xmlns:Data="clr-namespace:Ion.Data"
+    xmlns:Numeral="clr-namespace:Ion.Numeral;assembly=Ion">
+    <Window.Resources>
+        <Data:Reference x:Key="SplashWindow" Data="{i:Bind From=FindAncestor, FromType=i:SplashWindow}"/>
+
+        <DataTemplate x:Key="CircleTemplate">
+            <Grid DataContext="{i:Bind Data, Source={StaticResource SplashWindow}}">
+                <Grid i:XGrid.Rows="*,Auto,Auto">
+                    <ContentPresenter Grid.Row="0" Grid.RowSpan="3" Content="{i:Bind Image}" ContentTemplate="{i:Bind Data.ImageTemplate, Source={StaticResource SplashWindow}}"/>
+                    <i:ProgressLine
+                        Grid.Row="1"
+                        Foreground="{i:Bind Accent, Convert={x:Type Data:ConvertColorToSolidColorBrush}}"
+                        HorizontalAlignment="Center"
+                        Width="180"/>
+                    <TextBlock Grid.Row="2"
+                        HorizontalAlignment="Center"
+                        Margin="{i:Constant Key=Thick}"
+                        VerticalAlignment="Center">
+                        <Run Foreground="White" Text="Loading"/> <Run FontStyle="Italic" Foreground="#AA000000" Text="{i:Bind Message, Convert={x:Type Data:ConvertToStringLower}, Mode=OneWay}"/><Run Foreground="White" Text="..."/></TextBlock>
+                </Grid>
+                <i:ProgressRing 
+                    Foreground="{i:Bind Accent, Convert={x:Type Data:ConvertColorToSolidColorBrush}}"
+                    i:XProgressBar.ContentTemplate="{i:Template Key=Default}"
+                    Maximum="1"
+                    Minimum="0"
+                    Radius="128"
+                    Value="{i:Bind Progress}"/>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="SquareTemplate">
+            <Grid DataContext="{i:Bind Data, Source={StaticResource SplashWindow}}" 
+                i:XGrid.Rows="*,Auto,Auto,Auto">
+                <ContentPresenter Grid.Row="0" Grid.RowSpan="4" Content="{i:Bind Image}" ContentTemplate="{i:Bind Data.ImageTemplate, Source={StaticResource SplashWindow}}"/>
+                <i:ProgressLine
+                    Grid.Row="1"
+                    Foreground="{i:Bind Accent, Convert={x:Type Data:ConvertColorToSolidColorBrush}}"
+                    HorizontalAlignment="Center"
+                    Width="360"/>
+                <TextBlock 
+                    Grid.Row="2"
+                    Margin="10"
+                    VerticalAlignment="Center">
+                    <Run Foreground="White" Text="Loading"/> <Run FontStyle="Italic" Foreground="#AA000000" Text="{i:Bind Message, Convert={x:Type Data:ConvertToStringLower}, Mode=OneWay}"/><Run Foreground="White" Text="..."/></TextBlock>
+                <ProgressBar 
+                    Grid.Row="3"
+                    Foreground="{i:Bind Accent, Convert={x:Type Data:ConvertColorToSolidColorBrush}}"
+                    Height="6"
+                    i:XProgressBar.ContentTemplate="{i:Template Key=Default}"
+                    Maximum="1"
+                    Minimum="0"
+                    Value="{i:Bind Progress}"
+                    Width="{i:Bind ActualWidth, Mode=OneWay}"/>
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+    
+    <ContentPresenter Content="{i:Bind Data.ImageShape, Source={StaticResource SplashWindow}}">
+        <ContentPresenter.Style>
+            <Style TargetType="ContentPresenter">
+                <Style.Triggers>
+                    <DataTrigger Binding="{i:Bind}" Value="{x:Static Numeral:Polygon2D.Circle}">
+                        <Setter Property="ContentTemplate" Value="{StaticResource CircleTemplate}"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{i:Bind}" Value="{x:Static Numeral:Polygon2D.Square}">
+                        <Setter Property="ContentTemplate" Value="{StaticResource SquareTemplate}"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ContentPresenter.Style>
+    </ContentPresenter>
+</Window>

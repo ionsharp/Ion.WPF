@@ -1,0 +1,115 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:e="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:l="http://wpflocalizeextension.codeplex.com"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="clr-namespace:Ion.Controls"
+    xmlns:Data="clr-namespace:Ion.Data"
+    xmlns:Media="clr-namespace:Ion.Media">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="{i:Style Key=ComboBox}"/>
+        <ResourceDictionary Source="{i:Style Key=Control}"/>
+        <ResourceDictionary Source="{i:Style Key=Panels}"/>
+    </ResourceDictionary.MergedDictionaries>
+    <DataTemplate x:Key="{x:Static i:ColorDocument.Template}">
+        <i:ColorSelectorView Document="{i:Bind}"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="{x:Static i:ColorDocument.IconTemplate}">
+        <i:ClipBorder
+            Background="{x:Static Media:CheckerBrush.Default}"
+            BorderBrush="Black"
+            BorderThickness="1"
+            CornerRadius="999"
+            Height="16"
+            Margin="0,0,5,0"
+            Width="16">
+            <i:FillElement Fill="{i:Bind NewColor, Convert={x:Type Data:ConvertColorToSolidColorBrush}, ConverterParameter=1, Mode=OneWay}"/>
+        </i:ClipBorder>
+    </DataTemplate>
+
+    <DataTemplate x:Key="{x:Static i:ColorDocument.PreviewTemplate}">
+        <Border BorderBrush="Black" BorderThickness="1">
+            <Border.Resources>
+                <Data:Reference x:Key="ColorView" Data="{i:Bind From=FindAncestor, FromType=i:ColorView}"/>
+            </Border.Resources>
+            <Border BorderBrush="White" BorderThickness="1">
+                <StackPanel DataContext="{i:Bind Data.ViewModel.ActiveDocument, Source={StaticResource ColorView}}">
+                    <Border 
+                        Background="{x:Static Media:CheckerBrush.Default}"
+                        Height="32"
+                        i:XToolTip.Header="{i:Bind OldColor}"
+                        i:XToolTip.HeaderTemplate="{StaticResource {x:Static i:ColorView.ToolTipHeaderTemplate}}"
+                        i:XToolTip.Template="{StaticResource {x:Static i:ColorView.ToolTipTemplate}}"
+                        ToolTip="{i:Bind OldColor}">
+                        <Border.ContextMenu>
+                            <ContextMenu DataContext="{i:Bind From=Self, Path=PlacementTarget.DataContext.OldColor}">
+                                <MenuItem Header="{i:Text Copy}"
+                                    Command="{i:Bind Data.CopyColorCommand, Source={StaticResource ColorView}}"
+                                    CommandParameter="{i:Bind}"
+                                    Icon="{i:Image Key=Copy}"/>
+                                <MenuItem Header="{i:Text CopyHexadecimal}"
+                                    Command="{i:Bind Data.CopyHexadecimalCommand, Source={StaticResource ColorView}}"
+                                    CommandParameter="{i:Bind}"
+                                    Icon="{i:Image Key=CopyNumber}"/>
+                                <MenuItem Header="{i:Text Paste}"
+                                    Command="{i:Bind Data.PasteOldColorCommand, Source={StaticResource ColorView}}"
+                                    Icon="{i:Image Key=Paste}"/>
+                                <Separator/>
+                                <MenuItem Header="{i:Text Save}"
+                                    Command="{i:Bind Data.SaveOldColorCommand, Source={StaticResource ColorView}}"
+                                    Icon="{i:Image Key=Save}"/>
+                                <MenuItem Header="{i:Text SaveTo, Suffix=...}"
+                                    Command="{i:Bind Data.SaveNewColorToCommand, Source={StaticResource ColorView}}"
+                                    Icon="{i:Image Key=SaveAs}"/>
+                            </ContextMenu>
+                        </Border.ContextMenu>
+                        <Grid Background="{i:Bind OldColor, Convert={x:Type Data:ConvertColorToSolidColorBrush}, ConverterParameter=0}"/>
+                    </Border>
+                    <Border 
+                        Background="{x:Static Media:CheckerBrush.Default}"
+                        Height="32"
+                        i:XToolTip.Header="{i:Bind NewColor}"
+                        i:XToolTip.HeaderTemplate="{StaticResource {x:Static i:ColorView.ToolTipHeaderTemplate}}"
+                        i:XToolTip.Template="{StaticResource {x:Static i:ColorView.ToolTipTemplate}}"
+                        ToolTip="{i:Bind NewColor}">
+                        <Border.ContextMenu>
+                            <ContextMenu DataContext="{i:Bind From=Self, Path=PlacementTarget.DataContext.NewColor}">
+                                <MenuItem Header="{i:Text Copy}"
+                                    Command="{i:Bind Data.CopyColorCommand, Source={StaticResource ColorView}}"
+                                    CommandParameter="{i:Bind}"
+                                    Icon="{i:Image Key=Copy}"/>
+                                <MenuItem Header="{i:Text CopyHexadecimal}"
+                                    Command="{i:Bind Data.CopyHexadecimalCommand, Source={StaticResource ColorView}}"
+                                    CommandParameter="{i:Bind}"
+                                    Icon="{i:Image Key=CopyNumber}"/>
+                                <MenuItem Header="{i:Text Paste}"
+                                    Command="{i:Bind Data.PasteNewColorCommand, Source={StaticResource ColorView}}"
+                                    Icon="{i:Image Key=Paste}"/>
+                                <Separator/>
+                                <MenuItem Header="{i:Text Save}"
+                                    Command="{i:Bind Data.SaveOldColorCommand, Source={StaticResource ColorView}}"
+                                    Icon="{i:Image Key=Save}"/>
+                                <MenuItem Header="{i:Text SaveTo, Suffix=...}"
+                                    Command="{i:Bind Data.SaveOldColorToCommand, Source={StaticResource ColorView}}"
+                                    Icon="{i:Image Key=SaveAs}"/>
+                            </ContextMenu>
+                        </Border.ContextMenu>
+                        <Grid x:Name="Grid" Background="{i:Bind NewColor, Convert={x:Type Data:ConvertColorToSolidColorBrush}, ConverterParameter=1}"/>
+                    </Border>
+                </StackPanel>
+            </Border>
+        </Border>
+    </DataTemplate>
+
+    <DataTemplate x:Key="{x:Static i:ColorDocument.TitleTemplate}">
+        <StackPanel 
+            i:XPanel.Spacing="0,0,5,0"
+            i:XPanel.SpacingExcept="Last"
+            Orientation="Horizontal">
+            <TextBlock Text="{i:Bind Title}"/>
+            <Label Content="{i:Bind Model.Name}"
+                Style="{DynamicResource {x:Static i:XLabel.AccentLight}}"/>
+        </StackPanel>
+    </DataTemplate>
+</ResourceDictionary>

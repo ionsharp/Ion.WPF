@@ -1,0 +1,229 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:l="http://wpflocalizeextension.codeplex.com"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+    xmlns:i="clr-namespace:Ion.Controls"
+    xmlns:Core="clr-namespace:Ion.Core"
+    xmlns:Data="clr-namespace:Ion.Data">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="{i:Style Key=FrameworkElement}"/>
+    </ResourceDictionary.MergedDictionaries>
+    <Style x:Key="{x:Type i:FindControl}" TargetType="{x:Type i:FindControl}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type i:FindControl}">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding Border.CornerRadius}"
+                        Padding="{TemplateBinding Padding}">
+                        <ScrollViewer>
+                            <Grid i:XGrid.AutoRows="True" i:XGrid.Rows="Auto,Auto,Auto,Auto"
+                                Margin="10"
+                                i:XPanel.Spacing="0,0,0,5"
+                                i:XPanel.SpacingExcept="Last">
+                                <GroupBox>
+                                    <Grid i:XGrid.AutoRows="True" i:XGrid.Rows="Auto,Auto,Auto"
+                                        i:XPanel.Spacing="0,0,0,5"
+                                        i:XPanel.SpacingExcept="Last">
+                                        <ComboBox
+                                            ItemsSource="{i:Enumerate Core:FindSource}"
+                                            SelectedItem="{i:Bind Source, From=TemplatedParent, Way=2}">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <TextBlock Text="{i:Bind Convert={x:Type Data:ConvertToStringCamel}}"/>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                        <TextBox
+                                            i:XTextBox.ClearButtonVisibility="Visible"
+                                            i:XTextBoxBase.Placeholder="{i:Text Find, Suffix=...}"
+                                            Text="{i:Bind FindText, From=TemplatedParent, Trigger=PropertyChanged, Way=2}"/>
+                                        <TextBox
+                                            i:XTextBox.ClearButtonVisibility="Visible"
+                                            i:XTextBoxBase.Placeholder="{i:Text Replace, Suffix=...}"
+                                            Text="{i:Bind ReplaceText, From=TemplatedParent, Trigger=PropertyChanged, Way=2}"/>
+                                    </Grid>
+                                </GroupBox>
+
+                                <GroupBox Header="{i:Text Match}">
+                                    <StackPanel
+                                        i:XPanel.Spacing="0,0,5,0"
+                                        i:XPanel.SpacingExcept="Last"
+                                        Orientation="Horizontal"
+                                        VerticalAlignment="Top">
+                                        <CheckBox
+                                            Content="{i:Text Case}"
+                                            IsChecked="{i:Bind MatchCase, From=TemplatedParent, Way=2}"/>
+                                        <CheckBox
+                                            Content="{i:Text Word}"
+                                            IsChecked="{i:Bind MatchWord, From=TemplatedParent, Way=2}"/>
+                                    </StackPanel>
+                                </GroupBox>
+                                <GroupBox Header="{i:Text Find}">
+                                    <StackPanel
+                                        Grid.Row="4"
+                                        i:XPanel.Spacing="0,0,0,2"
+                                        i:XPanel.SpacingExcept="Last"
+                                        VerticalAlignment="Top">
+                                        <Button
+                                            Command="{i:Bind From=TemplatedParent, Path=FindNextCommand}"
+                                            Content="{i:Text Next}"/>
+                                        <Button
+                                            Command="{i:Bind From=TemplatedParent, Path=FindPreviousCommand}"
+                                            Content="{i:Text Previous}"/>
+                                        <Button
+                                            Command="{i:Bind From=TemplatedParent, Path=FindAllCommand}"
+                                            Content="{i:Text All}"/>
+                                    </StackPanel>
+                                </GroupBox>
+                                <GroupBox Header="{i:Text Replace}">
+                                    <StackPanel
+                                        Grid.Row="4"
+                                        i:XPanel.Spacing="0,0,0,2"
+                                        i:XPanel.SpacingExcept="Last"
+                                        VerticalAlignment="Top">
+                                        <Button
+                                            Command="{i:Bind From=TemplatedParent, Path=ReplaceNextCommand}"
+                                            Content="{i:Text Next}"/>
+                                        <Button
+                                            Command="{i:Bind From=TemplatedParent, Path=ReplacePreviousCommand}"
+                                            Content="{i:Text Previous}"/>
+                                        <Button
+                                            Command="{i:Bind From=TemplatedParent, Path=ReplaceAllCommand}"
+                                            Content="{i:Text All}"/>
+                                    </StackPanel>
+                                </GroupBox>
+                            </Grid>
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="{x:Type i:FindBox}" TargetType="{x:Type i:FindBox}">
+        <Setter Property="Background" Value="#EEE"/>
+        <Setter Property="BorderBrush" Value="#DDD"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Padding" Value="7"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type i:FindBox}">
+                    <Grid>
+                        <Border 
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="{TemplateBinding Border.CornerRadius}"
+                            Padding="{TemplateBinding Padding}">
+                            <Grid i:XGrid.AutoRows="True" i:XGrid.Rows="Auto,Auto,Auto,Auto">
+                                <Grid i:XGrid.AutoColumns="True" i:XGrid.Columns="*,Auto,Auto"
+                                    Margin="0,0,0,5">
+                                    <ComboBox
+                                        ItemsSource="{i:Enumerate Core:FindSource}"
+                                        Margin="0,0,5,0"
+                                        SelectedItem="{i:Bind Source, From=TemplatedParent, Way=2}"
+                                        ToolTip="{i:Text Source}">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{i:Bind Convert={x:Type Data:ConvertToStringCamel}}"/>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+                                    </ComboBox>
+                                    <i:ImageToggleButton
+                                        IsChecked="{i:Bind MatchCase, From=TemplatedParent, Way=2}"
+                                        Margin="0,0,5,0"
+                                        Source="{i:Image Key=MatchCase}"
+                                        ToolTip="{i:Text MatchCase}"/>
+                                    <i:ImageToggleButton
+                                        IsChecked="{i:Bind MatchWord, From=TemplatedParent, Way=2}"
+                                        Source="{i:Image Key=MatchWord}"
+                                        ToolTip="{i:Text MatchWord}"/>
+                                </Grid>
+                                <Grid i:XGrid.AutoColumns="True" i:XGrid.Columns="*,Auto,Auto"
+                                    Margin="0,0,0,5">
+                                    <TextBox
+                                        i:XTextBoxBase.Placeholder="{i:Text Find, Suffix=...}"
+                                        i:XTextBoxBase.TextTrimming="CharacterEllipsis"
+                                        Text="{i:Bind FindText, From=TemplatedParent, Trigger=PropertyChanged, Way=2}"/>
+                                    <i:ImageButton DataContext="{i:Bind From=TemplatedParent}"
+                                        ButtonVisibility="Visible"
+                                        Margin="2,0"
+                                        Source="{i:Image Key=FindNext}">
+                                        <i:ImageButton.Menu>
+                                            <ContextMenu DataContext="{i:Bind From=Self, Path=PlacementTarget.DataContext}">
+                                                <MenuItem Header="{i:Text FindNext}"
+                                                    Command="{i:Bind FindNextCommand}"
+                                                    Icon="{i:Image Key=FindNext}"/>
+                                                <MenuItem Header="{i:Text FindPrevious}"
+                                                    Command="{i:Bind FindPreviousCommand}"
+                                                    Icon="{i:Image Key=FindPrevious}"/>
+                                                <MenuItem Header="{i:Text FindAll}"
+                                                    Command="{i:Bind FindAllCommand}"
+                                                    Icon="{i:Image Key=FindAll}"/>
+                                            </ContextMenu>
+                                        </i:ImageButton.Menu>
+                                    </i:ImageButton>
+                                    <i:ImageButton
+                                        Command="{TemplateBinding CloseCommand}"
+                                        Source="{i:Image Key=XRound}"
+                                        ToolTip="{i:Text Close}"/>
+                                </Grid>
+                                <Grid i:XGrid.AutoColumns="True" i:XGrid.Columns="*,Auto,Auto">
+                                    <TextBox
+                                        i:XTextBoxBase.Placeholder="{i:Text Replace, Suffix=...}"
+                                        i:XTextBoxBase.TextTrimming="CharacterEllipsis"
+                                        Text="{i:Bind ReplaceText, From=TemplatedParent, Trigger=PropertyChanged, Way=2}"/>
+                                    <i:ImageButton
+                                        Command="{i:Bind From=TemplatedParent, Path=ReplaceNextCommand}"
+                                        Margin="5,0,0,0"
+                                        Source="{i:Image Key=ReplaceNext}"
+                                        ToolTip="{i:Text ReplaceNext}"/>
+                                    <i:ImageButton
+                                        Command="{i:Bind From=TemplatedParent, Path=ReplaceAllCommand}"
+                                        Margin="5,0,0,0"
+                                        Source="{i:Image Key=ReplaceAll}"
+                                        ToolTip="{i:Text ReplaceAll}"/>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                        <i:FillElement Fill="{TemplateBinding BorderBrush}"
+                            Height="4"
+                            Margin="0,0,0,-3"
+                            VerticalAlignment="Bottom"/>
+                        <!-- Grip -->
+                        <Path Data="F1 M1,10 L3,10 M5,10 L7,10 M9,10 L11,10 M2,9 L2,11 M6,9 L6,11 M10,9 L10,11 M5,6 L7,6 M9,6 L11,6 M6,5 L6,7 M10,5 L10,7 M9,2 L11,2 M10,1 L10,3"
+                            Height="12"
+                            HorizontalAlignment="Left"
+                            IsHitTestVisible="False"
+                            Margin="2,0,0,2"
+                            RenderTransformOrigin="0.5,0.5"
+                            Stroke="{TemplateBinding Foreground}"
+                            StrokeThickness="1"
+                            Stretch="None"
+                            VerticalAlignment="Bottom"
+                            Width="12">
+                            <Path.RenderTransform>
+                                <RotateTransform Angle="90"/>
+                            </Path.RenderTransform>
+                        </Path>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsKeyboardFocused" Value="True">
+                <Setter Property="BorderBrush" Value="#07c" />
+            </Trigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="IsKeyboardFocused" Value="False"/>
+                    <Condition Property="IsMouseOver" Value="True"/>
+                </MultiTrigger.Conditions>
+                <Setter Property="BorderBrush" Value="#CCC" />
+            </MultiTrigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

@@ -1,0 +1,49 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="clr-namespace:Ion.Controls"
+    xmlns:Data="clr-namespace:Ion.Data"
+    xmlns:Text="clr-namespace:Ion.Text;assembly=Ion">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="{i:Style Key=Constants}"/>
+    </ResourceDictionary.MergedDictionaries>
+    <Style x:Key="{x:Type TextBlock}" TargetType="{x:Type TextBlock}">
+        <!-- FontFamily="pack://application:,,,/Ion.WPF;component/Fonts/-.ttf#-" -->
+        <Setter Property="FontFamily" Value="{i:Bind FontFamily, AppSource=Data}"/>
+        <Setter Property="i:XTextBlock.FontScale" Value="{i:Bind FontScale, AppSource=Data}"/>
+        <Setter Property="i:XTextBlock.FontScaleOrigin" Value="{i:Bind FontSize, AppSource=Data}"/>
+        <Setter Property="UseLayoutRounding" Value="False" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="{x:Type i:TextBullet}" TargetType="{x:Type i:TextBullet}" BasedOn="{StaticResource {x:Type TextBlock}}">
+        <Setter Property="Text">
+            <Setter.Value>
+                <Data:MultiBind ConverterName="Bullet">
+                    <i:Bind From="Self" Path="Bullet"/>
+                    <i:Bind From="Self" Path="Value"/>
+                </Data:MultiBind>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="Bullet" Value="{x:Static Text:Bullet.Diamond}">
+                <Setter Property="Text" Value="◆"/>
+            </Trigger>
+            <Trigger Property="Bullet" Value="{x:Static Text:Bullet.DiamondOutline}">
+                <Setter Property="Text" Value="◇"/>
+            </Trigger>
+            <Trigger Property="Bullet" Value="{x:Static Text:Bullet.Square}">
+                <Setter Property="Text" Value="■"/>
+            </Trigger>
+            <Trigger Property="Bullet" Value="{x:Static Text:Bullet.SquareOutline}">
+                <Setter Property="Text" Value="□"/>
+            </Trigger>
+            <Trigger Property="Bullet" Value="{x:Static Text:Bullet.Circle}">
+                <Setter Property="Text" Value="●"/>
+            </Trigger>
+            <Trigger Property="Bullet" Value="{x:Static Text:Bullet.CircleOutline}">
+                <Setter Property="Text" Value="○"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+</ResourceDictionary>

@@ -1,0 +1,50 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:l="http://wpflocalizeextension.codeplex.com"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="clr-namespace:Ion.Controls"
+    xmlns:Data="clr-namespace:Ion.Data">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="{i:Style Key=Control}"/>
+    </ResourceDictionary.MergedDictionaries>
+    <Style x:Key="{x:Type i:ViewControl}" TargetType="{x:Type i:ViewControl}" BasedOn="{StaticResource {x:Type Control}}"/>
+
+    <Style x:Key="{x:Type i:FileView}" TargetType="{x:Type i:FileView}" BasedOn="{StaticResource {x:Type i:ViewControl}}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type i:FileView}">
+                    <DataGrid BorderThickness="0" CanUserSortColumns="True" ItemsSource="{TemplateBinding Items}" 
+                        i:XDataGrid.DisplayRowNumber="True" 
+                        i:XDataGrid.DisplayRowNumberBullet="{TemplateBinding Bullet}">
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn CanUserSort="False" Width="Auto">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <i:Thumbnail Path="{i:Bind}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Binding="{i:Bind Convert=Data:ConvertFileName}" 
+                                Header="{l:Loc Path}" 
+                                SortMemberPath="Path" 
+                                Width="50*"/>
+                            <DataGridTextColumn Binding="{i:Bind Convert=Data:ConvertFileModified, ConvertNext=Data:ConvertToStringTimeRelative}" 
+                                CanUserSort="False" 
+                                Header="{l:Loc Modified}" 
+                                Width="30*"/>
+                            <DataGridTextColumn Binding="{i:Bind Convert=Data:ConvertItemSize}" 
+                                CanUserSort="False" 
+                                Header="{l:Loc Size}" 
+                                Width="20*"/>
+                        </DataGrid.Columns>
+                        <DataGrid.RowStyle>
+                            <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
+                                <Setter Property="ToolTip" Value="{i:Bind}"/>
+                            </Style>
+                        </DataGrid.RowStyle>
+                    </DataGrid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

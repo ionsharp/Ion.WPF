@@ -1,0 +1,652 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:h="http://www.hardcodet.net/taskbar"
+    xmlns:l="http://wpflocalizeextension.codeplex.com" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="clr-namespace:Ion.Controls"
+    xmlns:Analysis="clr-namespace:Ion.Analysis"
+    xmlns:Core0="clr-namespace:Ion.Core;assembly=Ion"
+    xmlns:Core1="clr-namespace:Ion.Core"
+    xmlns:Data="clr-namespace:Ion.Data"
+    xmlns:Effects="clr-namespace:Ion.Effects;assembly=Ion.Effects"
+    xmlns:Ion="clr-namespace:Ion">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="{i:Style Key=Button}"/>
+        <ResourceDictionary Source="{i:Style Key=ComboBox}"/>
+        <ResourceDictionary Source="{i:Style Key=Menu}"/>
+        <ResourceDictionary Source="{i:Style Key=TextBox}"/>
+    </ResourceDictionary.MergedDictionaries>
+    <!--#region Grip-->
+
+    <DataTemplate x:Key="{x:Static i:XWindow.GripTemplateKey}">
+        <Path Data="F1 M1,10 L3,10 M5,10 L7,10 M9,10 L11,10 M2,9 L2,11 M6,9 L6,11 M10,9 L10,11 M5,6 L7,6 M9,6 L11,6 M6,5 L6,7 M10,5 L10,7 M9,2 L11,2 M10,1 L10,3"
+            Height="12"
+            Stroke="{i:Bind}"
+            StrokeThickness="1"
+            Stretch="None"
+            Width="12"/>
+    </DataTemplate>
+
+    <!--#endregion-->
+
+    <!--#region Header-->
+
+    <DataTemplate x:Key="{x:Static i:XWindow.HeaderPatternTemplate}">
+        <i:DotControl Foreground="{i:Theme Key=Text}" Margin="10,0"
+            Type="Dot3"/>
+    </DataTemplate>
+
+    <Style x:Key="{x:Type i:WindowHeader}" TargetType="{x:Type i:WindowHeader}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type i:WindowHeader}">
+                    <Border 
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Padding="{TemplateBinding Padding}">
+                        <Border.Resources>
+                            <Data:Reference x:Key="WindowHeader" Data="{i:Bind From=TemplatedParent}"/>
+                        </Border.Resources>
+                        <Grid i:XGrid.AutoColumns="True" i:XGrid.Columns="Auto,*,Auto,Auto,Auto">
+                            <!-- Title -->
+                            <ContentPresenter Content="{TemplateBinding Content}" 
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                IsHitTestVisible="True"
+                                WindowChrome.IsHitTestVisibleInChrome="True"/>
+
+                            <!-- * -->
+                            <ContentPresenter ContentTemplate="{DynamicResource {x:Static i:XWindow.HeaderPatternTemplate}}"/>
+
+                            <!-- Items -->
+                            <!--
+                            <i:ObjectControl
+                                IsHitTestVisible="True"
+                                i:XItemsControl.EmptyTemplate="{i:Template Key=Default}"
+                                i:XObjectControl.Source="{Data:BindSection Content, From=TemplatedParent, Section=HeaderItem}" 
+                                Orientation="Horizontal"
+                                Visibility="{Data:HasMembers Result=Visibility, WithSection=HeaderItem}"
+                                WindowChrome.IsHitTestVisibleInChrome="True"/>
+                            -->
+
+                            <!-- Options -->
+                            <i:ImageToggleButton DataContext="{TemplateBinding Content}"
+                                IsHitTestVisible="True"
+                                Source="{i:Image Key=TriangleDown}"
+                                ToolTip="{i:Text Options}"
+                                Visibility="{Data:HasMembers Result=Visibility, WithSection=HeaderOption}"
+                                WindowChrome.IsHitTestVisibleInChrome="True">
+                                <!--
+                                <i:ImageToggleButton.Menu>
+                                    <i:ObjectMenu DataContext="{i:Bind From=Self, Path=PlacementTarget.DataContext}" 
+                                        i:XObjectControl.Source="{Data:BindSection Section=HeaderOption}"/>
+                                </i:ImageToggleButton.Menu>
+                                -->
+                            </i:ImageToggleButton>
+
+                            <!-- Buttons -->
+                            <ItemsControl x:Name="ButtonControl"
+                                IsHitTestVisible="True"
+                                ItemsSource="{TemplateBinding Buttons}"
+                                WindowChrome.IsHitTestVisibleInChrome="True">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <StackPanel Orientation="Horizontal"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <i:Display Content="{i:Bind}"
+                                            i:Display.TemplateKey="{i:Bind Data.ButtonStyle, Source={StaticResource WindowHeader}}">
+                                            <i:Display.TemplateSelector>
+                                                <i:KeyTemplateSelector>
+                                                    <i:KeyTemplate DataType="{x:Type i:ButtonModel}" DataKey="{x:Static i:ButtonStyle.Circle}">
+                                                        <i:KeyTemplate.Resources>
+                                                            <Style TargetType="Button" BasedOn="{StaticResource {x:Static i:XButton.DefaultStyle}}">
+                                                                <Setter Property="Background" Value="{i:Bind From=Self, Path=Foreground}" />
+                                                                <!-- , Convert=Data:ConvertSolidColorBrushBrightness, ConverterParameter=70 crashes! -->
+                                                                <Setter Property="Border.CornerRadius" Value="999"/>
+                                                                <Setter Property="BorderThickness" Value="0" />
+                                                                <Setter Property="Cursor" Value="Hand" />
+                                                                <Setter Property="Height" Value="12"/>
+                                                                <Setter Property="Padding" Value="0" />
+                                                                <Setter Property="Width" Value="12"/>
+                                                                <Setter Property="Window.IsHitTestVisible" Value="True"/>
+                                                                <Style.Triggers>
+                                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                                        <Setter Property="Background" Value="{i:Bind From=Self, Path=Foreground, Convert=Data:ConvertSolidColorBrushBrightness, ConverterParameter=50}" />
+                                                                    </Trigger>
+                                                                    <Trigger Property="IsPressed" Value="True">
+                                                                        <Setter Property="Background" Value="{i:Bind From=Self, Path=Foreground, Convert=Data:ConvertSolidColorBrushBrightness, ConverterParameter=30}" />
+                                                                    </Trigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </i:KeyTemplate.Resources>
+                                                        <Button 
+                                                            Command="{i:Bind Command}"
+                                                            CommandTarget="{i:Bind CommandTarget}"
+                                                            Foreground="{i:Bind Color}"
+                                                            Margin="0,0,7.5,0"
+                                                            ToolTip="{i:Bind Tip}"
+                                                            Visibility="{i:Bind IsEnabled, Convert=Data:ConvertBooleanToVisibility, From=Self}"/>
+                                                    </i:KeyTemplate>
+                                                    <i:KeyTemplate DataType="{x:Type i:ButtonModel}" DataKey="{x:Static i:ButtonStyle.Simple}">
+                                                        <i:ImageButton
+                                                            Command="{i:Bind Command}"
+                                                            CommandTarget="{i:Bind CommandTarget}"
+                                                            Source="{i:Bind Image}"
+                                                            ToolTip="{i:Bind Tip}"
+                                                            Visibility="{i:Bind IsEnabled, Convert=Data:ConvertBooleanToVisibility, From=Self}"/>
+                                                    </i:KeyTemplate>
+                                                    <i:KeyTemplate DataType="{x:Type i:ButtonModel}" DataKey="{x:Static i:ButtonStyle.Square}">
+                                                        <i:WindowButton
+                                                            Command="{i:Bind Command}"
+                                                            CommandTarget="{i:Bind CommandTarget}"
+                                                            Content="{i:Bind Image}"
+                                                            ToolTip="{i:Bind Tip}"
+                                                            Visibility="{i:Bind IsEnabled, Convert=Data:ConvertBooleanToVisibility, From=Self}"/>
+                                                    </i:KeyTemplate>
+                                                </i:KeyTemplateSelector>
+                                            </i:Display.TemplateSelector>
+                                        </i:Display>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!--#endregion-->
+
+    <!--#region Menus-->
+
+    <DataTemplate x:Key="{x:Static i:AppWindow.MenuBelow}">
+        <Grid i:XGrid.AutoRows="True" i:XGrid.Rows="Auto,Auto" i:XPanel.Spacing="0,0,0,5">
+            <Grid>
+                <Button IsCancel="True"
+                    Command="{i:Bind HideCommand}"
+                    i:XButton.Image="{i:Image Key=Hidden}"
+                    ToolTip="{i:Text Hide}"
+                    Visibility="{i:Bind IsEnabled, Convert=Data:ConvertBooleanToVisibility, From=Self}"/>
+                <Button IsDefault="True"
+                    Command="{i:Bind ShowCommand}"
+                    i:XButton.Image="{i:Image Key=Visible}"
+                    ToolTip="{i:Text Show}"
+                    Visibility="{i:Bind IsEnabled, Convert=Data:ConvertBooleanToVisibility, From=Self}"/>
+            </Grid>
+
+            <Button Command="{i:Bind KillCommand}"
+                i:XButton.Image="{i:Image Key=X}"
+                Style="{StaticResource {x:Static i:XButton.BlackButton}}"
+                ToolTip="{i:Text Exit}"/>
+        </Grid>
+    </DataTemplate>
+
+    <ContextMenu x:Key="{x:Static i:AppWindow.MenuMain}" x:Shared="False"
+        i:XContextMenu.Above="{i:Bind AppSource=Model}"
+        i:XContextMenu.AboveTemplate="{i:Template Key=Default}"
+        i:XContextMenu.Below="{i:Bind AppSource=Model}"
+        i:XContextMenu.BelowTemplate="{DynamicResource {x:Static i:AppWindow.MenuBelow}}"
+        i:XContextMenu.Header="{i:AssemblyTitle}"
+        i:XContextMenu.HeaderIcon="{i:Image Logo16.png}"/>
+
+    <!--i:XMenuBase.Source="{i:Bind Menu, AppSource=Model}"-->
+
+    <!--
+    <DataTemplate>
+        <Image
+            Height="16"
+            Source="{Data:Ancestor Icon, {x:Type Window}}"
+            Width="16"/>
+    </DataTemplate>
+
+    <DataTemplate>
+        <ContentPresenter x:Name="PART_Icon"
+            Margin="5,0,0,0"
+            Visibility="Collapsed"
+            WindowChrome.IsHitTestVisibleInChrome="True"/>
+        <DataTemplate.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="Icon" Value="{x:Null}"/>
+                    <Condition Property="i:XWindow.IconVisibility" Value="Visible"/>
+                </MultiTrigger.Conditions>
+                <Setter TargetName="PART_Icon" Property="ContentTemplate"/>
+                <Setter TargetName="PART_Icon" Property="Visibility" Value="Visible"/>
+            </MultiTrigger>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="i:XWindow.Icon" Value="{x:Null}"/>
+                    <Condition Property="i:XWindow.IconVisibility" Value="Visible"/>
+                </MultiTrigger.Conditions>
+                <Setter TargetName="PART_Icon" Property="ContentTemplate"/>
+                <Setter TargetName="PART_Icon" Property="Visibility" Value="Visible"/>
+            </MultiTrigger>
+        </DataTemplate.Triggers>
+    </DataTemplate>
+    -->
+
+    <DataTemplate x:Key="IconWithMenuTemplate">
+        <i:ImageToggleButton
+            IsHitTestVisible="True"
+            WindowChrome.IsHitTestVisibleInChrome="True"
+            Menu="{i:Bind From=FindAncestor, FromType=Window, Path=(i:XWindow.IconMenu)}"
+            Source="{i:Bind From=FindAncestor, FromType=Window, Path=(i:XWindow.Icon)}"
+            SourceSize="{i:Bind From=FindAncestor, FromType=Window, Path=(i:XWindow.IconSize)}"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="IconTemplate">
+        <i:ImageElement
+            Source="{i:Bind From=FindAncestor, FromType=Window, Path=(i:XWindow.Icon)}"
+            SourceSize="{i:Bind From=FindAncestor, FromType=Window, Path=(i:XWindow.IconSize)}"/>
+    </DataTemplate>
+
+    <!--#endregion-->
+
+    <!--#region Window-->
+
+    <ControlTemplate x:Key="{x:Static i:XWindow.Template}" TargetType="Window">
+        <Border i:XElement.Name="{x:Static i:XWindow.BorderKey}"
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+            <Border.Resources>
+                <Data:Reference x:Key="Window" Data="{i:Bind From=TemplatedParent}"/>
+            </Border.Resources>
+            <Grid>
+                <HeaderedContentControl 
+                    i:XHeaderedContentControl.HeaderPlacement="{i:Bind From=TemplatedParent, Path=(i:XWindow.HeaderPlacement)}"
+                    i:XHeaderedContentControl.HeaderVisibility="{i:Bind From=TemplatedParent, Path=(i:XWindow.HeaderVisibility)}"
+                    Padding="0">
+                    <!-- Header -->
+                    <HeaderedContentControl.Header>
+                        <i:WindowHeader x:Name="Header" Content="{i:Bind DataContext}" DataContext="{i:Bind From=TemplatedParent}"
+                            Background="{i:Bind Path=(i:XWindow.HeaderBackground)}"
+                            Buttons="{i:Bind Path=(i:XWindow.HeaderButtons)}"
+                            ButtonStyle="{i:Bind Path=(i:XWindow.HeaderButtonStyle)}"
+                            Height="{i:Bind Path=(i:XWindow.HeaderHeight)}"
+                            Padding="5,0,0,0"/>
+                    </HeaderedContentControl.Header>
+                    <!-- Content -->
+                    <Grid i:XGrid.Rows="*,Auto">
+                        <AdornerDecorator Grid.Row="0" x:Name="Content">
+                            <Border Padding="{TemplateBinding Padding}" Style="{i:Bind From=TemplatedParent, Path=(i:XWindow.ContentStyle)}">
+                                <Grid>
+                                    <ContentPresenter ContentTemplate="{i:Bind From=TemplatedParent, Path=(i:XWindow.TaskbarIconTemplate)}"/>
+                                    <ContentPresenter ContentSource="Content"
+                                        HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                        VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                        <ContentPresenter.Style>
+                                            <Style TargetType="ContentPresenter">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{i:Bind Path=Data.(i:XWindow.IsDialogActive), Source={StaticResource Window}}" Value="True">
+                                                        <Setter Property="Effect">
+                                                            <Setter.Value>
+                                                                <Effects:ZoomBlurEffect Amount="{i:Bind Path=Data.(i:XWindow.DialogBlur), Source={StaticResource Window}}"/>
+                                                            </Setter.Value>
+                                                        </Setter>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </ContentPresenter.Style>
+                                    </ContentPresenter>
+                                </Grid>
+                            </Border>
+                        </AdornerDecorator>
+
+                        <!-- Footer -->
+                        <i:TopBorder Grid.Row="1" x:Name="Footer"
+                            Background="{i:Theme Key=WindowFooterBackground}"
+                            BorderBrush="{i:Theme Key=WindowFooterBorder}"
+                            BorderThickness="0,1,0,0"
+                            Padding="5"
+                            Visibility="{i:Bind From=TemplatedParent, Path=(i:XWindow.FooterVisibility)}">
+                            <ContentPresenter Content="{i:Bind From=TemplatedParent, Path=(i:XWindow.Footer)}"
+                                ContentTemplate="{i:Bind From=TemplatedParent, Path=(i:XWindow.FooterTemplate)}"
+                                ContentTemplateSelector="{i:Bind From=TemplatedParent, Path=(i:XWindow.FooterTemplateSelector)}"/>
+                        </i:TopBorder>
+
+                        <!-- Resize grip -->
+                        <ContentPresenter Grid.Row="0" Grid.RowSpan="2" x:Name="PART_ResizeGrip"
+                            Content="{TemplateBinding Foreground}"
+                            ContentTemplate="{StaticResource {x:Static i:XWindow.GripTemplateKey}}"
+                            HorizontalAlignment="Right"
+                            IsHitTestVisible="False"
+                            Margin="0,0,2,2"
+                            VerticalAlignment="Bottom"
+                            Visibility="Collapsed"/>
+                    </Grid>        
+                </HeaderedContentControl>
+
+                <i:DisplayDialog Content="{i:Bind From=TemplatedParent, Path=(i:XWindow.Dialogs)}"
+                    i:XElement.Name="{x:Static i:XWindow.DisplayDialog}"/>
+                <i:DisplayNotification Content="{i:Bind From=TemplatedParent, Path=(i:XWindow.Notifications)}"/>
+            </Grid>
+        </Border>
+        <ControlTemplate.Triggers>
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="i:XWindow.Menu" Value="{x:Null}"/>
+                </MultiTrigger.Conditions>
+                <!-- Show (1) icon and (2) title -->
+                <Setter TargetName="Header" Property="ContentTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <Grid i:XGrid.AutoColumns="True" i:XGrid.Columns="Auto,*">
+                                <ContentPresenter Content="{i:Bind From=FindAncestor, FromType=Window, Path=(i:XWindow.Icon)}" 
+                                    ContentTemplate="{i:Bind From=FindAncestor, FromType=Window, Path=(i:XWindow.IconTemplate)}"/>
+                                <ContentPresenter Content="{i:Bind From=FindAncestor, FromType=Window, Path=DataContext}" 
+                                    ContentTemplate="{i:Bind From=FindAncestor, FromType=Window, Path=(i:XWindow.TitleTemplate)}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </MultiTrigger>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{i:Equal From=Self, Path=(i:XWindow.Menu)}" Value="False"/>
+                    <Condition Binding="{i:Bind From=Self, Path=(i:XWindow.MenuOrientation)}" Value="Horizontal"/>
+                </MultiDataTrigger.Conditions>
+                <!-- Show (1) icon and (2) horizontal menu -->
+                <Setter TargetName="Header" Property="ContentTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <Grid i:XGrid.AutoColumns="True" i:XGrid.Columns="Auto,*">
+                                <ContentPresenter Content="{i:Bind From=FindAncestor, FromType=Window, Path=(i:XWindow.Icon)}" 
+                                    ContentTemplate="{i:Bind From=FindAncestor, FromType=Window, Path=(i:XWindow.IconTemplate)}"/>
+                                <ContentPresenter Content="{i:Bind From=FindAncestor, FromType=Window, Path=(i:XWindow.Menu)}" 
+                                    ContentTemplate="{i:Bind From=FindAncestor, FromType=Window, Path=(i:XWindow.MenuTemplate)}" 
+                                    VerticalAlignment="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </MultiDataTrigger>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{i:Equal From=Self, Path=(i:XWindow.Menu)}" Value="False"/>
+                    <Condition Binding="{i:Bind From=Self, Path=(i:XWindow.MenuOrientation)}" Value="Vertical"/>
+                </MultiDataTrigger.Conditions>
+                <!-- Show (1) icon (with vertical menu) and (2) title -->
+                <Setter TargetName="Header" Property="ContentTemplate">
+                    <Setter.Value>
+                        <DataTemplate>
+                            <Grid i:XGrid.AutoColumns="True" i:XGrid.Columns="Auto,*" i:XPanel.Spacing="0,0,5,0" i:XPanel.VerticalContentAlignment="Center">
+                                <ContentPresenter ContentTemplate="{StaticResource IconWithMenuTemplate}"/>
+                                <ContentPresenter Content="{i:Bind From=FindAncestor, FromType=Window, Path=DataContext}" 
+                                    ContentTemplate="{i:Bind From=FindAncestor, FromType=Window, Path=(i:XWindow.TitleTemplate)}"/>
+                            </Grid>
+                        </DataTemplate>
+                    </Setter.Value>
+                </Setter>
+            </MultiDataTrigger>
+
+            <MultiTrigger>
+                <MultiTrigger.Conditions>
+                    <Condition Property="ResizeMode" Value="CanResizeWithGrip"/>
+                    <Condition Property="WindowState" Value="Normal"/>
+                </MultiTrigger.Conditions>
+                <Setter TargetName="PART_ResizeGrip" Property="Visibility" Value="Visible"/>
+            </MultiTrigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="{x:Type Window}" TargetType="{x:Type Window}">
+        <Setter Property="AllowsTransparency" Value="True"/>
+        <Setter Property="Background" Value="{i:Theme WindowBackground}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="FontFamily" Value="{i:Bind FontFamily, AppSource=Data}"/>
+        <Setter Property="Foreground" Value="{i:Theme Text}"/>
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="i:XWindow.ContentStyle">
+            <Setter.Value>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="BorderBrush" Value="{i:Theme WindowContentBorder}"/>
+                    <Setter Property="BorderThickness" Value="0,1,0,0"/>
+                    <Setter Property="Margin" Value="0,2,0,0"/>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XWindow.DialogBlur" Value="2000"/>
+        <Setter Property="i:XWindow.DialogTemplate">
+            <Setter.Value>
+                <DataTemplate DataType="{x:Type Ion:DialogModel}">
+                    <i:DialogControl Content="{i:Bind}" Visibility="{i:Equal Invert=True, Result=Visibility}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XWindow.DialogTransition" Value="Left"/>
+        <Setter Property="i:XWindow.Extend" Value="True"/>
+        <Setter Property="i:XWindow.Footer" Value="{i:Bind From=Self, Path=(i:XWindow.FooterButtons)}"/>
+        <Setter Property="i:XWindow.FooterTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <i:TopBorder
+                        Background="{i:Theme WindowFooterBackground}"
+                        BorderBrush="{i:Theme WindowFooterBorder}"
+                        Padding="{i:Constant Key=Thick}">
+                        <i:DisplayButton Content="{i:Bind}">
+                            <i:DisplayButton.ButtonStyle>
+                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
+                                    <Setter Property="Command" Value="{x:Static i:XWindow.CloseCommand}"/>
+                                    <Setter Property="CommandTarget" Value="{i:Bind From=FindAncestor, FromType={x:Type Window}}"/>
+                                    <Setter Property="Margin" Value="{i:Constant Key=ThickSmallerLeft}"/>
+                                </Style>
+                            </i:DisplayButton.ButtonStyle>
+                        </i:DisplayButton>
+                    </i:TopBorder>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XWindow.IconTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <i:ImageElement
+                        Margin="0,0,5,0"
+                        Source="{i:Bind From=FindAncestor, FromType=Window, Path=(i:XWindow.Icon)}"
+                        SourceSize="{i:Bind From=FindAncestor, FromType=Window, Path=(i:XWindow.IconSize)}"
+                        VerticalAlignment="Center"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XWindow.NotificationTemplate">
+            <Setter.Value>
+                <DataTemplate DataType="Analysis:Notification">
+                    <i:ResultControl Content="{i:Bind Result}"
+                        Margin="0,5,0,0">
+                        <i:ResultControl.Resources>
+                            <Data:Reference x:Key="Notification" Data="{i:Bind}"/>
+                        </i:ResultControl.Resources>
+                        <i:ResultControl.ContentTemplate>
+                            <DataTemplate DataType="SharedAnalytics:Result">
+                                <Grid i:XGrid.Columns="*,Auto">
+                                    <StackPanel
+                                        i:XPanel.Spacing="0,0,0,5"
+                                        i:XPanel.SpacingExcept="Last">
+                                        <TextBlock
+                                            FontWeight="Bold"
+                                            Text="{i:Bind Data.Title, Source={StaticResource Notification}}"
+                                            TextTrimming="CharacterEllipsis"/>
+                                        <TextBlock 
+                                            Opacity="0.5"
+                                            Text="{i:Bind Text}"
+                                            TextWrapping="Wrap"/>
+                                        <Label HorizontalAlignment="Left"
+                                            Style="{DynamicResource {x:Static i:XLabel.Accent}}">
+                                            <TextBlock FontStyle="Italic" Opacity="0.8" Text="{i:Bind Data.Created, Convert=Data:ConvertToStringTimeRelative, Source={StaticResource Notification}}"/>
+                                        </Label>
+                                    </StackPanel>
+                                    <i:ImageButton Grid.Column="1"
+                                        Command="{x:Static i:XWindow.MarkNotificationCommand}"
+                                        CommandParameter="{i:Bind Data, Source={StaticResource Notification}}"
+                                        CommandTarget="{i:Bind From=FindAncestor, FromType=Window}"
+                                        Margin="5,0,0,0"
+                                        Source="{i:Image Key=XRound}"
+                                        ToolTip="{i:Text Close}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </i:ResultControl.ContentTemplate>
+                    </i:ResultControl>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XWindow.StartupLocation" Value="CenterScreen"/>
+        <Setter Property="i:XWindow.TaskbarIconTemplate" Value="{i:Template Key=Default}"/>
+        <Setter Property="i:XWindow.TitleTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock Text="{i:Bind Title}" TextTrimming="CharacterEllipsis"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:ImageElement.Foreground" Value="{i:Theme Text}"/>
+        <Setter Property="Opacity" Value="0"/>
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="RenderTransform">
+            <Setter.Value>
+                <ScaleTransform/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="RenderTransformOrigin" Value="0.5,0.5"/>
+        <Setter Property="ShowInTaskbar" Value="True"/>
+        <Setter Property="Template" Value="{StaticResource {x:Static i:XWindow.Template}}"/>
+        <Setter Property="TextOptions.TextFormattingMode" Value="Display"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+        <Setter Property="UseLayoutRounding" Value="True"/>
+        <Setter Property="WindowChrome.WindowChrome">
+            <Setter.Value>
+                <WindowChrome
+                    CaptionHeight="32"
+                    CornerRadius="0"
+                    GlassFrameThickness="0,0,0,1"
+                    ResizeBorderThickness="5"/>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="WindowStyle" Value="None"/>
+        <Style.Triggers>
+            <EventTrigger RoutedEvent="Loaded">
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation Duration="0:0:0.6" From="0" To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleX)">
+                            <DoubleAnimation.EasingFunction>
+                                <SineEase EasingMode="EaseOut"/>
+                            </DoubleAnimation.EasingFunction>
+                        </DoubleAnimation>
+                        <DoubleAnimation Duration="0:0:0.6" From="0" To="1" Storyboard.TargetProperty="(UIElement.RenderTransform).(ScaleTransform.ScaleY)">
+                            <DoubleAnimation.EasingFunction>
+                                <SineEase EasingMode="EaseOut"/>
+                            </DoubleAnimation.EasingFunction>
+                        </DoubleAnimation>
+                        <DoubleAnimation Duration="0:0:0.8" From="0" To="1" Storyboard.TargetProperty="Opacity"/>
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger>
+            <!-- /// -->
+            <Trigger Property="IsActive" Value="True">
+                <Setter Property="BorderBrush" Value="{i:Theme WindowActiveBorder}"/>
+            </Trigger>
+            <Trigger Property="IsActive" Value="False">
+                <Setter Property="BorderBrush" Value="{i:Theme WindowBorder}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
+    <!--#endregion-->
+
+    <!--#region Window > App-->
+
+    <Style x:Key="{x:Type i:AppWindow}" TargetType="{x:Type i:AppWindow}" BasedOn="{StaticResource {x:Type Window}}">
+        <Setter Property="Height" Value="{i:Bind WindowHeight, AppSource=Data, Mode=TwoWay}"/>
+        <Setter Property="i:XWindow.Footer" Value="{i:Bind AppSource=Model}"/>
+        <Setter Property="i:XWindow.FooterTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <!--
+                    <i:ObjectControl i:XObjectControl.Source="{Data:BindSection Section=Footer}" Orientation="Horizontal"/>
+                    -->
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XWindow.FooterVisibility" Value="{i:Bind WindowFooterVisibility, Convert=Data:ConvertBooleanToVisibility, AppSource=Data}"/>
+        <Setter Property="i:XWindow.HeaderButtons" Value="{i:Bind DataContext.HeaderButtons, Convert=Data:ConvertToObjectCollection, From=Self}"/>
+        <Setter Property="i:XWindow.HeaderButtonStyle" Value="{i:Bind WindowButtonStyle, AppSource=Data}"/>
+        <Setter Property="i:XWindow.HeaderHeight" Value="33"/>
+        <Setter Property="i:XWindow.HeaderPlacement" Value="{i:Bind WindowHeaderPlacement, AppSource=Data}"/>
+        <Setter Property="i:XWindow.HeaderVisibility" Value="{i:Bind WindowHeaderVisibility, Convert=Data:ConvertBooleanToVisibility, AppSource=Data}"/>
+        <Setter Property="i:XWindow.Icon" Value="{i:Image Logo16.png}"/>
+        <Setter Property="i:XWindow.IconMenu" Value="{StaticResource {x:Static i:AppWindow.MenuMain}}"/>
+        <Setter Property="i:XWindow.IconSize" Value="16,16"/>
+        <Setter Property="i:XWindow.Menu" Value="{i:Bind AppSource=Model}"/>
+        <Setter Property="i:XWindow.MenuOrientation" Value="{i:Bind WindowMenuOrientation, AppSource=Data}"/>
+        <Setter Property="i:XWindow.MenuTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Menu 
+                        IsHitTestVisible="True"
+                        i:XMenu.TopLevelIconVisibility="{i:Bind WindowMenuShowTopLevelIcons, Convert=Data:ConvertBooleanToVisibility, AppSource=Data}"
+                        WindowChrome.IsHitTestVisibleInChrome="True"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XWindow.TaskbarIconTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <h:TaskbarIcon
+                        ContextMenu="{StaticResource {x:Static i:AppWindow.MenuMain}}"
+                        IconSource="{i:Image Logo.ico}" 
+                        i:XElement.Reference="{i:Bind AppSource=Model}"
+                        i:XElement.ReferenceKey="{x:Static Core1:AppModel.TaskbarIconKey}"
+                        MenuActivation="LeftOrRightClick"
+                        ToolTipText="{i:AssemblyProduct}"
+                        Visibility="{i:Bind TaskbarIconVisibility, Convert={x:Type Data:ConvertBooleanToVisibility}, AppSource=Data}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Padding" Value="10,10,15,15"/>
+        <Setter Property="ResizeMode" Value="CanResizeWithGrip"/>
+        <Setter Property="Width" Value="{i:Bind WindowWidth, AppSource=Data, Mode=TwoWay}"/>
+        <Setter Property="WindowState" Value="{i:Bind WindowState, AppSource=Data, Mode=TwoWay}"/>
+    </Style>
+    
+    <!--#endregion-->
+
+    <!--#region Window > Splash-->
+
+    <DropShadowEffect x:Key="{x:Static i:SplashWindow.DropShadowEffectKey}"
+        BlurRadius="20" Color="{i:Theme PopupDropShadow}" Opacity="0.9" ShadowDepth="0"/>
+    
+    <Style x:Key="{x:Type i:SplashWindow}" TargetType="{x:Type i:SplashWindow}" BasedOn="{StaticResource {x:Type Window}}">
+        <Setter Property="Image" Value="{i:Image LogoSplash.png}"/>
+        <Setter Property="ImageHeight" Value="{x:Static i:SplashWindow.DefaultImageHeight}"/>
+        <Setter Property="ImageWidth" Value="{x:Static i:SplashWindow.DefaultImageWidth}"/>
+        <Setter Property="ImageTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <Image RenderOptions.BitmapScalingMode="NearestNeighbor" Source="{i:Bind}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Padding" Value="20"/>
+        <Setter Property="ResizeMode" Value="NoResize"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type i:SplashWindow}">
+                    <Border Padding="{TemplateBinding Padding}">
+                        <i:ClipBorder  Effect="{StaticResource {x:Static i:SplashWindow.DropShadowEffectKey}}" Height="{TemplateBinding ImageHeight}" Width="{TemplateBinding ImageWidth}">
+                            <ContentPresenter ContentSource="Content"/>
+                        </i:ClipBorder>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="SizeToContent" Value="WidthAndHeight"/>
+        <Setter Property="WindowState" Value="Normal"/>
+        <Setter Property="WindowStyle" Value="None"/>
+    </Style>
+
+    <!--#endregion-->
+</ResourceDictionary>

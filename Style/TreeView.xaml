@@ -1,0 +1,277 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:l="http://wpflocalizeextension.codeplex.com"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="clr-namespace:Ion.Controls"
+    xmlns:Data="clr-namespace:Ion.Data">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="{i:Style Key=ComboBox}"/>
+        <ResourceDictionary Source="{i:Style Key=Control}"/>
+        <ResourceDictionary Source="{i:Style Key=FrameworkElement}"/>
+        <ResourceDictionary Source="{i:Style Key=GridSplitter}"/>
+        <ResourceDictionary Source="{i:Style Key=ItemsControl}"/>
+    </ResourceDictionary.MergedDictionaries>
+    <!-- /// -->
+    
+    <Style x:Key="{x:Static i:XTreeViewItem.ToggleButtonTemplateKey}" TargetType="{x:Type ToggleButton}">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="ClickMode" Value="Press" />
+        <Setter Property="Focusable" Value="False" />
+        <Setter Property="Foreground" Value="{i:Theme TreeViewItemToggleButtonEmptyFill}" />
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Grid i:XGrid.Columns="Auto,*"
+                        Background="{TemplateBinding Background}">
+                        <i:RotateElement
+                            Rotate="{TemplateBinding IsChecked}"
+                            Rotation="-90,0"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                            <i:ImageElement
+                                Margin="{TemplateBinding Padding}"
+                                Source="{i:Image Key=ArrowDown}"
+                                SourceSize="12,12"
+                                Foreground="{TemplateBinding Foreground}"/>
+                        </i:RotateElement>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Style.Triggers>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Data:Ancestor HasItems, {x:Type TreeViewItem}}" Value="True"/>
+                    <Condition Binding="{Data:Ancestor IsExpanded, {x:Type TreeViewItem}}" Value="True"/>
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Foreground" Value="{i:Theme TreeViewItemToggleButtonFilledCheckedFill}"/>
+            </MultiDataTrigger>
+            <MultiDataTrigger>
+                <MultiDataTrigger.Conditions>
+                    <Condition Binding="{Data:Ancestor HasItems, {x:Type TreeViewItem}}" Value="True"/>
+                    <Condition Binding="{Data:Ancestor IsExpanded, {x:Type TreeViewItem}}" Value="False"/>
+                </MultiDataTrigger.Conditions>
+                <Setter Property="Foreground" Value="{i:Theme TreeViewItemToggleButtonFilledFill}"/>
+            </MultiDataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <!-- /// -->
+
+    <Style x:Key="{x:Type TreeView}" TargetType="{x:Type TreeView}" BasedOn="{StaticResource {x:Type ItemsControl}}">
+        <Setter Property="AlternationCount" Value="2" />
+        <Setter Property="Background" Value="{i:Theme TreeViewBackground}"/>
+        <Setter Property="BorderBrush" Value="{i:Theme TreeViewBorder}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel IsItemsHost="True"/>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="i:XItemsControl.CanDragSelect" Value="True"/>
+        <Setter Property="i:XItemsControl.EmptyTemplateVisibility" Value="Visible"/>
+        <Setter Property="i:XTreeView.CollapseSiblingsOnClick" Value="True" />
+        <Setter Property="i:XTreeView.SelectionMode" Value="One"/>
+        <Setter Property="i:XTreeView.SelectOnRightClick" Value="True" />
+        <Setter Property="KeyboardNavigation.DirectionalNavigation" Value="Cycle"/>
+        <Setter Property="OverridesDefaultStyle" Value="True"/>
+        <Setter Property="Padding" Value="5,0,0,0"/>
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type TreeView}">
+                    <ScrollViewer 
+                        x:Name="PART_ScrollViewer"
+                        Background="{TemplateBinding Background}" 
+                        BorderBrush="{TemplateBinding BorderBrush}" 
+                        BorderThickness="{TemplateBinding BorderThickness}" 
+                        CanContentScroll="True"
+                        Focusable="False" 
+                        Padding="{TemplateBinding Padding}">
+                        <ScrollViewer.Style>
+                            <Style TargetType="ScrollViewer">
+                                <Setter Property="CanContentScroll" Value="True"/>
+                                <Setter Property="VerticalScrollBarVisibility" Value="Auto"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ScrollViewer">
+                                            <Border 
+                                                Background="{TemplateBinding Background}" 
+                                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                                BorderThickness="{TemplateBinding BorderThickness}">
+                                                <Grid i:XGrid.Columns="*,Auto"
+                                                    i:XGrid.Rows="*,Auto"
+                                                    Background="{TemplateBinding Background}">
+                                                    <ScrollContentPresenter x:Name="PART_ScrollContentPresenter"
+                                                        Grid.ColumnSpan="2" Grid.Row="0" 
+                                                        KeyboardNavigation.DirectionalNavigation="Local"
+                                                        Margin="{TemplateBinding Padding}"/>
+
+                                                    <ScrollBar x:Name="PART_VerticalScrollBar"
+                                                        Grid.Column="1" Grid.Row="0"
+                                                        Maximum="{TemplateBinding ScrollableHeight}"
+                                                        ViewportSize="{TemplateBinding ViewportHeight}"
+                                                        Value="{TemplateBinding VerticalOffset}"
+                                                        Visibility="{TemplateBinding ComputedVerticalScrollBarVisibility}"/>
+                                                    <ScrollBar x:Name="PART_HorizontalScrollBar"
+                                                        Grid.Row="1"
+                                                        Orientation="Horizontal"
+                                                        Maximum="{TemplateBinding ScrollableWidth}"
+                                                        ViewportSize="{TemplateBinding ViewportWidth}"
+                                                        Value="{TemplateBinding HorizontalOffset}"
+                                                        Visibility="{TemplateBinding ComputedHorizontalScrollBarVisibility}"/>
+                                                </Grid>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ScrollViewer.Style>
+                        <Grid>
+                            <i:DisplayEmpty/>
+                            <i:DisplaySelection/>
+                            <ItemsPresenter 
+                                HorizontalAlignment="Stretch"/>
+                        </Grid>
+                    </ScrollViewer>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="VerticalAlignment" Value="Stretch"/>
+        <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True"/>
+        <Setter Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="True"/>
+        <Setter Property="VirtualizingPanel.ScrollUnit" Value="Pixel"/>
+        <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling"/>
+    </Style>
+
+    <Style x:Key="{x:Type TreeViewItem}" TargetType="{x:Type TreeViewItem}">
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        <Setter Property="i:XElement.FadeIn" Value="True" />
+        <Setter Property="Foreground" Value="{i:Theme TreeViewItemForeground}" />
+        <Setter Property="Opacity" Value="0" />
+        <Setter Property="OverridesDefaultStyle" Value="True" />
+        <Setter Property="Padding" Value="4,1.5" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="TreeViewItem">
+                    <Grid x:Name="PART_Grid" 
+                        i:XGrid.Columns="20,*" 
+                        i:XGrid.Rows="Auto,*">
+                        <ToggleButton x:Name="PART_ToggleButton"
+                            Grid.ColumnSpan="2"
+                            IsChecked="{i:Bind From=TemplatedParent, Path=IsExpanded, Mode=TwoWay}"
+                            Style="{StaticResource {x:Static i:XTreeViewItem.ToggleButtonTemplateKey}}"/>
+                        <Border x:Name="PART_Border"
+                            Grid.Column="1" Grid.ColumnSpan="1"
+                            Background="{TemplateBinding Background}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
+                            IsHitTestVisible="False"
+                            Padding="{TemplateBinding Padding}" 
+                            SnapsToDevicePixels="True">
+                            <ContentPresenter Content="{TemplateBinding Header}"
+                                ContentTemplate="{TemplateBinding HeaderTemplate}"
+                                ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Border>
+                        <ItemsPresenter x:Name="ItemsHost"
+                            Grid.Column="1" Grid.ColumnSpan="1" Grid.Row="1"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ItemsControl.AlternationIndex" Value="0" />
+                                <Condition SourceName="PART_Border" Property="IsMouseOver" Value="False" />
+                                <Condition Property="i:XTreeViewItem.IsSelected" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{i:Theme TreeViewItemEvenBackground}"/>
+                            <Setter Property="BorderBrush" Value="{i:Theme TreeViewItemEvenBorder}"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="ItemsControl.AlternationIndex" Value="1" />
+                                <Condition SourceName="PART_Border" Property="IsMouseOver" Value="False" />
+                                <Condition Property="i:XTreeViewItem.IsSelected" Value="False" />
+                            </MultiTrigger.Conditions>
+                            <Setter Property="Background" Value="{i:Theme TreeViewItemOddBackground}"/>
+                            <Setter Property="BorderBrush" Value="{i:Theme TreeViewItemOddBorder}"/>
+                        </MultiTrigger>
+                        <!-- /// -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="HasItems" Value="True"/>
+                                <Condition Property="IsExpanded" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="ItemsHost" Property="Visibility" Value="Visible"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="HasItems" Value="True"/>
+                                <Condition Property="IsExpanded" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="ItemsHost" Property="Visibility" Value="Collapsed"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="HasItems" Value="False"/>
+                                <Condition Property="IsExpanded" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="ItemsHost" Property="Visibility" Value="Visible"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="HasItems" Value="False"/>
+                                <Condition Property="IsExpanded" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="ItemsHost" Property="Visibility" Value="Collapsed"/>
+                        </MultiTrigger>
+                        <!-- /// -->
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="i:XTreeViewItem.IsSelected" Value="False"/>
+                                <Condition SourceName="PART_Border" Property="IsMouseOver" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="PART_Border" Property="Background" Value="{i:Theme TreeViewItemMouseOverBackground}"/>
+                            <Setter TargetName="PART_Border" Property="BorderBrush" Value="{i:Theme TreeViewItemMouseOverBorder}"/>
+                            <Setter Property="TextBlock.Foreground" Value="{i:Theme TreeViewItemMouseOverForeground}"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="i:XTreeViewItem.IsSelected" Value="True"/>
+                                <Condition Property="Selector.IsSelectionActive" Value="True"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="PART_Border" Property="Background" Value="{i:Theme TreeViewItemSelectedActiveBackground}"/>
+                            <Setter TargetName="PART_Border" Property="BorderBrush" Value="{i:Theme TreeViewItemSelectedActiveBorder}"/>
+                            <Setter Property="TextBlock.Foreground" Value="{i:Theme TreeViewItemSelectedActiveForeground}"/>
+                        </MultiTrigger>
+                        <MultiTrigger>
+                            <MultiTrigger.Conditions>
+                                <Condition Property="i:XTreeViewItem.IsSelected" Value="True"/>
+                                <Condition Property="Selector.IsSelectionActive" Value="False"/>
+                            </MultiTrigger.Conditions>
+                            <Setter TargetName="PART_Border" Property="Background" Value="{i:Theme TreeViewItemSelectedBackground}"/>
+                            <Setter TargetName="PART_Border" Property="BorderBrush" Value="{i:Theme TreeViewItemSelectedBorder}"/>
+                            <Setter Property="TextBlock.Foreground" Value="{i:Theme TreeViewItemSelectedForeground}"/>
+                        </MultiTrigger>
+                        <!-- /// -->
+                        <Trigger SourceName="PART_Border" Property="i:XControl.IsDraggingOver" Value="True">
+                            <Setter TargetName="PART_Border" Property="BorderBrush" Value="{i:Theme DropTargetBorder}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True"/>
+        <Setter Property="VirtualizingPanel.IsVirtualizingWhenGrouping" Value="True"/>
+        <Setter Property="VirtualizingPanel.ScrollUnit" Value="Pixel"/>
+        <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling"/>
+    </Style>
+</ResourceDictionary>

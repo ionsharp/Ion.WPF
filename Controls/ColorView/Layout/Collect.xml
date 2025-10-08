@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Layout xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="Ion.Controls">
+  <Top/>
+  <Left/>
+  <Right>
+	  <Panel Name="ColorAnalysisPanel"/>
+	  <Panel Name="ColorChromacityPanel"/>
+	  <Panel Name="ColorDifferencePanel"/>
+	  <Panel Name="NotificationPanel"/>
+	  <Panel Name="OptionPanel"/>
+	  <Panel Name="ThemePanel"/>
+  </Right>
+  <Bottom/>
+  <Root xsi:type="DockLayoutGroup" Orientation="Horizontal">
+    <Elements>
+      <Element xsi:type="DockLayoutGroup" Orientation="Vertical" Width="6*">
+        <Elements>
+          <Element xsi:type="DockLayoutDocumentGroup" Height="65*"/>
+          <Element xsi:type="DockLayoutPanelGroup" Height="35*">
+            <Panels>
+				<DockLayoutPanel IsSelected="true" Name="LogPanel"/>
+				<DockLayoutPanel Name="ColorHarmonyPanel"/>
+			</Panels>
+          </Element>
+        </Elements>
+      </Element>
+      <Element xsi:type="DockLayoutPanelGroup" Width="4*">
+        <Panels>
+          <DockLayoutPanel IsSelected="true" Name="ColorPanel"/>
+          <DockLayoutPanel Name="GradientPanel"/>
+          <DockLayoutPanel Name="IlluminantPanel"/>
+          <DockLayoutPanel Name="MatrixPanel"/>
+          <DockLayoutPanel Name="ProfilePanel"/>
+        </Panels>
+      </Element>
+    </Elements>
+  </Root>
+</Layout>

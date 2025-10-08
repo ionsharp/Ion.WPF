@@ -1,0 +1,146 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:l="http://wpflocalizeextension.codeplex.com"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="clr-namespace:Ion.Controls"
+    xmlns:Analysis="clr-namespace:Ion.Analysis;assembly=Ion"
+    xmlns:Core="clr-namespace:Ion.Core"
+    xmlns:Base0="clr-namespace:Ion"
+    xmlns:Base1="clr-namespace:Ion;assembly=Ion"
+    xmlns:Data="clr-namespace:Ion.Data">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="{i:Style Key=Panels}"/>
+    </ResourceDictionary.MergedDictionaries>
+    
+    <DataTemplate x:Key="{x:Static Base0:Dialog.AboutTemplateKey}">
+        <Grid i:XGrid.AutoColumns="True" i:XGrid.Columns="Auto,*"
+            Margin="16">
+            <i:ClipBorder BorderBrush="Transparent" BorderThickness="1" CornerRadius="999">
+                <Image Source="{i:Image Logo.png}"
+                    Height="96" Width="96"/>
+            </i:ClipBorder>
+            <Grid i:XGrid.Columns="Auto,Auto,*"
+                i:XGrid.Rows="Auto,Auto,Auto,Auto"
+                Margin="16,0,0,0"
+                VerticalAlignment="Center">
+                <TextBlock Grid.Column="0"
+                    Grid.Row="0"
+                    FontSize="26"
+                    Text="{i:AssemblyTitle}"
+                    VerticalAlignment="Center"/>
+                <Label Grid.Column="1"
+                    Content="{i:AssemblyFileVersion Assembly=Core}"
+                    FontSize="14"
+                    FontStyle="Italic"
+                    Margin="5,0,0,0"
+                    Style="{DynamicResource {x:Static i:XLabel.Accent}}"
+                    VerticalAlignment="Center"/>
+                <TextBlock Grid.ColumnSpan="3"
+                    Grid.Row="1"
+                    FontSize="15"
+                    Margin="0,5,0,0"
+                    Text="{i:AssemblyDescription}"
+                    TextWrapping="Wrap"
+                    VerticalAlignment="Top"/>
+                <TextBlock Grid.ColumnSpan="3"
+                    Grid.Row="2"
+                    FontSize="15"
+                    HorizontalAlignment="Left"
+                    Margin="0,5,0,0"
+                    Opacity="0.5"
+                    Text="{i:AssemblyCopyright}"
+                    TextTrimming="CharacterEllipsis"/>
+                <TextBlock Grid.ColumnSpan="3"
+                    Grid.Row="3"
+                    FontSize="15"
+                    Margin="0,5,0,0"
+                    TextTrimming="CharacterEllipsis">
+                    <Hyperlink NavigateUri="{i:Bind GitHubProject, AppSource=Model, Way=1}">
+                        <Hyperlink.Inlines>
+                            <Run Text="{i:Bind GitHubProject, AppSource=Model, Way=1}"/>
+                       </Hyperlink.Inlines>
+                    </Hyperlink>
+                </TextBlock>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="{x:Static Base0:Dialog.ColorTemplateKey}">
+        <i:ColorView ViewModel="{i:Bind ViewModel}"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="{x:Static Base0:Dialog.DownloadTemplateKey}">
+        <Grid i:XGrid.AutoRows="True" i:XGrid.Rows="Auto,*">
+            <ContentPresenter Content="{i:Bind Message}" ContentTemplate="{i:Bind MessageTemplate}"/>
+            <i:DownloadControl AutoStart="{i:Bind AutoStart}" Destination="{i:Bind Destination}" Source="{i:Bind Source}"/>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="{x:Static Base0:Dialog.ObjectTemplateKey}">
+        <!--
+        <i:ObjectControl i:XObjectControl.Source="{i:Bind}"/>
+        -->
+    </DataTemplate>
+
+    <DataTemplate x:Key="{x:Static Base0:Dialog.ProgressTemplateKey}">
+        <Grid i:XGrid.Rows="Auto,Auto" Margin="10">
+            <ProgressBar Grid.Row="0"
+                Height="16"
+                IsIndeterminate="{i:Bind IsIndeterminate}"
+                Maximum="1"
+                Minimum="0"
+                Value="{i:Bind Progress}"/>
+            <TextBlock Grid.Row="1"
+                HorizontalAlignment="Center"
+                Margin="0,5,0,0"
+                Text="{i:Bind Text}"
+                TextTrimming="CharacterEllipsis"
+                Visibility="{i:Bind Text, Convert=Data:ConvertObjectToVisibility, From=Self}"/>
+        </Grid>
+    </DataTemplate>
+
+    <DataTemplate x:Key="{x:Static Base0:Dialog.ResultTemplateKey}">
+        <Grid i:XGrid.AutoColumns="True" i:XGrid.Columns="Auto,Auto,*" Margin="10">
+            <i:ImageElement Source="{i:Bind Image, Convert=Data:ConvertToImageSource}" 
+                Margin="0,0,10,0" 
+                SourceSize="48,48"
+                VerticalAlignment="Top" 
+                Visibility="{i:Bind Source, Convert=Data:ConvertObjectToVisibility, From=Self}"/>
+            <Grid i:XGrid.AutoRows="True" i:XGrid.Rows="Auto,Auto" VerticalAlignment="Top">
+                <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+                    <i:Display Content="{i:Bind Content}" 
+                        i:Display.Condition="{i:Equal Type, Value={x:Static Analysis:ResultType.Error}}">
+                        <i:Display.ConditionalTemplate>
+                            <DataTemplate>
+                                <i:ErrorControl Error="{i:Bind}"
+                                    IsChildExpanded="True"
+                                    IsExpanded="False"
+                                    Wrap="Wrap">
+                                    <i:ErrorControl.ContentTemplate>
+                                        <DataTemplate>
+                                            <TextBlock Text="{i:Bind Text}"
+                                                TextTrimming="CharacterEllipsis"
+                                                TextWrapping="Wrap"
+                                                ToolTip="{i:Bind Text, From=Self}"/>
+                                        </DataTemplate>
+                                    </i:ErrorControl.ContentTemplate>
+                                </i:ErrorControl>
+                            </DataTemplate>
+                        </i:Display.ConditionalTemplate>
+                        <i:Display.DefaultTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{i:Bind Text}"
+                                    TextTrimming="CharacterEllipsis"
+                                    TextWrapping="Wrap"
+                                    ToolTip="{i:Bind Text, From=Self}"/>
+                            </DataTemplate>
+                        </i:Display.DefaultTemplate>
+                    </i:Display>
+                </ScrollViewer>
+                <CheckBox Content="Don't show again"
+                    IsChecked="{i:Bind NeverShow.Value, Trigger=PropertyChanged, Way=2}"
+                    Margin="0,10,0,0"
+                    Visibility="{i:Bind NeverShow, Convert=Data:ConvertObjectToVisibility}"/>
+            </Grid>
+        </Grid>
+    </DataTemplate>
+</ResourceDictionary>

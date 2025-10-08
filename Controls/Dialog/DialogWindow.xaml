@@ -1,0 +1,39 @@
+﻿<Window x:Class="Ion.Controls.DialogWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="clr-namespace:Ion.Controls"
+    xmlns:Data="clr-namespace:Ion.Data"
+    SizeToContent="Height"
+    Width="720"
+    WindowStartupLocation="CenterScreen">
+    <Grid
+        i:XGrid.AutoRows="True"
+        i:XGrid.Rows="Auto,Auto">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid
+            i:XGrid.AutoColumns="True"
+            i:XGrid.Columns="Auto,*"
+            Margin="5">
+            <Image Source="{i:Bind Image, Convert=Data:ConvertToImageSource}"
+                Margin="0,0,5,0"
+                VerticalAlignment="Top"/>
+            <ScrollViewer HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Auto">
+                <ContentPresenter Content="{Binding Message}" ContentTemplate="{Binding MessageTemplate}"/>
+            </ScrollViewer>
+        </Grid>
+
+        <Border
+            Background="#11000000"
+            BorderBrush="#44000000"
+            BorderThickness="0,1,0,0"
+            Padding="5"
+            Margin="0,5,0,0">
+            <Button
+                Click="Done"
+                Content="Done"/>
+        </Border>
+    </Grid>
+</Window>

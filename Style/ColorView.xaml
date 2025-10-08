@@ -1,0 +1,49 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:i="clr-namespace:Ion.Controls"
+    xmlns:Data="clr-namespace:Ion.Data">
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="{i:Style Key=ComboBox}"/>
+        <ResourceDictionary Source="{i:Style Key=Control}"/>
+        <ResourceDictionary Source="{i:Style Key=Panels}"/>
+    </ResourceDictionary.MergedDictionaries>
+    <Style x:Key="{x:Type i:ColorView}" TargetType="{x:Type i:ColorView}" BasedOn="{StaticResource {x:Type Control}}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="i:ColorView">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding Border.CornerRadius}"
+                        Padding="{TemplateBinding Padding}">
+                        <Border.Resources>
+                            <Data:Reference x:Key="Control" Data="{i:Bind From=TemplatedParent}"/>
+                        </Border.Resources>
+                        <i:DockControl 
+                            ActiveContent="{i:Bind ViewModel.ActiveContent, From=TemplatedParent, Mode=TwoWay}"
+                            ActiveDocument="{i:Bind ViewModel.ActiveDocument, From=TemplatedParent, Mode=TwoWay}"
+                            ActivePanel="{i:Bind ViewModel.ActivePanel, From=TemplatedParent, Mode=TwoWay}"
+                            AutoSave="{i:Bind ViewModel.Data.AutoSaveLayout, From=TemplatedParent}"
+                            Documents="{i:Bind ViewModel.Documents, From=TemplatedParent}"
+                            DocumentIconTemplate="{DynamicResource {x:Static i:ColorDocument.IconTemplate}}"
+                            DocumentTitleTemplate="{DynamicResource {x:Static i:ColorDocument.TitleTemplate}}"
+                            DocumentToolTipHeaderTemplate="{DynamicResource {x:Static i:ColorView.ToolTipHeaderTemplate}}"
+                            DocumentToolTipTemplate="{DynamicResource {x:Static i:ColorView.ToolTipTemplate}}"
+                            Layout="{i:Bind ViewModel.Layout, From=TemplatedParent}"
+                            Panels="{i:Bind ViewModel.Panels, From=TemplatedParent}">
+                            <i:DockControl.DocumentTemplate>
+                                <DataTemplate>
+                                    <i:ColorSelectorView Document="{i:Bind}" Options="{i:Bind Data.ViewModel.Data, Source={StaticResource Control}}"/>
+                                </DataTemplate>
+                            </i:DockControl.DocumentTemplate>
+                            <i:DockControl.PanelTemplateSelector>
+                                <i:DockPanelTemplateSelector/>
+                            </i:DockControl.PanelTemplateSelector>
+                        </i:DockControl>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
