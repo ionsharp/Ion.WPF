@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Ion.Core;
 
-public delegate void AppReloadedEventHandler(ISingleApp sender, AppReloadedEventArgs e);
+public delegate void AppReloadedEventHandler(IAppSingle sender, AppReloadedEventArgs e);
 
 public class AppReloadedEventArgs(IEnumerable<string> arguments) : EventArgs()
 {

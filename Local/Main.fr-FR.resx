@@ -534,9 +534,6 @@
   <data name="Difficulty" xml:space="preserve">
     <value>Difficulté</value>
   </data>
-  <data name="Disable" xml:space="preserve">
-    <value>Désactiver</value>
-  </data>
   <data name="Easy" xml:space="preserve">
     <value>Facile</value>
   </data>
@@ -765,9 +762,6 @@
   <data name="OverwriteFiles" xml:space="preserve">
     <value>Écraser les fichiers</value>
   </data>
-  <data name="Passwords" xml:space="preserve">
-    <value>Mots de passe</value>
-  </data>
   <data name="Progress" xml:space="preserve">
     <value>Le progrès</value>
   </data>
@@ -783,7 +777,7 @@
   <data name="ShowBar" xml:space="preserve">
     <value>Afficher la barre</value>
   </data>
-  <data name="ShowInTaskBar" xml:space="preserve">
+  <data name="ShowInTaskbar" xml:space="preserve">
     <value>Afficher dans la barre des tâches</value>
   </data>
   <data name="SizeRead" xml:space="preserve">
@@ -812,9 +806,6 @@
   </data>
   <data name="TimeLeft" xml:space="preserve">
     <value>Temps restant</value>
-  </data>
-  <data name="Type1" xml:space="preserve">
-    <value>Taper</value>
   </data>
   <data name="ViewCheckBoxes" xml:space="preserve">
     <value>Afficher les cases à cocher</value>
@@ -1211,5 +1202,11 @@
   </data>
   <data name="Trim" xml:space="preserve">
     <value>Garniture</value>
+  </data>
+  <data name="Disable" xml:space="preserve">
+    <value>Désactiver</value>
+  </data>
+  <data name="Passwords" xml:space="preserve">
+    <value>Mots de passe</value>
   </data>
 </root>

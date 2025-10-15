@@ -85,7 +85,7 @@ public abstract record class AppLink<T>() : AppLink() where T : IAppModel
 
 /// <inheritdoc/>
 [Serializable]
-public abstract record class PanelLink<T>() : AppLink<IDockAppModel>() where T : Panel
+public abstract record class PanelLink<T>() : AppLink<IAppModelDock>() where T : Panel
 {
     [field: NonSerialized]
     public T Panel { get; private set; }
@@ -128,13 +128,13 @@ public abstract record class PanelLink<T>() : AppLink<IDockAppModel>() where T :
     public override void OnDisabled()
     {
         base.OnEnabled();
-        Panel.IfNotNull(i => Appp.Get<IDockAppModel>().ViewModel.Panels.Remove(i));
+        Panel.IfNotNull(i => Appp.Get<IAppModelDock>().ViewModel.Panels.Remove(i));
     }
 
     public override void OnEnabled()
     {
         base.OnEnabled();
-        Panel.IfNotNull(i => Appp.Get<IDockAppModel>().ViewModel.Panels.Add(i));
+        Panel.IfNotNull(i => Appp.Get<IAppModelDock>().ViewModel.Panels.Add(i));
     }
 }
 

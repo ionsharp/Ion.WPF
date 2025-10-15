@@ -7,16 +7,12 @@ namespace Ion.Core;
 public interface IAppLink
 {
     /// <see cref="Region.Event"/>
-    #region
 
     event EventHandler<EventArgs> Enabled;
 
     event EventHandler<EventArgs> Disabled;
 
-    #endregion
-
     /// <see cref="Region.Property"/>
-    #region
 
     AssemblyContext AssemblyContext { get; set; }
 
@@ -40,14 +36,9 @@ public interface IAppLink
 
     Version Version { get; }
 
-    #endregion
-
     /// <see cref="Region.Method"/>
-    #region
 
     void OnEnabled();
 
     void OnDisabled();
-
-    #endregion
 }

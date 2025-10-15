@@ -2,7 +2,7 @@
 
 namespace Ion.Collect;
 
-public class GroupListWritable<T> : ListWritable<ItemGroup<T>>
+public class GroupListWritable<T> : ListObservableWritable<ItemGroup<T>>
 {
     public GroupListWritable() : base() { }
 

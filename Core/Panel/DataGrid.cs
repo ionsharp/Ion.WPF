@@ -4,6 +4,7 @@ using Ion.Data;
 using Ion.Input;
 using Ion.Reflect;
 using System;
+using System.Collections;
 using System.Reflection;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -53,7 +54,7 @@ public abstract record class DataGridPanel() : DataPanel()
 
     /// <see cref="Region.Constructor"/>
 
-    protected DataGridPanel(IListObservable items) : this() => Items = items;
+    protected DataGridPanel(IList items) : this() => Items = items;
 }
 
 #endregion
@@ -63,12 +64,12 @@ public abstract record class DataGridPanel() : DataPanel()
 
 /// <inheritdoc/>
 [Serializable]
-public abstract record class DataGridPanel<T>(IListObservable<T> input) : DataGridPanel(input as IListObservable)
+public abstract record class DataGridPanel<T>(IList input) : DataGridPanel(input)
 {
     [Hide, NonSerializable]
     public override Type ItemType => typeof(T);
 
-    protected DataGridPanel() : this(default(IListObservable<T>)) { }
+    protected DataGridPanel() : this(default(IList)) { }
 }
 
 #endregion
@@ -78,9 +79,9 @@ public abstract record class DataGridPanel<T>(IListObservable<T> input) : DataGr
 
 /// <inheritdoc/>
 [Serializable]
-public abstract record class XmlDataGridPanel<T>(IListObservable<T> input) : DataGridPanel<T>(input)
+public abstract record class XmlDataGridPanel<T>(IList input) : DataGridPanel<T>(input)
 {
-    protected XmlDataGridPanel() : this(default(IListObservable<T>)) { }
+    protected XmlDataGridPanel() : this(default(IList)) { }
 
     /// <see cref="ICommand"/>
 

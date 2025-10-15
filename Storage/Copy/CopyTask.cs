@@ -198,7 +198,7 @@ public record class CopyTask : Lockable, IComparable, ISubscribe, ITask
         SelectedItemProperty = nameof(Category))]
     [Styles.Text(CanEdit = false,
         TargetItem = typeof(string))]
-    public static IList CategorySource => Appp.Get<IDockAppModel>()?.ViewModel.Panels.FirstOrDefault<CopyPanel>().Groups;
+    public static IList CategorySource => Appp.Get<IAppModelDock>()?.ViewModel.Panels.FirstOrDefault<CopyPanel>().Groups;
 
     [Filter(Ion.Filter.Group)]
     [Hide, XmlIgnore]
@@ -1216,7 +1216,7 @@ public record class CopyTask : Lockable, IComparable, ISubscribe, ITask
 
     private async Task Run(CancellationToken token)
     {
-        if (Appp.Get<IDockAppModel>()?.ViewModel.Panels.First<CopyPanel>().ShowWarningBeforeEnablingTask == true)
+        if (Appp.Get<IAppModelDock>()?.ViewModel.Panels.First<CopyPanel>().ShowWarningBeforeEnablingTask == true)
         {
             //if (Dialog.ShowWarning(nameof(IsEnabled), new Warning($"Are you sure you want to synchronize '{Source}' with '{target}'?"), Buttons.ContinueCancel) != 0)
             //return;
@@ -1275,7 +1275,7 @@ public record class CopyTask : Lockable, IComparable, ISubscribe, ITask
 
     private void Disable()
     {
-        if (Appp.Get<IDockAppModel>()?.ViewModel.Panels.First<CopyPanel>().ShowWarningBeforeDisablingTask == true)
+        if (Appp.Get<IAppModelDock>()?.ViewModel.Panels.First<CopyPanel>().ShowWarningBeforeDisablingTask == true)
         {
             //if (Dialog.ShowWarning(nameof(Disable), new Warning($"Are you sure you want to stop synchronizing '{Source}' with '{target}'?"), Buttons.ContinueCancel) != 0)
             //return;
@@ -1427,7 +1427,7 @@ public record class CopyTask : Lockable, IComparable, ISubscribe, ITask
         Dialog.ShowResult("Delete", new Warning("Are you sure you want to delete this?"), i =>
         {
             if (i == 0)
-                Appp.Get<IDockAppModel>()?.ViewModel.Panels.First<CopyPanel>().Tasks.Remove(this);
+                Appp.Get<IAppModelDock>()?.ViewModel.Panels.First<CopyPanel>().Tasks.Remove(this);
         },
         Buttons.YesNo);
     },

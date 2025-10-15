@@ -3,7 +3,7 @@ using System.Windows;
 
 namespace Ion.Controls;
 
-public abstract class AppWindow() : Window(), IAppWindow
+public abstract class AppView() : Window(), IAppView
 {
     public static readonly ResourceKey MenuBelow = new();
 

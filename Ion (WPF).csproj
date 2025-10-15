@@ -39,8 +39,9 @@
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>true</UseWPF>
   </PropertyGroup>
+  
   <ItemGroup>
-    <Compile Update="App\App\IAppWindow.cs">
+    <Compile Update="App\App\IAppView.cs">
       <Generator>MSBuild:Compile</Generator>
     </Compile>
     <Compile Update="Storage\File\FileExtensionGroup.cs">
@@ -81,6 +82,8 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Image\016\Success.png" />
+    <Resource Include="Image\016\Error.png" />
     <Resource Include="Image\128\128-ArrowLeft.png" />
     <Resource Include="Image\128\128-ArrowRight.png" />
   </ItemGroup>

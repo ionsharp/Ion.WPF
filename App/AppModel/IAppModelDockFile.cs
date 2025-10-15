@@ -1,6 +1,6 @@
 ﻿namespace Ion.Core;
 
-public interface IFileDockAppModel : IDockAppModel
+public interface IAppModelDockFile : IAppModelDock
 {
     new IFileDockViewModel ViewModel { get; }
 }

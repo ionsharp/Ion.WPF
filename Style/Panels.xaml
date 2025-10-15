@@ -505,14 +505,14 @@
                 <DataTemplate>
                     <Viewbox>
                         <i:GradientBox Value="{i:Bind Value, Mode=TwoWay}"
-                        Height="Auto" Width="Auto"
-                        HorizontalAlignment="Stretch"
-                        Margin="0,0,0,5">
-                        <i:GradientBox.ValueTemplate>
-                            <DataTemplate>
-                                <Rectangle Fill="{Colors:GradientBinding}"/>
-                            </DataTemplate>
-                        </i:GradientBox.ValueTemplate>
+                            Height="Auto" Width="Auto"
+                            HorizontalAlignment="Stretch"
+                            Margin="0,0,0,5">
+                            <i:GradientBox.ValueTemplate>
+                                <DataTemplate>
+                                    <Rectangle Fill="{Colors:GradientBinding}"/>
+                                </DataTemplate>
+                            </i:GradientBox.ValueTemplate>
                         </i:GradientBox>
                     </Viewbox>
                 </DataTemplate>

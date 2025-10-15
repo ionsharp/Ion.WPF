@@ -31,7 +31,7 @@ namespace Ion.Core;
 [Styles.Object(Filter = Filter.None,
     MemberViewType = MemberViewType.All,
     MemberView = Ion.View.Footer | Ion.View.Header | Ion.View.HeaderItem | Ion.View.HeaderOption)]
-public abstract record class AppModel : Model, IAppModel, IWindow, IFrameworkElementReference
+public abstract record class AppModel : AppModelBase, IAppModel, IWindow, IFrameworkElementReference
 {
     /// <see cref="Region.Key"/>
 
@@ -64,11 +64,11 @@ public abstract record class AppModel : Model, IAppModel, IWindow, IFrameworkEle
     /// <see cref="Region.Property.Protected"/>
     #region
 
-    protected ListWritable<Entry> Log
-    { get => Get<ListWritable<Entry>>(); private set => Set(value); }
+    protected ListObservableWritable<Entry> Log
+    { get => Get<ListObservableWritable<Entry>>(); private set => Set(value); }
 
-    protected ListWritable<Notification> Notifications
-    { get => Get<ListWritable<Notification>>(); private set => Set(value); }
+    protected ListObservableWritable<Notification> Notifications
+    { get => Get<ListObservableWritable<Notification>>(); private set => Set(value); }
 
     protected TaskbarIcon
         TaskbarIcon;
@@ -89,7 +89,7 @@ public abstract record class AppModel : Model, IAppModel, IWindow, IFrameworkEle
     public virtual AppDataFolder DataFolder => AppDataFolder.Documents;
 
     /// <summary>The folder where data used by the app is saved.</summary>
-    public virtual string DataFolderPath => $@"{DataFolderPathShared}\{nameof(App)}\{XAssembly.GetInfo(AssemblySource.Entry).Title}";
+    public virtual string DataFolderPath => $@"{DataFolderPathShared}\{nameof(AppFull)}\{XAssembly.GetInfo(AssemblySource.Entry).Title}";
 
     /// <summary>The folder where data shared by all apps is saved.</summary>
     public virtual string DataFolderPathShared
@@ -116,7 +116,7 @@ public abstract record class AppModel : Model, IAppModel, IWindow, IFrameworkEle
 
     protected virtual Type MenuType { get; }
 
-    public AppWindow View { get => Get<AppWindow>(); private set => Set(value); }
+    public AppView View { get => Get<AppView>(); private set => Set(value); }
 
     protected virtual Type ViewType { get; }
 
@@ -193,10 +193,9 @@ public abstract record class AppModel : Model, IAppModel, IWindow, IFrameworkEle
             yield return new(1, "Data",
                 () =>
                 {
-                    var result = BinarySerializer.Deserialize(DataFilePath, out AppData oldData);
+                    BinarySerializer.Deserialize(DataFilePath, out AppData oldData);
                     Data = oldData ?? DataType.Create<AppData>();
                 });
-
             yield return new(0, "Analysis",
                 () => Data.AnalysisEnable.If(() =>
                 {
@@ -204,11 +203,20 @@ public abstract record class AppModel : Model, IAppModel, IWindow, IFrameworkEle
                     Analyzer.Analyze([.. AssemblyData.ProjectNames.Select(i => XAssembly.Get(i)), XAssembly.Entry]);
                 }));
             yield return new(1, "Language",
-                () => OnSetLanguage(Data.Language));
+                () =>
+                {
+                    OnSetLanguage(Data.Language);
+                });
             yield return new(1, "Links",
-                () => Links = new(LinkFilePath));
+                () =>
+                {
+                    Links = new(LinkFilePath);
+                });
             yield return new(1, "Menu",
-                () => Menu = MenuType.Create<AppMenu>(this));
+                () =>
+                {
+                    Menu = MenuType.Create<AppMenu>(this);
+                });
             yield return new(1, "Theme",
                 () =>
                 {
@@ -221,7 +229,10 @@ public abstract record class AppModel : Model, IAppModel, IWindow, IFrameworkEle
                     OnSetTheme();
                 });
             yield return new(1, "View",
-                () => ViewModel = ViewModelType.Create<IViewModel>());
+                () =>
+                {
+                    ViewModel = ViewModelType.Create<IViewModel>();
+                });
         }
     }
 
@@ -235,10 +246,10 @@ public abstract record class AppModel : Model, IAppModel, IWindow, IFrameworkEle
     {
         Appp.AddElement(this);
 
-        /// <see cref="App"/>
+        /// <see cref="AppFull"/>
 
-        App.Current.ExceptionUnhandled += OnExceptionUnhandled;
-        App.Current.If<ISingleApp>(i => i.Reloaded += OnAppReloaded);
+        AppFull.Current.ExceptionUnhandled += OnExceptionUnhandled;
+        AppFull.Current.If<IAppSingle>(i => i.Reloaded += OnAppReloaded);
 
         /// <see cref="AppResources"/>
 
@@ -249,10 +260,10 @@ public abstract record class AppModel : Model, IAppModel, IWindow, IFrameworkEle
     /// <see cref="EventHandler"/>
     #region
 
-    private void OnAppLoaded(IApp input, IList<string> arguments)
+    private void OnAppLoaded(IAppFull input, IList<string> arguments)
         => OnAppLoaded(arguments);
 
-    private void OnAppReloaded(ISingleApp input, AppReloadedEventArgs e)
+    private void OnAppReloaded(IAppSingle input, AppReloadedEventArgs e)
         => OnAppReloaded(e.Arguments);
 
     private void OnDataChanged(IPropertySet sender, PropertySetEventArgs e)
@@ -273,13 +284,14 @@ public abstract record class AppModel : Model, IAppModel, IWindow, IFrameworkEle
     private void OnLinkEnabled(object sender, EventArgs<IAppLink> e)
         => OnLinkEnabled(e.A);
 
+    [NotComplete]
     private void OnLogAdded(LogEventArgs e)
     {
         if (e.Entry is Notification)
             Notifications.Add(e.Entry as Notification);
 
-        else if (e.Entry is Entry)
-            Log.Add(e.Entry as Entry);
+        ///else if (e.Entry is Entry)
+            ///Log.Add(e.Entry as Entry);
     }
 
     private void OnLogChanged(IListChanged<Entry> sender, Collect.ListChangedEventArgs e)
@@ -395,7 +407,7 @@ public abstract record class AppModel : Model, IAppModel, IWindow, IFrameworkEle
             Application.Current.MainWindow
                 = Appp.Model.ViewType.Create<Window>()
         )
-        as AppWindow;
+        as AppView;
 
         await splashWindow.FadeOut();
         View.Show();
@@ -630,7 +642,7 @@ public abstract record class AppModel : Model, IAppModel, IWindow, IFrameworkEle
         });
     }
 
-    protected virtual void OnSetMenu(Value<AppWindow> e)
+    protected virtual void OnSetMenu(Value<AppView> e)
     {
         Appp.AddElement(Menu);
     }
@@ -642,7 +654,7 @@ public abstract record class AppModel : Model, IAppModel, IWindow, IFrameworkEle
         ThemeChanged?.Invoke(this, EventArgs.Empty);
     }
 
-    protected virtual void OnSetView(Value<AppWindow> e)
+    protected virtual void OnSetView(Value<AppView> e)
     {
         Appp.AddElement(View);
         e.OldValue.IfNotNull(i =>
@@ -838,7 +850,7 @@ public abstract record class AppModel : Model, IAppModel, IWindow, IFrameworkEle
 
     protected virtual void OnViewLoaded(RoutedEventArgs e)
     {
-        if (Data.PasswordEnable)
+        if (Data?.PasswordEnable == true)
             ShowPasswordDialog();
     }
 
@@ -921,7 +933,7 @@ public abstract record class AppModel : Model, IAppModel, IWindow, IFrameworkEle
 
     IListWritable<Notification> IAppModel.Notifications => Notifications;
 
-    IAppWindow IAppModel.View { get => View; set => View = (AppWindow)value; }
+    IAppView IAppModel.View { get => View; set => View = (AppView)value; }
 
     IViewModel IAppModel.ViewModel => ViewModel;
 
@@ -1024,7 +1036,7 @@ public abstract record class AppModel : Model, IAppModel, IWindow, IFrameworkEle
 #region
 
 /// <inheritdoc/>
-public abstract record class AppModel<data, menu, view>() : AppModel() where data : AppData where menu : AppMenu where view : AppWindow
+public abstract record class AppModel<data, menu, view>() : AppModel() where data : AppData where menu : AppMenu where view : AppView
 {
     /// <see cref="Region.Property"/>
 
@@ -1047,7 +1059,7 @@ public abstract record class AppModel<data, menu, view>() : AppModel() where dat
 #region
 
 /// <inheritdoc/>
-public abstract record class AppModel<data, menu, view, viewModel>() : AppModel<data, menu, view>() where data : AppData where menu : AppMenu where view : AppWindow where viewModel : IDataViewModel
+public abstract record class AppModel<data, menu, view, viewModel>() : AppModel<data, menu, view>() where data : AppData where menu : AppMenu where view : AppView where viewModel : IDataViewModel
 {
     /// <see cref="Region.Property"/>
 

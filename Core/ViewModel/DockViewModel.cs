@@ -6,6 +6,7 @@ using Ion.Input;
 using Ion.Reflect;
 using Ion.Storage;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
@@ -260,8 +261,8 @@ public abstract record class DockViewModel<T> : DataViewModel<T>, IDockViewModel
 
     public virtual IEnumerable<Panel> GetDefaultPanels()
     {
-        yield return new LogPanel(Appp.Model.Log as IListObservable<IEntry>);
-        yield return new NotificationPanel(Appp.Model.Notifications as IListObservable);
+        yield return new LogPanel(Appp.Model.Log);
+        yield return new NotificationPanel(Appp.Model.Notifications);
         yield return new OptionPanel();
         yield return new ThemePanel();
     }

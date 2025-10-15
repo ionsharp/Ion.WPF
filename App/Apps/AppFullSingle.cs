@@ -2,7 +2,7 @@
 
 namespace Ion.Core;
 
-public abstract class SingleApp() : App(), ISingleApp
+public abstract class AppFullSingle() : AppFull(), IAppSingle
 {
     public event AppReloadedEventHandler Reloaded;
 

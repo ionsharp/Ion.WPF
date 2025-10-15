@@ -5,11 +5,11 @@ namespace Ion.Core;
 
 /// <inheritdoc/>
 public abstract record class
-    FileDockAppModel<A, B, C, D, E>() :
-    DockAppModel<A, B, C, D, E>(), IFileDockAppModel
+    AppModelDockFile<A, B, C, D, E>() :
+    AppModelDock<A, B, C, D, E>(), IAppModelDockFile
         where A : AppData
         where B : DockAppMenu
-        where C : AppWindow
+        where C : AppView
         where D : IFileDockViewModel
         where E : Document
 {
@@ -25,7 +25,7 @@ public abstract record class
         ViewModel.Open(arguments);
     }
 
-    /// <see cref="IFileDockAppModel"/>
+    /// <see cref="IAppModelDockFile"/>
 
-    IFileDockViewModel IFileDockAppModel.ViewModel => ViewModel;
+    IFileDockViewModel IAppModelDockFile.ViewModel => ViewModel;
 }

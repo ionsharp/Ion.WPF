@@ -137,11 +137,13 @@ public record class DataPanel : Panel, IFrameworkElementReference
 
     public sealed override string Title
         => TitlePrefix
-        + (TitleLocalized ? Instance.GetName(this).Localize() : Instance.GetName(this))
+        + (TitleLocalizedHere ? Instance.GetName(this).Localize() : Instance.GetName(this))
         + TitleSuffix
         + $" ({TitleCount})";
 
-    public override bool TitleLocalized => true;
+    public sealed override bool TitleLocalized => false;
+
+    public virtual bool TitleLocalizedHere => true;
 
     #endregion
 
@@ -836,7 +838,7 @@ public record class DataPanel : Panel, IFrameworkElementReference
     {
         Warn("CopyTo", () =>
         {
-            var form = new DataPanelForm(this, Appp.Model.As<IDockAppModel>().ViewModel.Panels);
+            var form = new DataPanelForm(this, Appp.Model.As<IAppModelDock>().ViewModel.Panels);
             Dialog.ShowObject("CopyTo", form, Resource.GetImageUri(Images.CopyTo), i =>
             {
                 if (i == 0)
@@ -867,7 +869,7 @@ public record class DataPanel : Panel, IFrameworkElementReference
     {
         Warn("MoveTo", () =>
         {
-            var form = new DataPanelForm(this, Appp.Model.As<IDockAppModel>().ViewModel.Panels);
+            var form = new DataPanelForm(this, Appp.Model.As<IAppModelDock>().ViewModel.Panels);
             Dialog.ShowObject("MoveTo", form, Resource.GetImageUri(Images.CopyTo), i =>
             {
                 if (i == 0)

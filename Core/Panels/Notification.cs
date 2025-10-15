@@ -5,6 +5,7 @@ using Ion.Data;
 using Ion.Input;
 using Ion.Numeral;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Windows.Input;
 
@@ -57,10 +58,8 @@ public record class NotificationPanel : XmlDataGridPanel<Notification>
 
     /// <see cref="Region.Constructor"/>
 
-    public NotificationPanel(IListObservable input) : base()
+    public NotificationPanel(IList<Notification> input) : base(input as IList)
     {
-        Items = input;
-
         Notifications.ForEach(i => { Unsubscribe(i); Subscribe(i); });
         update.Updated += OnUpdate;
     }

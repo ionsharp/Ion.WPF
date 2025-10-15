@@ -252,8 +252,6 @@ public record class MemberBase : Model, IMemberStylable, IStyle
     /// <remarks>This occurs before setting a new value.</remarks>
     protected virtual object OnSettingValue(PropertySettingEventArgs e)
     {
-        System.Diagnostics.Debug.WriteLine("");
-
         Unsubscribe();
         WriteLine(MemberLogType.Value);
 

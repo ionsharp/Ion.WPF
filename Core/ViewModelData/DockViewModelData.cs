@@ -40,7 +40,7 @@ public record class DockViewModelData() : ViewModelData()
     public bool AutoSaveLayout { get => Get(true); set => Set(value); }
 
     [Style(Tab = Tab.Layout)]
-    public static PanelCollection Panels => Appp.Get<IDockAppModel>().ViewModel.Panels;
+    public static PanelCollection Panels => Appp.Get<IAppModelDock>().ViewModel.Panels;
 
     #endregion
 
@@ -53,7 +53,7 @@ public record class DockViewModelData() : ViewModelData()
         base.OnSetProperty(e);
         if (e.PropertyName == nameof(ViewModel))
         {
-            if (e.NewValue is IDockAppModel newViewModel)
+            if (e.NewValue is IAppModelDock newViewModel)
             {
                 if (RememberedDocuments.Count > 0)
                 {

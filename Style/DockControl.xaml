@@ -78,8 +78,10 @@
     </DataTemplate>
 
     <DataTemplate x:Key="{x:Static i:DockControl.ContentOptionsTemplate}">
+        <!--
         <i:ObjectControl i:XObjectControl.Source="{Data:BindSection Section=Option}"
             DescriptionVisibility="{i:Bind IsOptionDescriptionVisible, Convert=Data:ConvertBooleanToVisibility}"/>
+        -->
     </DataTemplate>
 
     <!--#endregion-->
@@ -1571,6 +1573,7 @@
         <Setter Property="Content" Value="{i:Bind}"/>
         <Setter Property="ContentTemplate" Value="{Data:Ancestor DockControl.PanelIconTemplate, i:DockRootControl}"/>
         <Setter Property="ContextMenu" Value="{DynamicResource {x:Static i:DockControl.PanelMenuKey}}"/>
+        <Setter Property="Cursor" Value="Hand"/>
         <Setter Property="Foreground" Value="{i:Theme DockPanelButtonForeground}"/>
         <Setter Property="i:XElement.MouseEnterCommand" Value="{Data:Ancestor SelectCommand, i:DockRootControl}"/>
         <Setter Property="i:XElement.MouseEnterCommandParameter" Value="{i:Bind From=Self}"/>
@@ -1665,7 +1668,7 @@
         <Setter Property="i:XWindow.Icon" Value="{i:Bind AppSource=Model, Path=View.(i:XWindow.Icon)}"/>
         <Setter Property="Padding" Value="5"/>
         <Setter Property="ResizeMode" Value="CanResizeWithGrip"/>
-        <Setter Property="Title" Value="{i:AssemblyProduct}"/>
+        <!--<Setter Property="Title" Value="{i:AssemblyProduct}"/>-->
         <Setter Property="Width" Value="540"/>
     </Style>
 

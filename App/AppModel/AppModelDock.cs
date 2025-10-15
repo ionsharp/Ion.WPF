@@ -9,11 +9,11 @@ namespace Ion.Core;
 
 /// <inheritdoc/>
 public abstract record class
-    DockAppModel<A, B, C, D, E>() :
-    AppModel<A, B, C, D>(), IDockAppModel
+    AppModelDock<A, B, C, D, E>() :
+    AppModel<A, B, C, D>(), IAppModelDock
         where A : AppData
         where B : DockAppMenu
-        where C : AppWindow
+        where C : AppView
         where D : IDockViewModel
         where E : Document
 {
@@ -119,7 +119,7 @@ public abstract record class
         }
     }
 
-    /// <see cref="IDockAppModel"/>
+    /// <see cref="IAppModelDock"/>
 
-    IDockViewModel IDockAppModel.ViewModel => ViewModel;
+    IDockViewModel IAppModelDock.ViewModel => ViewModel;
 }

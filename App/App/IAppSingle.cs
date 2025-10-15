@@ -2,7 +2,7 @@
 
 namespace Ion.Core;
 
-public interface ISingleApp
+public interface IAppSingle
 {
     event AppReloadedEventHandler Reloaded;
 

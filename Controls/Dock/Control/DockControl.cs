@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -2726,7 +2727,10 @@ public class DockControl : Control
             Convert(success.Data);
             LayoutChanged?.Invoke(this, EventArgs.Empty);
         }
-        else IsLayoutInvalid = true;
+        else
+        {
+            IsLayoutInvalid = true;
+        }
 
         Refreshing = false;
     }

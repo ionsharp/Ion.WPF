@@ -97,7 +97,7 @@ public record class FindResultPanel : DataGridPanel<FindResult>
     {
         if (item is FindResult result)
         {
-            Appp.Get<IDockAppModel>()?.ViewModel.IfNotNull(i => i.ActiveContent = result.File as Content);
+            Appp.Get<IAppModelDock>()?.ViewModel.IfNotNull(i => i.ActiveContent = result.File as Content);
             //Scroll to and select matched text
         }
     }
@@ -110,7 +110,7 @@ public record class FindResultPanel : DataGridPanel<FindResult>
             {
                 if (FilterSource == FindSource.CurrentDocument)
                 {
-                    if (!ReferenceEquals(result.File, Appp.Get<IDockAppModel>()?.ViewModel.ActiveContent as Document))
+                    if (!ReferenceEquals(result.File, Appp.Get<IAppModelDock>()?.ViewModel.ActiveContent as Document))
                         return false;
                 }
             }

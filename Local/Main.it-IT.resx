@@ -534,9 +534,6 @@
   <data name="Difficulty" xml:space="preserve">
     <value>Difficoltà</value>
   </data>
-  <data name="Disable" xml:space="preserve">
-    <value>Disattivare</value>
-  </data>
   <data name="Easy" xml:space="preserve">
     <value>Facile</value>
   </data>
@@ -765,9 +762,6 @@
   <data name="OverwriteFiles" xml:space="preserve">
     <value>Sovrascrivi file</value>
   </data>
-  <data name="Passwords" xml:space="preserve">
-    <value>Le password</value>
-  </data>
   <data name="Progress" xml:space="preserve">
     <value>Progresso</value>
   </data>
@@ -783,7 +777,7 @@
   <data name="ShowBar" xml:space="preserve">
     <value>Mostra barra</value>
   </data>
-  <data name="ShowInTaskBar" xml:space="preserve">
+  <data name="ShowInTaskbar" xml:space="preserve">
     <value>Mostra nella barra delle applicazioni</value>
   </data>
   <data name="SizeRead" xml:space="preserve">
@@ -812,9 +806,6 @@
   </data>
   <data name="TimeLeft" xml:space="preserve">
     <value>Tempo rimasto</value>
-  </data>
-  <data name="Vault" xml:space="preserve">
-    <value>Volta</value>
   </data>
   <data name="ViewCheckBoxes" xml:space="preserve">
     <value>Visualizza le caselle di controllo</value>
@@ -1211,5 +1202,14 @@
   </data>
   <data name="Trim" xml:space="preserve">
     <value>Ordinare</value>
+  </data>
+  <data name="Disable" xml:space="preserve">
+    <value>Disattivare</value>
+  </data>
+  <data name="Passwords" xml:space="preserve">
+    <value>Le password</value>
+  </data>
+  <data name="Vault" xml:space="preserve">
+    <value>Volta</value>
   </data>
 </root>

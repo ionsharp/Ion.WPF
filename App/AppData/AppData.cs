@@ -421,19 +421,19 @@ public abstract record class AppData() : Serializable(), IAppComponent
 
     /// <see cref="Region.Method"/>
 
+    [NotStable]
     protected override void OnDeserialized()
     {
         base.OnDeserialized();
-        Instance.GetPropertyValuesThatImplement<IItemList>(this)
-            .ForEach(i => i.Refresh());
-        Instance.GetPropertyValuesThatImplement<IListWritable>(this)
-            .ForEach(i => i.Load());
+        ///Instance.GetPropertyValuesThatImplement<IItemList>(this).ForEach(i => i.Refresh());
+        ///Instance.GetPropertyValuesThatImplement<IListWritable>(this).ForEach(i => i.Load());
     }
 
+    [NotStable]
     protected override void OnSerialized()
     {
         base.OnSerialized();
-        Instance.GetPropertyValuesThatImplement<IListWritable>(this).ForEach(i => i.Save());
+        ///Instance.GetPropertyValuesThatImplement<IListWritable>(this).ForEach(i => i.Save());
     }
 
     /// <see cref="ICommand"/>

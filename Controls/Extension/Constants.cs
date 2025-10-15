@@ -25,9 +25,13 @@ public enum Constants
     ThickDown,
     ThickLeft,
     ThickLeftRight,
+    ThickLeftRightDown,
+    ThickLeftRightUp,
     ThickRight,
     ThickUp,
     ThickUpDown,
+    ThickUpDownLeft,
+    ThickUpDownRight,
 
     //Thick (Larger)
 

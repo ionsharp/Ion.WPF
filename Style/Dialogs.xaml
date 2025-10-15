@@ -15,7 +15,7 @@
         <Grid i:XGrid.AutoColumns="True" i:XGrid.Columns="Auto,*"
             Margin="16">
             <i:ClipBorder BorderBrush="Transparent" BorderThickness="1" CornerRadius="999">
-                <Image Source="{i:Image Logo.png}"
+                <Image Source="{i:Image Logo512.png}"
                     Height="96" Width="96"/>
             </i:ClipBorder>
             <Grid i:XGrid.Columns="Auto,Auto,*"
@@ -91,10 +91,10 @@
                 Value="{i:Bind Progress}"/>
             <TextBlock Grid.Row="1"
                 HorizontalAlignment="Center"
-                Margin="0,5,0,0"
+                Margin="{i:Constant Key=ThickUp}"
                 Text="{i:Bind Text}"
                 TextTrimming="CharacterEllipsis"
-                Visibility="{i:Bind Text, Convert=Data:ConvertObjectToVisibility, From=Self}"/>
+                Visibility="{i:Bind Text, Convert=Data:ConvertStringToVisibility, From=Self}"/>
         </Grid>
     </DataTemplate>
 

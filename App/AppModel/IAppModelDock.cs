@@ -1,6 +1,6 @@
 ﻿namespace Ion.Core;
 
-public interface IDockAppModel : IAppModel
+public interface IAppModelDock : IAppModel
 {
     DocumentCollection Documents { get; }
 

@@ -112,7 +112,7 @@ public record class AppMenu(AppModel model) : Model(), IAppComponent
     [MenuCommand("Log", Images.Log,
         ToolTip = "Show log in a new window.",
         Parent = nameof(More))]
-    public ICommand LogCommand => Commands[nameof(LogCommand)] ??= new RelayCommand(() => Dialog.ShowPanel(new LogPanel(Appp.Model.Log as IListObservable<IEntry>)));
+    public ICommand LogCommand => Commands[nameof(LogCommand)] ??= new RelayCommand(() => Dialog.ShowPanel(new LogPanel(Appp.Model.Log)));
 
     [MenuCommand("Options", Images.Options,
         ToolTip = "Show options in a new window.",

@@ -345,9 +345,6 @@
   <data name="Paste" xml:space="preserve">
     <value>ペースト</value>
   </data>
-  <data name="Signaler un bug" xml:space="preserve">
-    <value>アボート</value>
-  </data>
   <data name="All" xml:space="preserve">
     <value>全て</value>
   </data>
@@ -533,9 +530,6 @@
   </data>
   <data name="Difficulty" xml:space="preserve">
     <value>困難</value>
-  </data>
-  <data name="Disable" xml:space="preserve">
-    <value>無効にする</value>
   </data>
   <data name="Easy" xml:space="preserve">
     <value>簡単</value>
@@ -765,9 +759,6 @@
   <data name="OverwriteFiles" xml:space="preserve">
     <value>ファイルを上書きする</value>
   </data>
-  <data name="Passwords" xml:space="preserve">
-    <value>パスワード</value>
-  </data>
   <data name="Progress" xml:space="preserve">
     <value>進捗</value>
   </data>
@@ -783,7 +774,7 @@
   <data name="ShowBar" xml:space="preserve">
     <value>ショーバー</value>
   </data>
-  <data name="ShowInTaskBar" xml:space="preserve">
+  <data name="ShowInTaskbar" xml:space="preserve">
     <value>タスクバーに表示</value>
   </data>
   <data name="SizeRead" xml:space="preserve">
@@ -812,9 +803,6 @@
   </data>
   <data name="TimeLeft" xml:space="preserve">
     <value>残り時間</value>
-  </data>
-  <data name="Vault" xml:space="preserve">
-    <value>ボールト</value>
   </data>
   <data name="ViewCheckBoxes" xml:space="preserve">
     <value>チェックボックスを表示する</value>
@@ -1211,5 +1199,14 @@
   </data>
   <data name="Trim" xml:space="preserve">
     <value>トリム</value>
+  </data>
+  <data name="Disable" xml:space="preserve">
+    <value>無効にする</value>
+  </data>
+  <data name="Passwords" xml:space="preserve">
+    <value>パスワード</value>
+  </data>
+  <data name="Vault" xml:space="preserve">
+    <value>ボールト</value>
   </data>
 </root>

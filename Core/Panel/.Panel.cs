@@ -178,11 +178,11 @@ public abstract record class Panel : Content
     /// <see cref="Region.Method"/>
     #region
 
-    public static T ActiveContent<T>() where T : Content => Appp.Get<IDockAppModel>()?.ViewModel?.ActiveContent.As<T>();
+    public static T ActiveContent<T>() where T : Content => Appp.Get<IAppModelDock>()?.ViewModel?.ActiveContent.As<T>();
 
-    public static T ActiveDocument<T>() where T : Document => Appp.Get<IDockAppModel>()?.ViewModel?.ActiveDocument.As<T>();
+    public static T ActiveDocument<T>() where T : Document => Appp.Get<IAppModelDock>()?.ViewModel?.ActiveDocument.As<T>();
 
-    public static T ActivePanel<T>() where T : Panel => Appp.Get<IDockAppModel>()?.ViewModel?.ActivePanel.As<T>();
+    public static T ActivePanel<T>() where T : Panel => Appp.Get<IAppModelDock>()?.ViewModel?.ActivePanel.As<T>();
 
     ///
 
@@ -196,7 +196,7 @@ public abstract record class Panel : Content
     {
         if (IsSubscribed)
         {
-            Appp.Get<IDockAppModel>()?.ViewModel?.ActiveDocument.IfNotNull(i =>
+            Appp.Get<IAppModelDock>()?.ViewModel?.ActiveDocument.IfNotNull(i =>
             {
                 i.PropertySet -= OnActiveDocumentPropertyChanged;
                 i.PropertySet += OnActiveDocumentPropertyChanged;
@@ -236,7 +236,7 @@ public abstract record class Panel : Content
     {
         base.Subscribe();
         update.Updated -= OnUpdate; update.Updated += OnUpdate;
-        Appp.Get<IDockAppModel>()?.ViewModel.IfNotNull(i =>
+        Appp.Get<IAppModelDock>()?.ViewModel.IfNotNull(i =>
         {
             i.ActiveContentChanged
                 += OnActiveContentChanged;
@@ -264,7 +264,7 @@ public abstract record class Panel : Content
     {
         base.Subscribe();
         update.Updated -= OnUpdate;
-        Appp.Get<IDockAppModel>()?.ViewModel.IfNotNull(i =>
+        Appp.Get<IAppModelDock>()?.ViewModel.IfNotNull(i =>
         {
             i.ActiveContentChanged
                 -= OnActiveContentChanged;

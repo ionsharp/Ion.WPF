@@ -44,7 +44,7 @@ public static class Appp
         return i switch
         {
             AppSource.App
-                => App.Current,
+                => AppFull.Current,
             AppSource.Data
                 => Model?.Data,
             AppSource.Model
@@ -53,6 +53,8 @@ public static class Appp
                 => Model?.Theme,
             AppSource.View
                 => Model?.View,
+            AppSource.ViewModel
+                => Model?.ViewModel,
             _ => null,
         };
     }

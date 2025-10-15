@@ -140,8 +140,8 @@ namespace Ion.Data
         protected BindInvert() : this(Paths.Dot) { }
     }
 
-    /// <summary>Gets panel by type. Panels managed by <see cref="IDockAppModel"/>. To work, remove, then add panel; don't replace.</summary>
-    /// <remarks>Updates when <see cref="IDockAppModel.ViewModel"/>, <see cref="IDockViewModel.Panels"/>, or <see cref="PanelCollection"/> changes.</remarks>
+    /// <summary>Gets panel by type. Panels managed by <see cref="IAppModelDock"/>. To work, remove, then add panel; don't replace.</summary>
+    /// <remarks>Updates when <see cref="IAppModelDock.ViewModel"/>, <see cref="IDockViewModel.Panels"/>, or <see cref="PanelCollection"/> changes.</remarks>
     public class BindPanel : MultiBind
     {
         public Type Panel
@@ -152,13 +152,13 @@ namespace Ion.Data
                 Bindings.Add(new Binding()
                 { Source = value });
 
-                Bindings.Add(new Binding(nameof(IDockAppModel.ViewModel))
+                Bindings.Add(new Binding(nameof(IAppModelDock.ViewModel))
                 { Source = Appp.Model });
 
-                Bindings.Add(new Binding($"{nameof(IDockAppModel.ViewModel)}.{nameof(IDockViewModel.Panels)}")
+                Bindings.Add(new Binding($"{nameof(IAppModelDock.ViewModel)}.{nameof(IDockViewModel.Panels)}")
                 { Source = Appp.Model });
 
-                Bindings.Add(new Binding($"{nameof(IDockAppModel.ViewModel)}.{nameof(IDockViewModel.Panels)}.{nameof(PanelCollection.Count)}")
+                Bindings.Add(new Binding($"{nameof(IAppModelDock.ViewModel)}.{nameof(IDockViewModel.Panels)}.{nameof(PanelCollection.Count)}")
                 { Source = Appp.Model });
 
                 Converter = new MultiValueConverter(i =>

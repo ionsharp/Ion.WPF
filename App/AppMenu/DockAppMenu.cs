@@ -12,7 +12,7 @@ public record class DockAppMenu(AppModel model) : AppMenu(model)
 {
     private enum Group { Custom, Default }
 
-    new public IDockAppModel Model => base.Model as IDockAppModel;
+    new public IAppModelDock Model => base.Model as IAppModelDock;
 
     public MenuObject Document => new(nameof(Document), Images.File) { };
     #region

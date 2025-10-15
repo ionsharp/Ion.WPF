@@ -347,8 +347,11 @@ public static class Dialog
     #region
 
     public static async Task<Result> ShowProgress(string title, Action<ProgressModel> action, TimeSpan delay = default, bool isIndeterminate = true)
+        => await ShowProgress(title, null, action, delay, isIndeterminate);
+
+    public static async Task<Result> ShowProgress(string title, string text, Action<ProgressModel> action, TimeSpan delay = default, bool isIndeterminate = true)
     {
-        var model = new ProgressModel() { IsIndeterminate = isIndeterminate };
+        var model = new ProgressModel() { IsIndeterminate = isIndeterminate, Text = text };
 
         var dialog = new DialogModel(title ?? "Progress", model, ProgressTemplateKey, Images.HourGlass, Buttons.Cancel);
         ShowDialog(dialog);

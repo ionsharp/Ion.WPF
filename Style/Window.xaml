@@ -163,7 +163,7 @@
 
     <!--#region Menus-->
 
-    <DataTemplate x:Key="{x:Static i:AppWindow.MenuBelow}">
+    <DataTemplate x:Key="{x:Static i:AppView.MenuBelow}">
         <Grid i:XGrid.AutoRows="True" i:XGrid.Rows="Auto,Auto" i:XPanel.Spacing="0,0,0,5">
             <Grid>
                 <Button IsCancel="True"
@@ -185,11 +185,11 @@
         </Grid>
     </DataTemplate>
 
-    <ContextMenu x:Key="{x:Static i:AppWindow.MenuMain}" x:Shared="False"
+    <ContextMenu x:Key="{x:Static i:AppView.MenuMain}" x:Shared="False"
         i:XContextMenu.Above="{i:Bind AppSource=Model}"
         i:XContextMenu.AboveTemplate="{i:Template Key=Default}"
         i:XContextMenu.Below="{i:Bind AppSource=Model}"
-        i:XContextMenu.BelowTemplate="{DynamicResource {x:Static i:AppWindow.MenuBelow}}"
+        i:XContextMenu.BelowTemplate="{DynamicResource {x:Static i:AppView.MenuBelow}}"
         i:XContextMenu.Header="{i:AssemblyTitle}"
         i:XContextMenu.HeaderIcon="{i:Image Logo16.png}"/>
 
@@ -260,16 +260,14 @@
             <Grid>
                 <HeaderedContentControl 
                     i:XHeaderedContentControl.HeaderPlacement="{i:Bind From=TemplatedParent, Path=(i:XWindow.HeaderPlacement)}"
-                    i:XHeaderedContentControl.HeaderVisibility="{i:Bind From=TemplatedParent, Path=(i:XWindow.HeaderVisibility)}"
-                    Padding="0">
+                    i:XHeaderedContentControl.HeaderVisibility="{i:Bind From=TemplatedParent, Path=(i:XWindow.HeaderVisibility)}">
                     <!-- Header -->
                     <HeaderedContentControl.Header>
                         <i:WindowHeader x:Name="Header" Content="{i:Bind DataContext}" DataContext="{i:Bind From=TemplatedParent}"
                             Background="{i:Bind Path=(i:XWindow.HeaderBackground)}"
                             Buttons="{i:Bind Path=(i:XWindow.HeaderButtons)}"
                             ButtonStyle="{i:Bind Path=(i:XWindow.HeaderButtonStyle)}"
-                            Height="{i:Bind Path=(i:XWindow.HeaderHeight)}"
-                            Padding="5,0,0,0"/>
+                            Height="{i:Bind Path=(i:XWindow.HeaderHeight)}"/>
                     </HeaderedContentControl.Header>
                     <!-- Content -->
                     <Grid i:XGrid.Rows="*,Auto">
@@ -442,11 +440,12 @@
                 </DataTemplate>
             </Setter.Value>
         </Setter>
+        <Setter Property="i:XWindow.HeaderButtonStyle" Value="Circle"/>
         <Setter Property="i:XWindow.IconTemplate">
             <Setter.Value>
                 <DataTemplate>
                     <i:ImageElement
-                        Margin="0,0,5,0"
+                        Margin="5,0"
                         Source="{i:Bind From=FindAncestor, FromType=Window, Path=(i:XWindow.Icon)}"
                         SourceSize="{i:Bind From=FindAncestor, FromType=Window, Path=(i:XWindow.IconSize)}"
                         VerticalAlignment="Center"/>
@@ -496,13 +495,7 @@
         </Setter>
         <Setter Property="i:XWindow.StartupLocation" Value="CenterScreen"/>
         <Setter Property="i:XWindow.TaskbarIconTemplate" Value="{i:Template Key=Default}"/>
-        <Setter Property="i:XWindow.TitleTemplate">
-            <Setter.Value>
-                <DataTemplate>
-                    <TextBlock Text="{i:Bind Title}" TextTrimming="CharacterEllipsis"/>
-                </DataTemplate>
-            </Setter.Value>
-        </Setter>
+        <Setter Property="i:XWindow.TitleTemplate" Value="{i:Template Key=Default}"/>
         <Setter Property="i:ImageElement.Foreground" Value="{i:Theme Text}"/>
         <Setter Property="Opacity" Value="0"/>
         <Setter Property="OverridesDefaultStyle" Value="True"/>
@@ -559,7 +552,7 @@
 
     <!--#region Window > App-->
 
-    <Style x:Key="{x:Type i:AppWindow}" TargetType="{x:Type i:AppWindow}" BasedOn="{StaticResource {x:Type Window}}">
+    <Style x:Key="{x:Type i:AppView}" TargetType="{x:Type i:AppView}" BasedOn="{StaticResource {x:Type Window}}">
         <Setter Property="Height" Value="{i:Bind WindowHeight, AppSource=Data, Mode=TwoWay}"/>
         <Setter Property="i:XWindow.Footer" Value="{i:Bind AppSource=Model}"/>
         <Setter Property="i:XWindow.FooterTemplate">
@@ -578,7 +571,7 @@
         <Setter Property="i:XWindow.HeaderPlacement" Value="{i:Bind WindowHeaderPlacement, AppSource=Data}"/>
         <Setter Property="i:XWindow.HeaderVisibility" Value="{i:Bind WindowHeaderVisibility, Convert=Data:ConvertBooleanToVisibility, AppSource=Data}"/>
         <Setter Property="i:XWindow.Icon" Value="{i:Image Logo16.png}"/>
-        <Setter Property="i:XWindow.IconMenu" Value="{StaticResource {x:Static i:AppWindow.MenuMain}}"/>
+        <Setter Property="i:XWindow.IconMenu" Value="{StaticResource {x:Static i:AppView.MenuMain}}"/>
         <Setter Property="i:XWindow.IconSize" Value="16,16"/>
         <Setter Property="i:XWindow.Menu" Value="{i:Bind AppSource=Model}"/>
         <Setter Property="i:XWindow.MenuOrientation" Value="{i:Bind WindowMenuOrientation, AppSource=Data}"/>
@@ -596,8 +589,8 @@
             <Setter.Value>
                 <DataTemplate>
                     <h:TaskbarIcon
-                        ContextMenu="{StaticResource {x:Static i:AppWindow.MenuMain}}"
-                        IconSource="{i:Image Logo.ico}" 
+                        ContextMenu="{StaticResource {x:Static i:AppView.MenuMain}}"
+                        IconSource="{i:Image Logo512.ico}" 
                         i:XElement.Reference="{i:Bind AppSource=Model}"
                         i:XElement.ReferenceKey="{x:Static Core1:AppModel.TaskbarIconKey}"
                         MenuActivation="LeftOrRightClick"
@@ -611,7 +604,23 @@
         <Setter Property="Width" Value="{i:Bind WindowWidth, AppSource=Data, Mode=TwoWay}"/>
         <Setter Property="WindowState" Value="{i:Bind WindowState, AppSource=Data, Mode=TwoWay}"/>
     </Style>
-    
+
+    <Style x:Key="{x:Type i:AppToolView}" TargetType="{x:Type i:AppToolView}" BasedOn="{StaticResource {x:Type Window}}">
+        <Setter Property="i:XWindow.Icon" Value="{i:Image Logo16.png}"/>
+        <Setter Property="i:XWindow.IconSize" Value="16,16"/>
+        <Setter Property="i:XWindow.FooterVisibility" Value="Collapsed"/>
+        <Setter Property="i:XWindow.HeaderButtons" Value="{i:Bind HeaderButtons, Convert=Data:ConvertToObjectCollection}"/>
+        <Setter Property="i:XWindow.TitleTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <TextBlock Text="{i:Bind Title}" TextTrimming="CharacterEllipsis"
+                        Margin="{i:Constant Key=ThickUpDownRight}"/>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="WindowState" Value="Normal"/>
+    </Style>
+
     <!--#endregion-->
 
     <!--#region Window > Splash-->
@@ -620,13 +629,17 @@
         BlurRadius="20" Color="{i:Theme PopupDropShadow}" Opacity="0.9" ShadowDepth="0"/>
     
     <Style x:Key="{x:Type i:SplashWindow}" TargetType="{x:Type i:SplashWindow}" BasedOn="{StaticResource {x:Type Window}}">
-        <Setter Property="Image" Value="{i:Image LogoSplash.png}"/>
+        <Setter Property="Accent" Value="White"/>
+        <Setter Property="Image" Value="{i:Image Logo900.png}"/>
         <Setter Property="ImageHeight" Value="{x:Static i:SplashWindow.DefaultImageHeight}"/>
         <Setter Property="ImageWidth" Value="{x:Static i:SplashWindow.DefaultImageWidth}"/>
         <Setter Property="ImageTemplate">
             <Setter.Value>
                 <DataTemplate>
-                    <Image RenderOptions.BitmapScalingMode="NearestNeighbor" Source="{i:Bind}"/>
+                    <Image RenderOptions.BitmapScalingMode="HighQuality" Source="{i:Bind}" 
+                        HorizontalAlignment="Center"
+                        Stretch="None"
+                        VerticalAlignment="Center"/>
                 </DataTemplate>
             </Setter.Value>
         </Setter>

@@ -46,7 +46,7 @@ public interface IAppModel : IAppElement
 
     Type MenuType { get; }
 
-    IAppWindow View { get; set; }
+    IAppView View { get; set; }
 
     IViewModel ViewModel { get; }
 

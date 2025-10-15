@@ -70,7 +70,7 @@ public record class FindPanel : Panel, IFrameworkElementReference
     private ICommand resultsCommand;
     public ICommand ResultsCommand => resultsCommand ??= new RelayCommand<FindResultList>(i =>
     {
-        if (Appp.Get<IDockAppModel>()?.ViewModel.Panels.FirstOrDefault<FindResultPanel>() is FindResultPanel oldPanel)
+        if (Appp.Get<IAppModelDock>()?.ViewModel.Panels.FirstOrDefault<FindResultPanel>() is FindResultPanel oldPanel)
         {
             if (!oldPanel.KeepResults)
             {
@@ -78,7 +78,7 @@ public record class FindPanel : Panel, IFrameworkElementReference
                 return;
             }
         }
-        Appp.Get<IDockAppModel>()?.ViewModel.Panels.Add(new FindResultPanel(i));
+        Appp.Get<IAppModelDock>()?.ViewModel.Panels.Add(new FindResultPanel(i));
     },
     i => i != null);
 }

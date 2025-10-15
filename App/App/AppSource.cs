@@ -6,5 +6,6 @@ public enum AppSource
     Data,
     Model,
     Theme,
-    View
+    View,
+    ViewModel,
 }

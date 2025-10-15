@@ -44,7 +44,7 @@
                     Grid.Row="2"
                     Margin="10"
                     VerticalAlignment="Center">
-                    <Run Foreground="White" Text="Loading"/> <Run FontStyle="Italic" Foreground="#AA000000" Text="{i:Bind Message, Convert={x:Type Data:ConvertToStringLower}, Mode=OneWay}"/><Run Foreground="White" Text="..."/></TextBlock>
+                    <Run Foreground="White" Text="Loading"/> <Run FontStyle="Italic" Foreground="#BB000000" Text="{i:Bind Message, Convert={x:Type Data:ConvertToStringLower}, Mode=OneWay}"/><Run Foreground="White" Text="..."/></TextBlock>
                 <ProgressBar 
                     Grid.Row="3"
                     Foreground="{i:Bind Accent, Convert={x:Type Data:ConvertColorToSolidColorBrush}}"

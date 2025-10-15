@@ -1,4 +1,5 @@
-﻿using Microsoft.WindowsAPICodePack.Dialogs;
+﻿using Microsoft.Win32;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,6 +7,31 @@ using System.Windows.Forms;
 
 namespace Ion.Storage;
 
+/*
+var dialog = new OpenFileDialog
+{
+    InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+    Multiselect = false,
+    Title = "Select file",
+};
+
+if (dialog.ShowDialog() == true)
+{
+    string selectedPath = dialog.FileName;
+}
+
+var dialog = new OpenFolderDialog
+{
+    InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+    Title = "Select folder",
+};
+
+if (dialog.ShowDialog() == true)
+{
+    string selectedPath = dialog.FolderName;
+}
+*/
+[NotImplemented(nameof(OpenFolderDialog))]
 public static class StorageDialog
 {
     private static object New(string title, StorageDialogMode mode, Controls.Select selectionMode, IEnumerable<string> fileExtensions, string defaultPath)

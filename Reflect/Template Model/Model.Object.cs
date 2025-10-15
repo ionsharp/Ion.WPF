@@ -288,7 +288,7 @@ public record class TemplateModelObject() : TemplateModel()
     private void OnPropertySet(IPropertySet sender, PropertySetEventArgs e)
     {
         Members.IfNotNull(i => i.ForEach<Member>(j => j.OnSetStyleTriggers(e.PropertyName)));
-        //Members.FirstOrDefault(i => i.Name == e.PropertyName).If(i => i.Value = e.NewValue);
+        Members.FirstOrDefault(i => i.Name == e.PropertyName).IfNotNull(i => i.Value = e.NewValue);
     }
 
     private void OnStyleChanged(object sender, string key, object value)

@@ -77,11 +77,19 @@
 
     <Thickness x:Key="ThickLeftRight">5,0,5,0</Thickness>
 
+    <Thickness x:Key="ThickLeftRightDown">5,0,5,5</Thickness>
+
+    <Thickness x:Key="ThickLeftRightUp">5,5,5,0</Thickness>
+
     <Thickness x:Key="ThickRight">0,0,5,0</Thickness>
 
     <Thickness x:Key="ThickUp">0,5,0,0</Thickness>
 
     <Thickness x:Key="ThickUpDown">0,5,0,5</Thickness>
+
+    <Thickness x:Key="ThickUpDownLeft">5,5,0,5</Thickness>
+
+    <Thickness x:Key="ThickUpDownRight">0,5,5,5</Thickness>
 
     <!--#endregion-->
 

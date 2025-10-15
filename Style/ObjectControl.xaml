@@ -4,11 +4,11 @@
     xmlns:l="http://wpflocalizeextension.codeplex.com"
     xmlns:i="clr-namespace:Ion.Controls"
     xmlns:Behavior="clr-namespace:Ion.Behavior"
+    xmlns:Collect0="clr-namespace:Ion.Collect;assembly=Ion"
+    xmlns:Core="clr-namespace:Ion.Core;assembly=Ion"
     xmlns:Data="clr-namespace:Ion.Data"
     xmlns:Ion0="clr-namespace:Ion;assembly=Ion"
     xmlns:Ion1="clr-namespace:Ion"
-    xmlns:Collect0="clr-namespace:Ion.Collect;assembly=Ion"
-    xmlns:Core="clr-namespace:Ion.Core;assembly=Ion"
     xmlns:Reflect="clr-namespace:Ion.Reflect"
     xmlns:Reflect0="clr-namespace:Ion.Reflect;assembly=Ion"
     xmlns:Reflection1="clr-namespace:System.Reflection;assembly=mscorlib"
@@ -201,8 +201,10 @@
                 <Grid i:XGrid.AutoColumns="True" i:XGrid.Columns="*,Auto,Auto,*"
                     i:XPanel.Spacing="{i:Constant Key=ThickRight}">
                     <i:DotControl Foreground="{i:Theme Key=Text}"/>
+                    <!--
                     <i:ImageElement Source="{Data:MultiBindMemberImage Type=Image}" 
                         Visibility="{i:Bind Source, Convert=Data:ConvertObjectToVisibility, From=Self}"/>
+                    -->
                     <TextBlock Text="{Data:MultiBindMemberName}"
                         TextTrimming="CharacterEllipsis"
                         ToolTip="{i:Bind Text, From=Self}"/>
@@ -1048,7 +1050,7 @@
                                     <Setter Property="i:XToolTip.Template" Value="{DynamicResource {x:Static i:ObjectControlKey.ObjectToolTip}}"/>
                                     <Setter Property="ToolTip" Value="{i:Bind}"/>
                                 </DataTrigger>
-                                <DataTrigger Binding="{Data:Is Type=Ion0:Namable}" Value="True">
+                                <DataTrigger Binding="{Data:Is Type=Core:Namable}" Value="True">
                                     <Setter Property="Header" Value="{i:Bind Name}"/>
                                 </DataTrigger>
                                 <DataTrigger Binding="{Data:Is Type=System1:Type}" Value="True">
@@ -1945,7 +1947,7 @@
         <Grid i:XGrid.AutoColumns="True" i:XGrid.Columns="Auto,*" i:XPanel.VerticalContentAlignment="Center">
             <i:Display Content="{i:Bind}" ContentTemplate="{StaticResource {x:Static i:ObjectControlKey.ObjectImage}}" 
                 Margin="{i:Constant Key=ThickRight}" 
-                Visibility="{Data:HasAttribute Attribute=Ion0:ImageAttribute, Result=Visibility}"/>
+                Visibility="{Data:HasAttribute Attribute=Ion1:ImageAttribute, Result=Visibility}"/>
             <TextBlock>
                 <TextBlock.Text>
                     <Data:MultiBindName>
@@ -3142,8 +3144,12 @@
                             <i:Bind Convert="Data:ConvertHasFlag" ConverterParameter="{x:Static Ion1:Filter.Sort}" From="TemplatedParent" Path="Model.Style[Filter]"/>
                         </Data:MultiBindTrue>
                     </Border.Visibility>
-                    <Grid x:Name="HeaderGrid" i:XPanel.VerticalContentAlignment="Center">
+                    <Grid x:Name="HeaderGrid" 
+                        i:XGrid.AutoColumns="True"
+                        i:XGrid.Columns="*,Auto,Auto,Auto,Auto,Auto"
+                        i:XPanel.VerticalContentAlignment="Center">
                         <!--#region Route-->
+                        <Grid></Grid>
                         <!--
                         <i:Display Content="{i:Bind From=FindAncestor, FromType={x:Type i:IObjectControl}, Path=(i:XObjectControl.Route)}" 
                             i:Display.Condition="{i:Bind Convert=Data:ConvertHasFlag, ConverterParameter={x:Static Ion1:Filter.Route}, From=TemplatedParent, Path=Model.Style[Filter]}"
@@ -3157,39 +3163,29 @@
                         -->
                         <!--#endregion-->
                         <!--#region Search-->
-                        <!--
                         <i:Display Content="{i:Bind From=TemplatedParent, Path=Model}" 
                             i:Display.Condition="{i:Bind Convert=Data:ConvertHasFlag, ConverterParameter={x:Static Ion1:Filter.Search}, From=TemplatedParent, Path=Model.Style[Filter]}"
                             i:Display.ConditionalTemplate="{DynamicResource {x:Static i:ObjectControlKey.ModelSearch}}"/>
-                        -->
                         <!--#endregion-->
                         <!--#region Filter-->
-                        <!--
                         <i:Display Content="{i:Bind From=TemplatedParent, Path=Model}" 
                             i:Display.Condition="{i:Bind Convert=Data:ConvertHasFlag, ConverterParameter={x:Static Ion1:Filter.Show}, From=TemplatedParent, Path=Model.Style[Filter]}"
                             i:Display.ConditionalTemplate="{DynamicResource {x:Static i:ObjectControlKey.ModelFilter}}"/>
-                        -->
                         <!--#endregion-->
                         <!--#region Group-->
-                        <!--
                         <i:Display Content="{i:Bind From=TemplatedParent, Path=Model}" 
                             i:Display.Condition="{i:Bind Convert=Data:ConvertHasFlag, ConverterParameter={x:Static Ion1:Filter.Group}, From=TemplatedParent, Path=Model.Style[Filter]}"
                             i:Display.ConditionalTemplate="{DynamicResource {x:Static i:ObjectControlKey.GroupButton}}"/>
-                        -->
                         <!--#endregion-->
                         <!--#region Sort-->
-                        <!--
                         <i:Display Content="{i:Bind From=TemplatedParent, Path=Model}" 
                             i:Display.Condition="{i:Bind Convert=Data:ConvertHasFlag, ConverterParameter={x:Static Ion1:Filter.Sort}, From=TemplatedParent, Path=Model.Style[Filter]}"
                             i:Display.ConditionalTemplate="{DynamicResource {x:Static i:ObjectControlKey.ModelSort}}"/>
-                        -->
                         <!--#endregion-->
                         <!--#region Options-->
-                        <!--
                         <i:Display Content="{i:Bind From=TemplatedParent, Path=Model}" 
                             i:Display.Condition="{i:Equal From=TemplatedParent, Invert=True, Path=Model.Style[Options], Value={x:Static Ion1:Option.None}}"
                             i:Display.ConditionalTemplate="{DynamicResource {x:Static i:ObjectControlKey.ModelOption}}"/>
-                        -->
                         <!--#endregion-->
                     </Grid>
                 </Border>
@@ -3326,7 +3322,7 @@
                             </DataTemplate>
                         </i:Display.ConditionalTemplate>
                     </i:Display>
-                    
+
                     <!--Body > Float > Right/Bottom-->
                     <i:Display Content="{i:Bind Data.StyleModel.RightBottomFloatExternal.View, Source={StaticResource Model}}" 
                         i:Display.Condition="{i:Compare32 Data.StyleModel.RightBottomFloatExternal.Source.Count, Source={StaticResource Model}, Type=Greater}">
@@ -3342,11 +3338,9 @@
             </Grid>
             
             <!--Load-->
-            <!--
             <i:Display x:Name="Load" ContentTemplate="{DynamicResource {x:Static i:ObjectControlKey.LoadVertical}}"
                 HorizontalAlignment="Center" VerticalAlignment="Center"
                 Visibility="{i:Bind StyleModel.IsLoading, Convert=Data:ConvertBooleanToVisibility}"/>
-            -->
         </Grid>
         <DataTemplate.Triggers>
             <DataTrigger Binding="{i:Bind Orientation, From=FindAncestor, FromType={x:Type i:ObjectControl}}" Value="{x:Static Orientation.Horizontal}">
@@ -3379,7 +3373,7 @@
                 <Setter TargetName="BodyDefaultContent" 
                     Property="i:XGrid.Rows" Value="*"/>
 
-                <!--<Setter TargetName="Load" Property="ContentTemplate" Value="{DynamicResource {x:Static i:ObjectControlKey.LoadVertical}}"/>-->
+                <Setter TargetName="Load" Property="ContentTemplate" Value="{DynamicResource {x:Static i:ObjectControlKey.LoadHorizontal}}"/>
 
                 <Setter TargetName="Main" Property="i:XGrid.AutoColumns" Value="True"/>
                 <Setter TargetName="Main" Property="i:XGrid.AutoRows" Value="False"/>
@@ -3417,7 +3411,7 @@
                 <Setter TargetName="BodyDefaultContent" 
                     Property="i:XGrid.Rows" Value="Auto,Auto,*,Auto,Auto"/>
 
-                <!--<Setter TargetName="Load" Property="ContentTemplate" Value="{DynamicResource {x:Static i:ObjectControlKey.LoadHorizontal}}"/>-->
+                <Setter TargetName="Load" Property="ContentTemplate" Value="{DynamicResource {x:Static i:ObjectControlKey.LoadVertical}}"/>
 
                 <Setter TargetName="Main" Property="i:XGrid.AutoColumns" Value="False"/>
                 <Setter TargetName="Main" Property="i:XGrid.AutoRows" Value="True"/>

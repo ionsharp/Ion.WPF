@@ -4,6 +4,8 @@ using Ion.Controls;
 using Ion.Data;
 using Ion.Reflect;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Data;
@@ -13,12 +15,12 @@ namespace Ion.Core;
 /// <see cref="Region.Constructor"/>
 [Image(Images.Log)]
 [Name("Log")]
-[Styles.ObjectAttribute(MemberViewType = MemberViewType.All,
+[Styles.Object(MemberViewType = MemberViewType.All,
     MemberView = Ion.View.All ^ Ion.View.Option)]
-[Styles.ObjectAttribute(MemberViewType = MemberViewType.Tab,
+[Styles.Object(MemberViewType = MemberViewType.Tab,
     MemberView = Ion.View.Option)]
 [Serializable]
-public record class LogPanel(IListObservable<IEntry> input) : XmlDataGridPanel<IEntry>(input)
+public record class LogPanel : XmlDataGridPanel<Entry>
 {
     private enum Group
     {
@@ -81,6 +83,10 @@ public record class LogPanel(IListObservable<IEntry> input) : XmlDataGridPanel<I
         }
         return $"0";
     });
+
+    /// <see cref="Region.Constructor"/>
+
+    public LogPanel(IList<Entry> input) : base(input as IList) { }
 
     /// <see cref="Region.Property"/>
     #region
