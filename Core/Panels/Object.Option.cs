@@ -6,7 +6,6 @@ namespace Ion.Core;
 
 [Name("Options")]
 [Image(Images.Options)]
-[Serializable]
 public record class OptionPanel : ObjectPanel
 {
     public static readonly new ResourceKey Template = new();

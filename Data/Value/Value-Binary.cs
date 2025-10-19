@@ -5,7 +5,6 @@ using System.Runtime.Serialization;
 
 namespace Ion.Data;
 
-[Serializable]
 public abstract record class BinaryValue<NonSerializable, Serializable> : Model
 {
     private Serializable serializedValue;
@@ -35,7 +34,6 @@ public abstract record class BinaryValue<NonSerializable, Serializable> : Model
     }
 }
 
-[Serializable]
 public record class BinaryValue<NonSerializable, Serializable, Converter>(NonSerializable value) : BinaryValue<NonSerializable, Serializable>(value) where Converter : Data.ValueConverter<NonSerializable, Serializable>
 {
     [NonSerialized]

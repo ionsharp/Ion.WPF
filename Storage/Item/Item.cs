@@ -17,7 +17,6 @@ namespace Ion.Storage;
 
 [Styles.Object(Strict = MemberTypes.All,
     MemberViewType = MemberViewType.Tab)]
-[Serializable]
 public abstract record class Item : Namable, IItemProperties
 {
     private enum Category { Attributes, Size }

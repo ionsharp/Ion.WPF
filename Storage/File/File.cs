@@ -18,7 +18,6 @@ namespace Ion.Storage;
 
 [Image(Images.File)]
 [Name("File")]
-[Serializable]
 [Styles.Object(MemberViewType = MemberViewType.Tab)]
 public record class File(string path) : Item(ItemType.File, FileOrigin.Local, path)
 {

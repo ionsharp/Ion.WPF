@@ -4,7 +4,6 @@ using System.Xml.Serialization;
 
 namespace Ion.Controls;
 
-[Serializable]
 public record class DockLayoutPanel : Model
 {
     [XmlAttribute]

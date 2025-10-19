@@ -9,7 +9,6 @@ namespace Ion.Storage;
 
 [Image(Images.Drive)]
 [Name("Drive")]
-[Serializable]
 [Styles.Object(MemberViewType = MemberViewType.Tab)]
 public sealed record class Drive : Container
 {

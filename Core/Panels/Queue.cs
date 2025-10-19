@@ -7,7 +7,6 @@ namespace Ion.Core;
 [Description("A queue of operations to run asynchronously (first one in, first one out).")]
 [Image(Images.Queue)]
 [Name("Queue")]
-[Serializable]
 public record class QueuePanel : DataGridPanel<FileTask>
 {
     public static readonly new ResourceKey Template = new();

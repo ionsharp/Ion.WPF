@@ -30,7 +30,6 @@ namespace Ion.Core;
 [Name("Explore")]
 [Styles.Object(Strict = MemberTypes.All,
     MemberViewType = MemberViewType.Tab)]
-[Serializable]
 public record class ItemViewPanel : DataViewPanel<Item>
 {
     private enum Group { File, Folder }

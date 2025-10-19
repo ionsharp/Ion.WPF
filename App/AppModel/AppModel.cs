@@ -82,6 +82,8 @@ public abstract record class AppModel : AppModelBase, IAppModel, IWindow, IFrame
 
     public virtual Type AnalyzerType => typeof(AppAnalyzer);
 
+    public virtual CacheByType Clipboard { get => Get<CacheByType>(); private set => Set(value); }
+
     public AppData Data { get => Get<AppData>(); private set => Set(value); }
 
     public virtual string DataFilePath => $@"{DataFolderPath}\Option.data";
@@ -140,12 +142,6 @@ public abstract record class AppModel : AppModelBase, IAppModel, IWindow, IFrame
 
     ///
 
-    public virtual string GitHub => $@"https://github.com/ionsharp";
-
-    public virtual string GitHubProject => GitHub + $@"/{XAssembly.GetInfo(AssemblySource.Entry).Product}";
-
-    ///
-
     public virtual AppResources Theme { get => Get<AppResources>(); private set => Set(value); }
 
     public virtual PathList Themes { get; private set; } = new PathList(new Storage.Filter(ItemType.File, "theme"));
@@ -175,7 +171,8 @@ public abstract record class AppModel : AppModelBase, IAppModel, IWindow, IFrame
             yield return new(0, "Log",
                 () =>
                 {
-                    Log = new(DataFolderPath, "Log", "dat");
+                    Log = new();
+                    Log.SetFile(DataFolderPath, "Log", "dat");
                     Log.Limit = ListWritableLimit.Default;
                     Log.Load();
 
@@ -184,7 +181,8 @@ public abstract record class AppModel : AppModelBase, IAppModel, IWindow, IFrame
             yield return new(0, "Notifications",
                 () =>
                 {
-                    Notifications = new(DataFolderPath, "Notifications", "dat");
+                    Notifications = new();
+                    Notifications.SetFile(DataFolderPath, "Notifications", "dat");
                     Notifications.Limit = ListWritableLimit.Default;
                     Notifications.Load();
 
@@ -193,7 +191,7 @@ public abstract record class AppModel : AppModelBase, IAppModel, IWindow, IFrame
             yield return new(1, "Data",
                 () =>
                 {
-                    BinarySerializer.Deserialize(DataFilePath, out AppData oldData);
+                    FileSerializer.Deserialize(DataFilePath, out AppData oldData);
                     Data = oldData ?? DataType.Create<AppData>();
                 });
             yield return new(0, "Analysis",
@@ -625,7 +623,7 @@ public abstract record class AppModel : AppModelBase, IAppModel, IWindow, IFrame
                         {
                             var defaultExtensionPath = $@"{LinkFilePath}\{link.Name}.ext";
                             if (!File.Exists(defaultExtensionPath))
-                                BinarySerializer.Serialize(defaultExtensionPath, link);
+                                FileSerializer.Serialize(defaultExtensionPath, link);
                         }
                     }
                 }
@@ -985,6 +983,13 @@ public abstract record class AppModel : AppModelBase, IAppModel, IWindow, IFrame
     {
         get
         {
+            yield return new ButtonModel()
+            {
+                Color = Brushes.Gold,
+                Command = HelpCommand,
+                Image = XImageSource.Convert(Resource.GetImageUri(Images.Help)),
+                Tip = "Help"
+            };
             yield return new ButtonModel()
             {
                 Color = Brushes.DarkGray,

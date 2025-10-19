@@ -3,6 +3,7 @@ using Ion.Analysis;
 using Ion.Controls;
 using Ion.Input;
 using Ion.Reflect;
+using Ion.Serialization;
 using Ion.Storage;
 using Ion.Text;
 using System;
@@ -89,7 +90,7 @@ public abstract record class FileDockViewModel<T>() : DockViewModel<T>(), IFileD
         switch (serializationType)
         {
             case SerializationType.Binary:
-                BinarySerializer.Deserialize(filePath, out document);
+                FileSerializer.Deserialize(filePath, out document, SerializationType.Binary);
                 break;
 
             case SerializationType.Image:
@@ -104,7 +105,7 @@ public abstract record class FileDockViewModel<T>() : DockViewModel<T>(), IFileD
                 }
                 break;
 
-            case SerializationType.Text:
+            case SerializationType.None:
                 document = documentType.Create<FileDocument>();
                 if (document is TextFileDocument textFile)
                 {

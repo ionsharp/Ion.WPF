@@ -10,7 +10,6 @@ namespace Ion.Core;
 
 [Image(Images.Search)]
 [Name("Find")]
-[Serializable]
 public record class FindResultPanel : DataGridPanel<FindResult>
 {
     /// <see cref="Region.Field"/>

@@ -21,7 +21,6 @@ using System.Xml.Serialization;
 namespace Ion.Storage;
 
 [Name("CopyTask")]
-[Serializable]
 [Styles.Object(Filter = Ion.Filter.None, GroupName = MemberGroupName.None, MemberViewType = MemberViewType.Tab)]
 [XmlType(TypeName = nameof(Task))]
 public record class CopyTask : Lockable, IComparable, ISubscribe, ITask

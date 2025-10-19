@@ -15,7 +15,6 @@ namespace Ion.Core;
 
 /// <inheritdoc/>
 [Styles.Object(MemberViewType = MemberViewType.Tab)]
-[Serializable]
 public abstract record class DataViewPanel() : DataPanel()
 {
     [TabView(View = Ion.View.Main)]
@@ -322,7 +321,6 @@ public abstract record class DataViewPanel() : DataPanel()
 #region
 
 /// <inheritdoc/>
-[Serializable]
 public abstract record class DataViewPanel<T>() : DataViewPanel()
 {
     [Hide, NonSerializable]

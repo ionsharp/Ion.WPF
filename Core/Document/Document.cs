@@ -11,7 +11,6 @@ namespace Ion.Core;
 [Image(Images.File)]
 [Name("Document")]
 [Styles.Object(Strict = MemberTypes.All)]
-[Serializable]
 public abstract record class Document : Content
 {
     ///<see cref="Region.Field"/>

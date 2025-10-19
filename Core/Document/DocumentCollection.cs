@@ -4,7 +4,6 @@ using System.Collections.Specialized;
 
 namespace Ion.Core;
 
-[Serializable]
 public class DocumentCollection : ListObservable<Document>
 {
     public DocumentCollection() : base() { }

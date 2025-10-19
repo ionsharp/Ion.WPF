@@ -2,7 +2,6 @@
 
 namespace Ion.Controls;
 
-[Serializable]
 public enum Select
 {
     /// <summary>One item must be selected.</summary>

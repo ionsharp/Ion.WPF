@@ -15,7 +15,6 @@ namespace Ion.Media;
 [Styles.Object(Name = "Color", NameHide = true,
     Filter = Filter.None, GroupName = MemberGroupName.None,
     Strict = MemberTypes.All)]
-[Serializable]
 public abstract record class ColorViewModel(IColor Color) : Model(), ICloneable
 {
     private ColorViewModel() : this(default(IColor)) { }
@@ -94,7 +93,6 @@ public abstract record class ColorViewModel(IColor Color) : Model(), ICloneable
 }
 
 /// <inheritdoc/>
-[Serializable]
 public abstract record class ColorViewModel<T> : ColorViewModel where T : IVector<double>
 {
     private ColorViewModel() : this(default(IColor)) { }
@@ -264,7 +262,6 @@ public abstract record class ColorViewModel<T> : ColorViewModel where T : IVecto
 }
 
 /// <inheritdoc/>
-[Serializable]
 public record class ColorViewModel3 : ColorViewModel<Vector3>
 {
     private ColorViewModel3() : this(default(IColor3)) { }
@@ -287,7 +284,6 @@ public record class ColorViewModel3 : ColorViewModel<Vector3>
 }
 
 /// <inheritdoc/>
-[Serializable]
 public record class ColorViewModel4 : ColorViewModel<Vector4>
 {
     private ColorViewModel4() : this(default(IColor4)) { }

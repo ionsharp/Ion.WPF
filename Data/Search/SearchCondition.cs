@@ -2,7 +2,6 @@
 
 namespace Ion.Data;
 
-[Serializable]
 public enum SearchCondition
 {
     [Description("The target text contains the source text.")]

@@ -14,7 +14,6 @@ namespace Ion.Core;
 [Styles.Object(Strict = MemberTypes.All,
     MemberViewType = MemberViewType.Tab,
     MemberView = View.Option)]
-[Serializable]
 public abstract record class Panel : Content
 {
     [TabView(View = View.Option)]

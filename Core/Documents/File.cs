@@ -22,7 +22,6 @@ namespace Ion.Core;
 
 /// <inheritdoc/>
 [Styles.Object(MemberViewType = MemberViewType.Tab)]
-[Serializable]
 public abstract record class FileDocument : Document
 {
     private enum Group { Attributes, Extension, Format, Properties, Size, Save }
@@ -321,7 +320,6 @@ public abstract record class FileDocument : Document
 /// <inheritdoc/>
 [Description("Interface for managing an image file.")]
 [Name("Image file document")]
-[Serializable]
 public abstract record class ImageFileDocument : FileDocument
 {
     /// <see cref="Region.Field"/>
@@ -342,7 +340,6 @@ public abstract record class ImageFileDocument : FileDocument
 /// <inheritdoc/>
 [Description("Interface for managing a text file.")]
 [Name("Text file document")]
-[Serializable]
 public record class TextFileDocument : FileDocument
 {
     private enum Group { Count, Format }

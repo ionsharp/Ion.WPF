@@ -19,7 +19,6 @@ namespace Ion.Core;
 [Name("Color")]
 [Styles.Object(Strict = MemberTypes.All,
     MemberViewType = MemberViewType.Tab)]
-[Serializable]
 public record class ColorPanel : DataGroupPanel<ByteVector4>
 {
     private enum Group { Detail }

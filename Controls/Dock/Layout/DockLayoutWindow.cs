@@ -4,7 +4,6 @@ using System.Windows;
 
 namespace Ion.Controls;
 
-[Serializable]
 public record class DockLayoutWindow : DockLayoutRoot
 {
     public Vector2M<double> Position { get => Get<Vector2M<double>>(); set => Set(value); }

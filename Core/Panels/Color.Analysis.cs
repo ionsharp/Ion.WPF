@@ -20,7 +20,6 @@ namespace Ion.Core;
 [Styles.Object(Image = Images.LineGraph, Name = "Analysis",
     Description = "Analyze color.",
     MemberViewType = MemberViewType.Tab)]
-[Serializable]
 public record class ColorAnalysisPanel : MethodPanel
 {
     [TabView(View = View.Main)]

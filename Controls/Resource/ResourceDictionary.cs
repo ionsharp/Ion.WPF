@@ -70,7 +70,7 @@ public static class XResourceDictionary
         result = null;
         try
         {
-            BinarySerializer.Deserialize(filePath, out ObjectDictionary finalResult);
+            FileSerializer.Deserialize(filePath, out ObjectDictionary finalResult);
             result = finalResult.Convert();
             return true;
         }
@@ -86,7 +86,7 @@ public static class XResourceDictionary
         try
         {
             var result = input.Convert();
-            BinarySerializer.Serialize(filePath, result);
+            FileSerializer.Serialize(filePath, result);
             Log.Write(new Success($"Saved theme '{filePath}'!"));
             return true;
         }

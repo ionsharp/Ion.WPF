@@ -4,7 +4,6 @@ using System.Xml.Serialization;
 
 namespace Ion.Controls;
 
-[Serializable]
 [XmlRoot("Layout")]
 public record class DockLayout : DockLayoutRoot
 {

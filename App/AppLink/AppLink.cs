@@ -11,7 +11,6 @@ namespace Ion.Core;
 
 /// <summary>A (partially) independent component that extends functionality of an application.</summary>
 [Styles.Object(GroupName = MemberGroupName.None)]
-[Serializable]
 public abstract record class AppLink() : Model(), IAppLink
 {
     [field: NonSerialized]
@@ -72,7 +71,6 @@ public abstract record class AppLink() : Model(), IAppLink
 #region
 
 /// <inheritdoc/>
-[Serializable]
 public abstract record class AppLink<T>() : AppLink() where T : IAppModel
 {
     public override Type TargetType => typeof(T);
@@ -84,7 +82,6 @@ public abstract record class AppLink<T>() : AppLink() where T : IAppModel
 #region
 
 /// <inheritdoc/>
-[Serializable]
 public abstract record class PanelLink<T>() : AppLink<IAppModelDock>() where T : Panel
 {
     [field: NonSerialized]

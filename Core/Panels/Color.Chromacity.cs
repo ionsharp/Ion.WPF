@@ -12,7 +12,6 @@ namespace Ion.Core;
 [Styles.Object(Image = Images.Thermometer, Name = "Chromacity",
     Description = "Calculate the chromacity of color.",
     Filter = Filter.None, GroupName = MemberGroupName.None)]
-[Serializable]
 public record class ColorChromacityPanel() : Panel()
 {
     /// <see cref="Region.Key"/>

@@ -13,7 +13,6 @@ namespace Ion.Controls;
     Orientation = Orient.Vertical,
     Strict = MemberTypes.All,
     MemberViewType = MemberViewType.Tab)]
-[Serializable]
 public record class ColorFileDockViewModelData() : FileDockViewModelData()
 {
     /// <see cref="Tab"/>

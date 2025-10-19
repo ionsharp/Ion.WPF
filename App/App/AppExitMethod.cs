@@ -2,7 +2,6 @@
 
 namespace Ion.Core;
 
-[Serializable]
 public enum AppExitMethod
 {
     None,

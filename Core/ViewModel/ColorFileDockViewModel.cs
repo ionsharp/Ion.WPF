@@ -2,6 +2,7 @@
 using Ion.Imaging;
 using Ion.Input;
 using Ion.Numeral;
+using Ion.Serialization;
 using Ion.Storage;
 using System;
 using System.Collections.Generic;
@@ -69,7 +70,7 @@ public record class ColorFileDockViewModel() : FileDockViewModel<ColorFileDockVi
 
     protected override Type GetDocumentType(string fileExtension) => typeof(ColorDocument);
 
-    protected override SerializationType GetSerializationType(string fileExtension) => SerializationType.Binary;
+    protected override SerializationType GetSerializationType(string fileExtension) => SerializationType.JSON;
 
     ///
 

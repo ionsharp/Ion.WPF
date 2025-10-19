@@ -13,7 +13,6 @@ namespace Ion.Core;
 
 [Image(Images.Bell)]
 [Name("Notifications")]
-[Serializable]
 public record class NotificationPanel : XmlDataGridPanel<Notification>
 {
     private enum Category { Text }

@@ -4,7 +4,7 @@ using System;
 
 namespace Ion.Storage;
 
-[Name("Shortcut"), Serializable]
+[Name("Shortcut")]
 public sealed record class Shortcut : File
 {
     public ItemList Items { get => Get(new ItemList()); private set => Set(value); }

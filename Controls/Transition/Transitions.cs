@@ -5,7 +5,6 @@ namespace Ion.Controls;
 /// <summary>
 /// Transitions of <see cref="TransitionControl"/>.
 /// </summary>
-[Serializable]
 public enum Transitions
 {
     /// <summary>

@@ -19,7 +19,6 @@ namespace Ion.Core;
 [Name("Reflect"), Image(Images.Code)]
 [Styles.Object(Strict = MemberTypes.All,
     MemberViewType = MemberViewType.Tab)]
-[Serializable]
 public record class ReflectPanel : MethodPanel
 {
     [TabView(View = View.Main)]

@@ -46,7 +46,6 @@ public enum DataGroupPanelTab
 
 /// <inheritdoc/>
 [Styles.Object(MemberViewType = MemberViewType.Tab)]
-[Serializable]
 public abstract record class DataGroupPanel<T> : DataViewPanel<T>, IDataGroupPanel
 {
     /// <see cref="Region.Property.Public.Override"/>

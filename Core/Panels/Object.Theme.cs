@@ -5,7 +5,7 @@ using System.Windows.Input;
 
 namespace Ion.Core;
 
-[Name("Theme"), Image(Images.Palette), Serializable]
+[Name("Theme"), Image(Images.Palette)]
 public record class ThemePanel : ObjectPanel
 {
     public static readonly new ResourceKey Template = new();

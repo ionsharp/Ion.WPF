@@ -23,7 +23,6 @@ namespace Ion.Core;
 [Styles.Object(Image = Images.ColorWheel, Name = "Harmony",
     Description = "Explore color harmony.",
     MemberViewType = MemberViewType.Tab)]
-[Serializable]
 public record class ColorHarmonyPanel : DataViewPanel<Color>
 {
     private enum Group
@@ -39,10 +38,9 @@ public record class ColorHarmonyPanel : DataViewPanel<Color>
     [TabView(View = Ion.View.Main)]
     private new enum Tab { }
 
-    [Serializable]
     public enum Steps { Increase, Decrease, Both }
 
-    [Flags, Serializable]
+    [Flags]
     public enum TargetComponents { [Hide]None = 0, Y = 1, Z = 2, [Hide]Both = Y | Z }
 
     /// <see cref="Region.Event"/>

@@ -5,7 +5,6 @@ using System.Linq;
 
 namespace Ion.Core;
 
-[Serializable]
 public class ItemGroup<T> : ListObservable<Item<T>>, IItemGroup, IName
 {
     public string Name { get => this.Get(""); set => this.Set(value); }

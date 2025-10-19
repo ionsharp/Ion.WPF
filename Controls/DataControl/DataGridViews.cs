@@ -2,7 +2,6 @@
 
 namespace Ion.Controls;
 
-[Serializable]
 public enum DataGridViews
 {
     [Image(Images.ViewDetail)]

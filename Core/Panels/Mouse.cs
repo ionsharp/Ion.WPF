@@ -9,7 +9,6 @@ namespace Ion.Core;
 
 [Name("Mouse"), Image(Images.Arrow)]
 [Styles.Object(GroupName = MemberGroupName.None, Filter = Filter.None)]
-[Serializable]
 public record class MousePanel() : Panel()
 {
     public static readonly new ResourceKey Template = new();

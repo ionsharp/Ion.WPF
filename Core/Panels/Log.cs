@@ -19,7 +19,6 @@ namespace Ion.Core;
     MemberView = Ion.View.All ^ Ion.View.Option)]
 [Styles.Object(MemberViewType = MemberViewType.Tab,
     MemberView = Ion.View.Option)]
-[Serializable]
 public record class LogPanel : XmlDataGridPanel<Entry>
 {
     private enum Group

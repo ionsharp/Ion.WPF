@@ -35,7 +35,7 @@ public abstract record class DataViewModel() : ViewModel(), IDataViewModel
 
     public virtual void Load()
     {
-        BinarySerializer.Deserialize(DataFilePath, out IViewModelData oldData);
+        FileSerializer.Deserialize(DataFilePath, out IViewModelData oldData);
         Data = oldData ?? DataType?.Create<IViewModelData>();
     }
 }

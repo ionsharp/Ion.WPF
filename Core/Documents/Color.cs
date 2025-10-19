@@ -26,7 +26,6 @@ namespace Ion.Controls;
     Filter = Filter.None,
     GroupName = MemberGroupName.None,
     IgnoreNames = [nameof(Created), nameof(LastAccessed), nameof(LastModified), nameof(Name), nameof(Path), nameof(SaveCommand), nameof(SaveAsCommand), nameof(Size)])]
-[Serializable]
 public record class ColorDocument : FileDocument
 {
     private enum Group { Background }

@@ -4,7 +4,6 @@ using System.ComponentModel;
 
 namespace Ion.Controls;
 
-[Serializable]
 public record class FolderOptions : Model
 {
     public ListSortDirection GroupDirection { get => Get(ListSortDirection.Ascending); set => Set(value); }

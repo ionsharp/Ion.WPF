@@ -5,7 +5,6 @@ using System.Collections.Generic;
 namespace Ion.Core;
 
 /// <inheritdoc/>
-[Serializable]
 public record class DockViewModelData() : ViewModelData()
 {
     private enum Group { Default }

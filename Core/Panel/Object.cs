@@ -4,7 +4,6 @@ using System;
 namespace Ion.Core;
 
 /// <inheritdoc/>
-[Serializable]
 public abstract record class ObjectPanel() : Panel()
 {
     /// <see cref="Region.Field"/>

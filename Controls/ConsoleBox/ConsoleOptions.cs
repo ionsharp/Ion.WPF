@@ -5,7 +5,7 @@ using System.Windows.Media;
 
 namespace Ion.Controls;
 
-[Name(nameof(ConsoleOptions)), Serializable]
+[Name(nameof(ConsoleOptions))]
 public record class ConsoleOptions : ControlOptions<ConsoleBox>
 {
     public SolidColorBrush Background { get => Get(Brushes.Black, ValueConverter.Cache.Get<ConvertSolidColorBrushToString>()); set => Set(value, ValueConverter.Cache.Get<ConvertSolidColorBrushToString>()); }

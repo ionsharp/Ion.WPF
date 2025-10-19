@@ -5,7 +5,7 @@ using System;
 namespace Ion.Storage;
 
 [Name("Extensions")]
-[Styles.Object(GroupName = MemberGroupName.None), Serializable]
+[Styles.Object(GroupName = MemberGroupName.None)]
 public record class FilterExtensions : Model
 {
     public Clude Filter { get => Get(Clude.Include); set => Set(value); }

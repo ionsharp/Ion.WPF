@@ -11,7 +11,6 @@ using System.Reflection;
 
 namespace Ion.Core;
 
-[Serializable]
 public class DefaultMatrices : ItemGroup<IMatrix>
 {
     public static IMatrix Gaussian3x3 => new Matrix3x3<double>(4, 2, 1, Matrix3x3Fill.Alternate);
@@ -47,7 +46,6 @@ public class DefaultMatrices : ItemGroup<IMatrix>
 [Image(Images.Matrix), Name("Matrix")]
 [Styles.Object(Strict = MemberTypes.All, MemberViewType = MemberViewType.Tab)]
 [Description("Manage groups of matrices.")]
-[Serializable]
 public record class MatrixPanel(IListWritable input) : DataGroupPanel<IMatrix>(input)
 {
     private enum Group { AddRemove }

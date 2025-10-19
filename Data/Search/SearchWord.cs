@@ -2,7 +2,6 @@
 
 namespace Ion.Data;
 
-[Serializable]
 public enum SearchWord
 {
     [Description("The target text must match all source words.")]

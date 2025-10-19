@@ -9,7 +9,6 @@ using System.Windows.Input;
 namespace Ion.Core;
 
 /// <summary>Invokes a <see cref="Taskable"/>.</summary>
-[Serializable]
 public abstract record class MethodPanel() : Panel()
 {
     /// <see cref="Region.Property.Protected.Abstract"/>

@@ -17,7 +17,6 @@ namespace Ion.Controls;
 [Name("Illuminant")]
 [Styles.Object(Strict = MemberTypes.All,
     MemberViewType = MemberViewType.Tab)]
-[Serializable]
 public record class IlluminantPanel : DataGroupPanel<Vector2>
 {
     [TabView(View = Ion.View.Main)]

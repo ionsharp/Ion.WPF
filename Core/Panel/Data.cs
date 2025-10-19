@@ -29,7 +29,6 @@ namespace Ion.Core;
 [Styles.Object(Strict = MemberTypes.All,
     MemberViewType = MemberViewType.Tab,
     MemberView = View.Option)]
-[Serializable]
 public record class DataPanel : Panel, IFrameworkElementReference
 {
     /// <see cref="Tab"/>

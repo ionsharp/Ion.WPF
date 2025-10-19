@@ -6,7 +6,6 @@ namespace Ion.Core;
 
 [Styles.Object(GroupName = MemberGroupName.None,
     Strict = MemberTypes.All)]
-[Serializable]
 public record class Item<T>(string name) : Namable<T>(name), IGeneric, IItem
 {
     /// <see cref="Region.Property"/>

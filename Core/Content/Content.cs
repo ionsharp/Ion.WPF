@@ -6,7 +6,6 @@ using System.Xml.Serialization;
 namespace Ion.Core;
 
 /// <inheritdoc/>
-[Serializable]
 [Styles.Object(Filter = Filter.Route | Filter.Search | Filter.Sort,
     RouteIcon = Images.Options,
     RouteName = "Options",

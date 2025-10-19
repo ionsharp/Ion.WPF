@@ -10,7 +10,6 @@ namespace Ion.Core;
 /// <inheritdoc/>
 [Image(Images.Properties)]
 [Name("Properties")]
-[Serializable]
 public record class PropertyPanel() : ObjectPanel()
 {
     /// <see cref="TargetAttribute"/>

@@ -6,7 +6,6 @@ using System.Xml.Serialization;
 
 namespace Ion.Controls;
 
-[Serializable]
 public record class DockLayoutDocumentGroup : DockLayoutElement
 {
     public bool Default { get; set; }

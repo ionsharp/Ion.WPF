@@ -36,7 +36,6 @@ public record class CopyPanelItem() : Model()
 [Description("Sync file contents of multiple folders.")]
 [Image(Images.Copy)]
 [Name("Copy")]
-[Serializable]
 public record class CopyPanel : DataGridPanel<CopyTask>
 {
     private enum Group { Disable, Enable, Pause, Remove, Task, Warnings }

@@ -4,7 +4,6 @@ using System.Xml.Serialization;
 
 namespace Ion.Controls;
 
-[Serializable]
 public class ControlLength
 {
     public static readonly ControlLength Auto = new(1, ControlLengthUnit.Auto);

@@ -16,7 +16,6 @@ namespace Ion.Controls;
 [Name("Profile")]
 [Styles.Object(Strict = MemberTypes.All,
     MemberViewType = MemberViewType.Tab)]
-[Serializable]
 public record class ProfilePanel : DataGroupPanel<ColorProfile>
 {
     [TabView(View = Ion.View.Main)]

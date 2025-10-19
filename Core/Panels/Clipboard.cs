@@ -6,7 +6,6 @@ namespace Ion.Core;
 
 [Description("Store a single instance of any type.")]
 [Image(Images.Paste), Name("Clipboard")]
-[Serializable]
 public record class ClipboardPanel : DataGridPanel<CacheListItem>
 {
     /// <see cref="Region.Key"/>

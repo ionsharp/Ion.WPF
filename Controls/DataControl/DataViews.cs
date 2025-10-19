@@ -2,7 +2,6 @@
 
 namespace Ion.Controls;
 
-[Serializable]
 public enum DataViews
 {
     [Image(Images.ViewBlock)]

@@ -12,7 +12,7 @@ using System.Windows.Media;
 
 namespace Ion.Core;
 
-[Serializable, Style("Random", Image = Images.Dice)]
+[Style("Random", Image = Images.Dice)]
 public record class RandomPanel : Panel
 {
     private enum Category { Characters }

@@ -2,7 +2,6 @@
 
 namespace Ion.Storage;
 
-[Serializable]
 public enum CopyDirection
 {
     [Image(Images.ArrowPrevious)]

@@ -3,7 +3,6 @@
 namespace Ion.Local;
 
 [Description("A language.")]
-[Serializable]
 public enum Language
 {
     [Culture("en")]

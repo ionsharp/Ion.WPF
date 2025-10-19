@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Ion.Storage;
 
-[Image(Images.Folder), Name("Folder"), Serializable]
+[Image(Images.Folder), Name("Folder")]
 [Styles.Object(MemberViewType = MemberViewType.Tab)]
 public sealed record class Folder(string path) : Container(ItemType.Folder, FileOrigin.Local, path)
 {

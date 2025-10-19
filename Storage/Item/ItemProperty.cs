@@ -3,7 +3,6 @@
 namespace Ion.Storage;
 
 [Flags]
-[Serializable]
 public enum ItemProperty
 {
     None = 0,

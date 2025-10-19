@@ -5,7 +5,6 @@ using System.Collections;
 namespace Ion.Core;
 
 [Styles.Object(Filter = Filter.None)]
-[Serializable]
 public record class GroupItemForm : Model
 {
     public IList Groups { get => Get<IList>(null, false); set => Set(value, false); }

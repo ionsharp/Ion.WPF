@@ -9,7 +9,6 @@ namespace Ion.Core;
 [Name("Find")]
 [Image(Images.Search)]
 [Styles.Object(Strict = MemberTypes.All)]
-[Serializable]
 public record class FindPanel : Panel, IFrameworkElementReference
 {
     /// <see cref="Region.Field"/>

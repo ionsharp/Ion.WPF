@@ -12,7 +12,6 @@ namespace Ion.Core;
 [Styles.Object(Image = Images.Ruler, Name = "Difference",
     Description = "Calcuate the distance of color.",
     Filter = Filter.None)]
-[Serializable]
 public record class ColorDifferencePanel : Panel
 {
     private enum Group { A, B, Difference }

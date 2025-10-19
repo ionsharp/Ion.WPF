@@ -8,7 +8,6 @@ namespace Ion.Core;
 [AppLink(Name = "Find",
     Description = "Find and replace text in documents.",
     Icon = Images.Search)]
-[Serializable]
 public record class FindLink() : PanelLink<FindPanel>()
 {
     private enum Menu { Find }

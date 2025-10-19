@@ -22,7 +22,6 @@ namespace Ion.Core;
     Options = Option.All,
     TabPlacement = Side.Left,
     MemberViewType = MemberViewType.Tab)]
-[Serializable]
 public abstract record class AppData() : Serializable(), IAppComponent
 {
     private enum Group { Button, Dialog, Footer, General, Group, Header, Limit, Log, Menu, Model, Size, Window }

@@ -6,7 +6,6 @@ using System.Windows;
 namespace Ion;
 
 [Styles.Object(GroupName = MemberGroupName.None)]
-[Serializable]
 public record class Alignment() : Model()
 {
     public static Alignment Center => new(HorizontalAlignment.Center, VerticalAlignment.Center);

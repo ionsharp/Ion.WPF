@@ -10,7 +10,6 @@ namespace Ion.Controls;
 
 public class FlagButton : Button, ISubscribe
 {
-    [Serializable]
     public enum Views { Default, Menu }
 
     /// <see cref="Region.Field"/>

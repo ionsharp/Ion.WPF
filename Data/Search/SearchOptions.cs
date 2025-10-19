@@ -3,7 +3,6 @@ using System;
 
 namespace Ion.Data;
 
-[Serializable]
 public record class SearchOptions : Model
 {
     public bool Case { get => Get(false); set => Set(value); }

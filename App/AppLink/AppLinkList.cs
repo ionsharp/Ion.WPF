@@ -96,7 +96,7 @@ public class AppLinkList(string path) : ItemList(path, new Storage.Filter(ItemTy
                     var assemblyContext = new AssemblyContext(guid, Assembly.Load(System.IO.File.ReadAllBytes(item.Path)), AppDomain.CreateDomain(guid.ToString()));
                     link = Create(assemblyContext);
                 }),
-                InternalLink => BinarySerializer.Deserialize(item.Path, out link),
+                InternalLink => FileSerializer.Deserialize(item.Path, out link),
                 _ => new Error(new NotSupportedException())
             };
 
@@ -194,7 +194,7 @@ public class AppLinkList(string path) : ItemList(path, new Storage.Filter(ItemTy
                     if (System.IO.File.Exists(extensionPath))
                         Try.Do(() => System.IO.File.Delete(extensionPath));
 
-                    BinarySerializer.Serialize(extensionPath, extension);
+                    FileSerializer.Serialize(extensionPath, extension);
                     Log.Write(new Message($"Reset extension '{extension.Name}'"));
                 }
             }

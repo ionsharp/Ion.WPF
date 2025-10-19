@@ -9,7 +9,6 @@ namespace Ion.Core;
 [Image(Images.Shutdown)]
 [Styles.Object(Strict = MemberTypes.All,
     MemberViewType = MemberViewType.Tab)]
-[Serializable]
 public record class AddressPanel : Panel
 {
     [TabView(View = View.Main)]

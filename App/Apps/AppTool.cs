@@ -12,13 +12,15 @@ namespace Ion.Core;
 /// <summary>
 /// A lightweight <see cref="App"/>.
 /// </summary>
-[Using<AppModelBase>]
+[Using<AppToolModel>]
 [Using<AppResources>]
 [Using<IAppView>]
 [Using<IAppViewModel>]
 public abstract class AppTool : App
 {
-    public AppModelBase Model { get; private set; }
+    new public static AppTool Current => App.Current as AppTool;
+
+    public AppToolModel Model { get; private set; }
 
     public AppResources Theme { get; private set; }
 
@@ -28,8 +30,8 @@ public abstract class AppTool : App
 
     public AppTool() : base()
     {
-        Model = XAssembly.GetDerivedTypes<AppModelBase>(XAssembly.Get(AssemblySource.Entry)).FirstOrDefault<Type>().Create<AppModelBase>() ??
-            throw new NotImplementedException(typeof(AppModelBase).FullName);
+        Model = XAssembly.GetDerivedTypes<AppToolModel>(XAssembly.Get(AssemblySource.Entry)).FirstOrDefault<Type>().Create<AppToolModel>() ??
+            throw new NotImplementedException(typeof(AppToolModel).FullName);
 
         Theme = [];
         Theme.LoadTheme(DefaultThemes.Light);

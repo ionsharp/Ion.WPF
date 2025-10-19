@@ -18,7 +18,6 @@ namespace Ion.Core;
 [Styles.ObjectAttribute(Strict = MemberTypes.All,
     MemberViewType = MemberViewType.Tab,
     MemberView = Ion.View.Option)]
-[Serializable]
 public abstract record class DataGridPanel() : DataPanel()
 {
     [TabView(View = Ion.View.Main)]
@@ -63,7 +62,6 @@ public abstract record class DataGridPanel() : DataPanel()
 #region
 
 /// <inheritdoc/>
-[Serializable]
 public abstract record class DataGridPanel<T>(IList input) : DataGridPanel(input)
 {
     [Hide, NonSerializable]
@@ -78,7 +76,6 @@ public abstract record class DataGridPanel<T>(IList input) : DataGridPanel(input
 #region
 
 /// <inheritdoc/>
-[Serializable]
 public abstract record class XmlDataGridPanel<T>(IList input) : DataGridPanel<T>(input)
 {
     protected XmlDataGridPanel() : this(default(IList)) { }

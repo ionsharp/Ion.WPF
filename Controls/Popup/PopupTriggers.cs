@@ -3,7 +3,6 @@
 namespace Ion.Controls;
 
 [Flags]
-[Serializable]
 public enum PopupTriggers
 {
     [Hide]
